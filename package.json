@@ -14,7 +14,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "validate": "tsx scripts/validate-manifests.ts",
-    "audit:a11y": "tsx scripts/audit-a11y.ts"
+    "audit:a11y": "tsx scripts/audit-a11y.ts",
+    "audit:parity": "tsx scripts/audit-parity.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
