@@ -13,7 +13,12 @@ const repoRoot = path.resolve(__dirname, '..');
 const outPath = path.join(repoRoot, 'data', 'docs-links.json');
 const configPath = path.join(repoRoot, 'data', 'product-config.json');
 
-const RAW_YAML_URL = 'https://raw.githubusercontent.com/tokenpak/docs/main/docs-links.yaml';
+// GitHub Contents API returns base64-encoded file content with proper
+// Authorization: Bearer handling for private repos. raw.githubusercontent.com
+// does not reliably serve private-repo content with a Bearer header —
+// GitHub returns 404 instead of 403, which is indistinguishable from
+// "file absent" at the HTTP layer. The Contents API is the supported path.
+const CONTENTS_API_URL = 'https://api.github.com/repos/tokenpak/docs/contents/docs-links.yaml?ref=main';
 
 interface RawLink {
   title: string;
@@ -63,14 +68,21 @@ async function main() {
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8')) as { docs_base_url: string };
   const docsBase = config.docs_base_url.replace(/\/+$/, '');
 
-  const headers: Record<string, string> = { Accept: 'text/plain' };
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
   if (process.env.GITHUB_TOKEN) {
     headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
   }
 
-  const res = await fetch(RAW_YAML_URL, { headers });
+  const res = await fetch(CONTENTS_API_URL, { headers });
   if (res.status === 404) {
-    console.warn(`docs-links.yaml not yet present at ${RAW_YAML_URL}; writing empty manifest.`);
+    console.warn(
+      `docs-links.yaml not found at ${CONTENTS_API_URL} (404). If the repo ` +
+      `is private, confirm MAIN_REPO_TOKEN has contents:read on tokenpak/docs. ` +
+      `Writing empty manifest.`,
+    );
     fs.writeFileSync(outPath, '[]\n', 'utf8');
     return;
   }
@@ -78,7 +90,11 @@ async function main() {
     throw new Error(`docs-links fetch ${res.status} ${res.statusText}`);
   }
 
-  const yaml = await res.text();
+  const body = (await res.json()) as { content?: string; encoding?: string };
+  if (!body.content || body.encoding !== 'base64') {
+    throw new Error(`docs-links contents API returned unexpected shape: ${JSON.stringify(body).slice(0, 200)}`);
+  }
+  const yaml = Buffer.from(body.content, 'base64').toString('utf8');
   const raw = parseSimpleYamlList(yaml);
 
   const resolved = raw.map((link) => {
