@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import { config } from '../lib/config';
+---
+<BaseLayout title="Pro — TokenPak" description="TokenPak Pro: team dashboards, advanced routing, enterprise credential management.">
+  <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Pro tier</p>
+    <h1>TokenPak Pro.</h1>
+    <p class="mt-6 text-body">
+      Team dashboards with multi-seat cost attribution, advanced routing policies
+      (cost-aware and SLA-aware), enterprise credential management (SSO, rotation hooks),
+      priority support with an SLA, and custom compression recipes + compliance rulesets.
+    </p>
+    <p class="mt-4 text-body">
+      The OSS core — proxy, compression engine, client integrations, local dashboard, telemetry
+      store — is <a href="/open-source" class="text-tp-accent">Apache 2.0 licensed</a> and
+      full-featured. Pro adds team-scale features on top of the same core; it does not unlock the
+      OSS engine.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose px-6 py-6">
+    <h2>Install</h2>
+    <p class="mt-2 text-small text-tp-mute">
+      <strong class="text-tp-ink">Pro</strong> is the tier name. <code class="font-mono">{config.package_paid}</code> is the package name. They're deliberately different — see <a href={config.docs_base_url + '/'} class="text-tp-accent">docs</a> for the naming rule.
+    </p>
+    <div class="mt-4">
+      <CodeBlock language="bash" title="pip">
+{`pip install ${config.package_paid} --index-url ${config.private_index_url_public_label}`}
+      </CodeBlock>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-prose px-6 py-8">
+    <div class="rounded-card border border-tp-rule p-8 bg-tp-paper">
+      <h2>Request access</h2>
+      <p class="mt-2 text-body">
+        Pro access is gated during v1. Drop us a line with how you're using TokenPak today and we'll
+        follow up with credentials for <code class="font-mono">{config.private_index_url_public_label}</code>.
+      </p>
+      <a
+        href={config.cta_urls.request_access}
+        class="mt-4 inline-flex items-center rounded-card bg-tp-accent px-5 py-3 font-semibold text-tp-ink no-underline"
+      >
+        Request access
+      </a>
+    </div>
+  </section>
+</BaseLayout>
