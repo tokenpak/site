@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import type { ReleaseEntry } from '../lib/releases';
+import { renderMarkdown } from '../lib/markdown';
 
 interface Props {
   release: ReleaseEntry;
@@ -11,14 +12,25 @@ const description = release.summary?.slice(0, 160) ?? `TokenPak ${release.versio
 const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
   year: 'numeric', month: 'short', day: 'numeric',
 });
+
+// Sanitized HTML from the GitHub Release body (D2.a, 2026-04-23).
+// Falls back to the short summary if the source body is empty.
+const bodyHtml = release.body_markdown ? renderMarkdown(release.body_markdown) : '';
 ---
 <BaseLayout title={title} description={description}>
   <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide">Release</p>
     <h1 class="mt-1">{release.title}</h1>
     <p class="mt-2 font-mono text-small text-tp-mute">v{release.version} · {dateText}</p>
-    {release.summary && <p class="mt-6 text-body">{release.summary}</p>}
-    <div class="mt-6 flex flex-wrap gap-3 text-small">
+    {!bodyHtml && release.summary && <p class="mt-6 text-body">{release.summary}</p>}
+
+    {bodyHtml && (
+      <article class="release-body mt-8">
+        <Fragment set:html={bodyHtml} />
+      </article>
+    )}
+
+    <div class="mt-10 flex flex-wrap gap-3 text-small">
       {release.github_release_url && <a href={release.github_release_url}>Full notes on GitHub</a>}
       {release.pypi_url           && <a href={release.pypi_url}>PyPI package</a>}
       {release.changelog_url      && <a href={release.changelog_url}>CHANGELOG</a>}
@@ -29,3 +41,84 @@ const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
     <slot />
   </section>
 </BaseLayout>
+
+<style>
+  /*
+   * Scoped styling for the release-body prose. Kept tight — headings,
+   * lists, code, tables, links — matching brand tokens from global.css
+   * via CSS variables (05 §5.1).
+   */
+  .release-body :global(h1),
+  .release-body :global(h2) {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .release-body :global(h1) { font-size: 1.5rem; }
+  .release-body :global(h2) { font-size: 1.25rem; }
+  .release-body :global(h3) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  .release-body :global(p) { margin: 0.75rem 0; line-height: 1.6; }
+  .release-body :global(ul),
+  .release-body :global(ol) { margin: 0.75rem 0 0.75rem 1.5rem; }
+  .release-body :global(ul) { list-style: disc; }
+  .release-body :global(ol) { list-style: decimal; }
+  .release-body :global(li) { margin: 0.25rem 0; }
+  .release-body :global(code) {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    background-color: var(--tp-rule);
+    color: var(--tp-ink);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    font-size: 0.875em;
+  }
+  .release-body :global(pre) {
+    background-color: var(--tp-charcoal);
+    color: var(--tp-paper);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  .release-body :global(pre code) {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.875rem;
+  }
+  .release-body :global(blockquote) {
+    border-left: 3px solid var(--tp-rule);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--tp-mute);
+  }
+  .release-body :global(table) {
+    border-collapse: collapse;
+    margin: 1rem 0;
+    width: 100%;
+  }
+  .release-body :global(th),
+  .release-body :global(td) {
+    border: 1px solid var(--tp-rule);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: 0.9375rem;
+  }
+  .release-body :global(th) { background: var(--tp-paper); font-weight: 600; }
+  .release-body :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--tp-rule);
+    margin: 1.5rem 0;
+  }
+  .release-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+</style>
