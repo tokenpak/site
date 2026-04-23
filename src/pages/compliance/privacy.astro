@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { config } from '../../lib/config';
+
+// C1 (PM/GTM v2 Phase 2, 2026-04-23): Privacy policy template.
+// Banner: "Templates pending legal review."
+// Authoritative escape-hatch list sourced from 2026-04-23 repo audit —
+// keep in sync with tokenpak/telemetry/{config,request_logger}.py + the
+// TOKENPAK_DEBUG CLI surface.
+---
+<BaseLayout
+  title="Privacy — TokenPak"
+  description="How TokenPak handles data on your machine. Local-first by default."
+>
+  <div class="mx-auto max-w-prose-wide px-6 py-12 prose">
+    <div class="rounded-lg border border-tp-rule bg-tp-signal-value p-4 mb-8 text-small">
+      <strong>Templates pending legal review.</strong> This page is drafted by the
+      TokenPak team as an honest, plain-English summary of current data-handling
+      behavior. It is not a substitute for legal advice and has not been
+      reviewed by counsel. Authoritative contract terms will land in
+      <a href="/compliance/dpa">the DPA</a> once legal review completes.
+    </div>
+
+    <h1>Privacy</h1>
+
+    <p class="text-tp-mute">Last updated: 2026-04-23 (draft).</p>
+
+    <h2>What runs where</h2>
+    <p>
+      TokenPak is a <strong>local proxy</strong>. Every compression, routing,
+      caching, and telemetry decision happens on your machine. Your prompts,
+      completions, code, and business data are <em>not</em> sent to TokenPak
+      infrastructure by default, at any point, for any reason.
+    </p>
+
+    <h2>What we collect by default</h2>
+    <p>Nothing. Zero opt-in-required telemetry. No usage pings. No install counters.</p>
+
+    <h2>What TokenPak stores locally on your machine</h2>
+    <ul>
+      <li>A SQLite ledger at <code>~/.tokenpak/monitor.db</code> with per-request metadata (model, token counts, latency, cost, cache-origin). Default retention: 90 days of rolling history.</li>
+      <li>Configuration at <code>~/.tokenpak/config.yaml</code>. Contains profile selection, port, compression knobs. Never contains API keys or prompts.</li>
+      <li>Optional license key at <code>~/.tokenpak/license.key</code> (mode 600). Applies only if you've activated a Pro tier. Never transmitted except to the license server for signature verification.</li>
+    </ul>
+
+    <h2>Optional debug/logging escape hatches — full disclosure</h2>
+    <p>
+      Several opt-in controls <strong>will</strong> expand what is stored locally if
+      you turn them on. They are off by default. We disclose them here so you
+      know exactly what each knob does before enabling it.
+    </p>
+    <dl class="space-y-4">
+      <div>
+        <dt><code>TOKENPAK_DEBUG=1</code> (env var)</dt>
+        <dd>Enables verbose debug output on stdout/stderr and debug-level entries in local logs. Debug output <em>may</em> include request headers (never credential values — those are redacted at the logging boundary). Off by default.</dd>
+      </div>
+      <div>
+        <dt><code>TOKENPAK_LOG_ENABLED=1</code> + <code>TOKENPAK_LOG_DESTINATION</code> (env vars)</dt>
+        <dd>Enables the structured request logger. Destinations: <code>file</code> (default path), <code>stdout</code>, <code>syslog</code>. Logger records request metadata — not prompt/response bodies unless <code>store_prompts</code> is also enabled. See <code>TOKENPAK_LOG_LEVEL</code> and <code>TOKENPAK_LOG_RETENTION_DAYS</code> for tuning.</dd>
+      </div>
+      <div>
+        <dt><code>telemetry.store_prompts = true</code> (config flag)</dt>
+        <dd><strong>This flag stores prompt and response bodies to local disk.</strong> Off by default. Exists for debugging and benchmarking. When enabled, prompt/response content is written to the same retention store as metadata. Clients with regulated data should leave this off.</dd>
+      </div>
+    </dl>
+
+    <h2>What leaves your machine</h2>
+    <p>Only what you ask TokenPak to proxy:</p>
+    <ul>
+      <li><strong>LLM requests</strong> — forwarded to the provider you configured (Anthropic, OpenAI, etc.), using <em>your</em> credentials on the way out. TokenPak does not intercept, log to our infrastructure, or mirror the payload.</li>
+      <li><strong>License verification</strong> — if you activated a Pro license, the signed license token is presented to <code>{config.private_index_url_public_label}</code> to authorize package downloads and to the license server for tier checks.</li>
+    </ul>
+
+    <h2>Third parties</h2>
+    <p>See <a href="/compliance/sub-processors">Sub-processors</a>.</p>
+
+    <h2>Your controls</h2>
+    <ul>
+      <li><code>rm -rf ~/.tokenpak</code> removes every local artifact TokenPak has ever created.</li>
+      <li>Unset any optional escape-hatch env var to disable that source of data collection.</li>
+      <li>Uninstalling the package (<code>pip uninstall tokenpak</code>) stops all TokenPak execution on your machine.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>Questions: <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a>.</p>
+  </div>
+</BaseLayout>

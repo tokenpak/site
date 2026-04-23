@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// C1 (PM/GTM v2 Phase 2, 2026-04-23): Data Processing Agreement template.
+// Draft based on IAPP starting points. Banner clearly marks pending legal
+// review. Not a substitute for an executed DPA with counsel review.
+---
+<BaseLayout
+  title="DPA — TokenPak"
+  description="Data Processing Agreement template for TokenPak."
+>
+  <div class="mx-auto max-w-prose-wide px-6 py-12 prose">
+    <div class="rounded-lg border border-tp-rule bg-tp-signal-value p-4 mb-8 text-small">
+      <strong>Template pending legal review.</strong> This DPA is a plain-English
+      starting point. It is <em>not</em> a legally binding contract in its
+      current form. Customers requiring an executed DPA should contact us at
+      <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a> — legal review and a
+      counterparty signature round will finalize the binding version.
+    </div>
+
+    <h1>Data Processing Agreement (template)</h1>
+
+    <p class="text-tp-mute">Last updated: 2026-04-23 (draft).</p>
+
+    <h2>1. Parties + roles</h2>
+    <p>
+      <strong>Customer</strong> (Data Controller) — the party that installs or
+      uses TokenPak in connection with Personal Data.
+    </p>
+    <p>
+      <strong>TokenPak</strong> (Data Processor) — Kevin Yang, sole proprietor, operating
+      the TokenPak open-source project and commercial Pro tier under the
+      TokenPak brand (<code>hello@tokenpak.ai</code>). Processor only where TokenPak
+      actually processes Customer Personal Data on Customer's behalf, which
+      under the default deployment is <em>none</em> — see §3.
+    </p>
+
+    <h2>2. Scope</h2>
+    <p>
+      This DPA covers Personal Data that flows through TokenPak infrastructure
+      as part of Pro-tier services (license server, private package index,
+      portal). It does <em>not</em> apply to the OSS local proxy, which runs
+      entirely on the Customer's infrastructure and processes data only on the
+      Customer's own machines.
+    </p>
+
+    <h2>3. Data categories</h2>
+    <ul>
+      <li>
+        <strong>OSS local proxy (default deployment):</strong> TokenPak does not
+        receive or process Customer Personal Data. All processing occurs on the
+        Customer's machine. TokenPak is out-of-scope as a Processor for this
+        deployment.
+      </li>
+      <li>
+        <strong>Pro-tier license verification:</strong> license tokens, an account
+        identifier (email address), and billing metadata (via Stripe —
+        see <a href="/compliance/sub-processors">Sub-processors</a>).
+      </li>
+      <li>
+        <strong>Pro-tier package distribution:</strong> license token presented
+        to <code>pypi.tokenpak.ai</code> to authorize downloads. No prompt, response,
+        or business content crosses this boundary.
+      </li>
+    </ul>
+
+    <h2>4. Purpose limitation</h2>
+    <p>
+      Processor may Process Personal Data <em>only</em> to: (a) deliver the Pro-tier
+      service the Customer purchased, (b) verify license validity, and (c)
+      fulfill legal obligations. Processor shall not use Personal Data for
+      marketing, research, training, or any purpose not expressly authorized.
+    </p>
+
+    <h2>5. Sub-processors</h2>
+    <p>
+      A current list of Sub-processors is maintained at
+      <a href="/compliance/sub-processors"><code>/compliance/sub-processors</code></a>.
+      Processor will give Customer at least 30 days' advance notice of any new
+      Sub-processor via that page; Customer may object in writing.
+    </p>
+
+    <h2>6. Security measures</h2>
+    <ul>
+      <li>License tokens at rest: RSA-signed; stored with mode 0600 on the Customer's machine.</li>
+      <li>In-transit: TLS 1.2+ for license server and package-index traffic.</li>
+      <li>Operational access: limited to the Processor principal; no shared staff.</li>
+    </ul>
+
+    <h2>7. Data subject rights</h2>
+    <p>
+      Processor will assist Customer in responding to data-subject access,
+      rectification, erasure, or portability requests that relate to Processor-held
+      Personal Data (license tokens + account email) within a reasonable time and at
+      no additional cost, except for fulfillment of requests that are manifestly
+      unfounded or excessive.
+    </p>
+
+    <h2>8. Breach notification</h2>
+    <p>
+      Processor will notify Customer without undue delay (target: 72 hours) of any
+      Personal Data Breach affecting the Pro-tier services, describing the nature
+      of the breach, data categories and approximate counts affected, likely
+      consequences, and remediation steps.
+    </p>
+
+    <h2>9. Data transfer, retention, deletion</h2>
+    <ul>
+      <li>Processor stores license tokens and account emails for the duration of the active subscription plus a 30-day wind-down window.</li>
+      <li>Upon account termination, Processor will delete all Customer Personal Data within 30 days, excluding anonymized aggregates (counts of issued licenses) and records legally required to be retained.</li>
+      <li>International transfers: see <a href="/compliance/sub-processors">Sub-processors</a> for jurisdictions.</li>
+    </ul>
+
+    <h2>10. Audit</h2>
+    <p>
+      Customer may request an audit of Processor's compliance with this DPA, limited
+      to once per year and 30 days' notice, subject to reasonable confidentiality
+      terms.
+    </p>
+
+    <h2>11. Conflict</h2>
+    <p>
+      In the event of conflict between this DPA and any other agreement, this DPA
+      governs the Processing of Personal Data.
+    </p>
+
+    <hr />
+
+    <p class="text-tp-mute text-small">
+      Questions or to execute a binding DPA:
+      <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a>.
+    </p>
+  </div>
+</BaseLayout>
