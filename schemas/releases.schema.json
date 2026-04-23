@@ -12,6 +12,7 @@
       "published_at":        { "type": "string", "format": "date-time" },
       "title":               { "type": "string", "minLength": 1 },
       "summary":             { "type": "string" },
+      "body_markdown":       { "type": "string" },
       "changelog_url":       { "type": "string", "format": "uri" },
       "github_release_url":  { "type": "string", "format": "uri" },
       "pypi_url":            { "type": "string", "format": "uri" },

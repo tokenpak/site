@@ -5,6 +5,7 @@ export interface ReleaseEntry {
   published_at: string;
   title: string;
   summary?: string;
+  body_markdown?: string;
   changelog_url?: string;
   github_release_url?: string;
   pypi_url?: string;
