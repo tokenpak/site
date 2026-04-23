@@ -20,8 +20,8 @@ const whyCards = [
     body: 'Under 50ms compression overhead on typical agent prompts. Your agent does not feel slower.',
   },
   {
-    title: 'Zero-config install',
-    body: 'pip install tokenpak && tokenpak integrate claude-code --apply. One command wires the proxy into your tools.',
+    title: 'One-command setup',
+    body: 'pip install tokenpak && tokenpak setup. Interactive wizard detects your API keys, picks a compression profile, and starts the proxy. Per-client auto-integration (tokenpak integrate) is on the roadmap.',
   },
   {
     title: 'Works with what you already use',
@@ -37,7 +37,7 @@ const whyCards = [
 // a later phase (kickoff §3 PR#6 calls out a stub here is acceptable).
 const steps = [
   { label: 'Step 1', title: 'Install',   body: 'pip install tokenpak. Runs at 127.0.0.1 as a local proxy.' },
-  { label: 'Step 2', title: 'Integrate', body: 'tokenpak integrate <client> --apply wires your existing LLM tools.' },
+  { label: 'Step 2', title: 'Setup',     body: 'tokenpak setup — interactive wizard wires your keys + starts the proxy. Point your LLM client at http://127.0.0.1:8766 via one env var.' },
   { label: 'Step 3', title: 'Save',      body: 'Every request is compressed deterministically; savings logged locally.' },
 ];
 ---
