@@ -16,7 +16,17 @@ const { title, description = 'Compression, caching, routing, telemetry — for e
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {/* Content Security Policy. Static site; no JS, no analytics, no
+        third-party embeds. Allows own-origin assets + inline styles
+        (Tailwind generates some). Data URIs allowed for SVG favicons /
+        small inlined images. 22 §19 item. */}
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title}</title>
   </head>
   <body class="min-h-screen flex flex-col">
