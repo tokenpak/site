@@ -1,27 +1,99 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import ModuleCard from '../components/ModuleCard.astro';
 import CTASection from '../components/CTASection.astro';
 import { config } from '../lib/config';
+
+// Copy sourced from Constitution §2 (identity), §13 (TIP), and
+// 01 §1.4 (three planes). No invented framings.
+
+const capabilities = [
+  {
+    title: 'Context compression',
+    body: 'Deterministic pipeline that trims repeated boilerplate, redundant file contents, and stale system-prompt prefix before your request hits the wire. Same answer, fewer tokens.',
+  },
+  {
+    title: 'Model routing',
+    body: 'Rules-based routing with fallbacks across providers (Anthropic, OpenAI, Google, Ollama, local). Swap the model without swapping the client.',
+  },
+  {
+    title: 'Caching',
+    body: 'Byte-preserved passthrough keeps provider-side cache hits intact. When TokenPak caches something itself it says so in the telemetry store — never mixed with provider cache hits.',
+  },
+  {
+    title: 'Telemetry + cost tracking',
+    body: 'Every request logged to a local SQLite store with a version-controlled schema. Savings are attributed: proxy-caused, client-caused, or unclassified — never conflated.',
+  },
+];
+
+const planes = [
+  {
+    label: 'Data plane',
+    title: 'The traffic path',
+    body: 'proxy/ + services/. Byte-level work: compression, cache, routing, wire-side telemetry. Every outbound request flows through here exactly once.',
+  },
+  {
+    label: 'Control plane',
+    title: 'Capability + diagnostics',
+    body: 'MCP over stdio or Streamable HTTP. Tools, resources, prompts, status. No model requests flow on this plane — it only describes and observes.',
+  },
+  {
+    label: 'Semantic layer',
+    title: 'TIP-1.0 contracts',
+    body: 'Canonical headers, metadata fields, telemetry events, capability labels. TokenPak is the reference implementation of the TokenPak Integration Protocol.',
+  },
+];
 ---
-<BaseLayout title="Product — TokenPak" description="A local proxy that compresses context before it hits the LLM API.">
-  <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
+<BaseLayout title="Product — TokenPak" description="TokenPak is a local proxy that compresses context before it hits the LLM API. Three planes, 18 subsystems, proxy-centered design.">
+  <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Product overview</p>
     <h1>A local proxy that compresses context before it hits the LLM API.</h1>
     <p class="mt-6 text-body">
-      TokenPak runs on <code class="font-mono">127.0.0.1</code> between your LLM client (Claude Code, Cursor,
-      Cline, and six others) and the model provider. Every outbound request flows through a deterministic
-      compression pipeline that trims context — repeated boilerplate, redundant file contents, stale
-      system-prompt prefix — without changing the meaning of the prompt. Your agent gets the same answers
-      for fewer tokens.
+      TokenPak runs on <code class="font-mono">127.0.0.1</code> between your LLM client and the
+      model provider. Every outbound request flows through a deterministic pipeline that trims
+      context — repeated boilerplate, redundant file contents, stale system-prompt prefix —
+      without changing the meaning of the prompt. Your agent gets the same answers for fewer
+      tokens.
     </p>
     <p class="mt-4 text-body">
-      The proxy is the <strong>reference implementation of TIP-1.0</strong>, the TokenPak Integration
-      Protocol. Routing, caching, and telemetry are first-class concerns — the compression pipeline is
-      one of five planes, not the whole story.
+      Compression is one of four first-class concerns. Routing, caching, and telemetry all live
+      at the same layer: your traffic, your machine, your rules.
     </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>What it does</h2>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {capabilities.map((c) => <FeatureCard title={c.title} body={c.body} />)}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Architecture at a glance</h2>
+    <p class="mt-2 text-tp-mute">
+      Three planes. Every TokenPak surface maps onto exactly one of them.
+    </p>
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      {planes.map((p) => <ModuleCard label={p.label} title={p.title} body={p.body} />)}
+    </div>
     <p class="mt-6 text-small text-tp-mute">
-      More detail on the architecture — 18 subsystems, three planes, proxy-centered design —
-      lives on <a href={config.docs_base_url + '/architecture/'}>docs.tokenpak.ai/architecture</a>.
+      Full architecture — 18 canonical subsystems, plane ownership rules,
+      byte-fidelity guarantees — lives on <a href={config.docs_base_url + '/architecture/'}>docs.tokenpak.ai/architecture</a>.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Who it's for</h2>
+    <p class="mt-2 text-body">
+      Teams running LLM agents in production or in daily developer workflows where the token
+      bill is starting to show. Claude Code, Cursor, Cline, Continue, Aider, Codex, plus any
+      app built on the Anthropic or OpenAI SDK or LiteLLM.
+    </p>
+    <p class="mt-4 text-body">
+      If your tools already speak the provider API, TokenPak drops in under them. If you're
+      building the tools yourself, there's an SDK. Nothing on this page is per-tool; the
+      integrations are in <a href="/open-source">the OSS package</a>.
     </p>
   </section>
 
