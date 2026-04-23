@@ -1,0 +1,8 @@
+route,chromium_overflow,firefox_overflow,webkit_overflow
+/,false,false,false
+/open-source/,false,false,false
+/product/,false,false,false
+/paid/,false,false,false
+/about/,false,false,false
+/releases/,false,false,false
+/releases/1.3.7/,false,false,false
