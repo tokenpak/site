@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "tokenpak-site product-config",
+  "description": "Hand-maintained product identity + CTA manifest consumed by every site component that needs install commands, package names, or CTA destinations. See 22-public-website-standard.md §5.3 and site design doc §4.2.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "brand_name",
+    "package_public",
+    "package_paid",
+    "github_repo",
+    "pypi_repo",
+    "private_index_url_public_label",
+    "docs_base_url",
+    "feature_flags",
+    "cta_urls"
+  ],
+  "properties": {
+    "brand_name": { "type": "string", "minLength": 1 },
+    "package_public": { "type": "string", "minLength": 1 },
+    "package_paid": { "type": "string", "minLength": 1 },
+    "github_repo": { "type": "string", "format": "uri" },
+    "pypi_repo": { "type": "string", "format": "uri" },
+    "private_index_url_public_label": { "type": "string", "format": "uri" },
+    "docs_base_url": { "type": "string", "format": "uri" },
+    "feature_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["analytics", "show_paid_page", "show_product_page"],
+      "properties": {
+        "analytics": { "type": "boolean" },
+        "show_paid_page": { "type": "boolean" },
+        "show_product_page": { "type": "boolean" }
+      }
+    },
+    "cta_urls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "get_started",
+        "view_on_github",
+        "read_docs",
+        "explore_pro",
+        "see_latest_release",
+        "request_access"
+      ],
+      "properties": {
+        "get_started":         { "type": "string", "minLength": 1 },
+        "view_on_github":      { "type": "string", "minLength": 1 },
+        "read_docs":           { "type": "string", "minLength": 1 },
+        "explore_pro":         { "type": "string", "minLength": 1 },
+        "see_latest_release":  { "type": "string", "minLength": 1 },
+        "request_access":      { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
