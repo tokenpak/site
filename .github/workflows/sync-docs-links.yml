@@ -24,7 +24,11 @@ jobs:
       - run: npm ci
       - name: Regenerate data/docs-links.json
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # MAIN_REPO_TOKEN has cross-repo read on tokenpak/docs (private
+          # during Phase 1). Falls back to the workflow's default GITHUB_TOKEN
+          # if the secret isn't set (no-op fallback that still 404s cleanly
+          # per scripts/sync-docs-links.ts's tolerant handling).
+          GITHUB_TOKEN: ${{ secrets.MAIN_REPO_TOKEN || secrets.GITHUB_TOKEN }}
         run: npx tsx scripts/sync-docs-links.ts
       - name: Validate + build (smoke)
         run: npm run build

@@ -24,7 +24,11 @@ jobs:
       - run: npm ci
       - name: Regenerate data/releases.json
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # MAIN_REPO_TOKEN has cross-repo read on tokenpak/tokenpak;
+          # falls back to the workflow's default GITHUB_TOKEN (which works
+          # now that tokenpak/tokenpak is public but keeps the explicit
+          # higher-priority secret in place for future visibility flips).
+          GITHUB_TOKEN: ${{ secrets.MAIN_REPO_TOKEN || secrets.GITHUB_TOKEN }}
         run: npx tsx scripts/sync-releases.ts
       - name: Validate + build (smoke)
         run: npm run build
