@@ -53,6 +53,9 @@ const statusStyles = {
   'pending-deploy': { dot: 'bg-gray-400',   label: 'Pending deploy' },
 };
 
+// Timestamp bumped after a GitHub Pages deploy-queue hiccup on 2026-04-23
+// (stuck "in progress" state from an earlier Phase 4 audit commit blocked
+// the C3 initial deploy; a follow-up push cleared the queue).
 const lastUpdated = '2026-04-23';
 ---
 <BaseLayout
