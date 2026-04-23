@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import CTASection from '../components/CTASection.astro';
+import { config } from '../lib/config';
+
+// Copy sourced verbatim from 07-messaging-positioning-guide.md §5 and §2.
+// Claim boundaries from 07 §3 respected.
+const ossHighlights = [
+  { title: 'Full compression engine', body: 'Deterministic context compression for every request. Not a limited demo — the OSS package is the full product.' },
+  { title: 'Local proxy, no cloud',   body: 'Runs at 127.0.0.1. No data leaves your machine; no credentials stored in a third party.' },
+  { title: 'Nine client integrations', body: 'Claude Code, Cursor, Cline, Continue, Aider, OpenAI SDK, Anthropic SDK, LiteLLM, Codex.' },
+  { title: 'Cost tracking + vault search', body: 'Local telemetry store, A/B replay, 50 built-in compression recipes, semantic vault indexing.' },
+];
+---
+<BaseLayout title="Open source — TokenPak" description="TokenPak's OSS core is Apache 2.0 licensed and full-featured. Install in one command.">
+  <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Open source core</p>
+    <h1>TokenPak OSS is the full product.</h1>
+    <p class="mt-4 text-body text-tp-ink max-w-prose">
+      The core proxy, compression engine, client integrations, local dashboard, and telemetry store are all
+      <strong>Apache 2.0 licensed</strong>. Pro adds team-scale features on top of the same core — it does not unlock the OSS engine.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-6">
+    <h2>Install</h2>
+    <div class="mt-4 grid grid-cols-1 gap-4">
+      <CodeBlock language="bash" title="pip">
+{`pip install ${config.package_public}
+${config.package_public} integrate claude-code --apply`}
+      </CodeBlock>
+    </div>
+    <p class="mt-3 text-small text-tp-mute">
+      Pro is delivered as the <code class="font-mono">{config.package_paid}</code> package via a separate index
+      (<a href={config.private_index_url_public_label} class="text-tp-accent">{config.private_index_url_public_label}</a>).
+      <strong class="text-tp-ink">Pro</strong> is the tier name; <code class="font-mono">{config.package_paid}</code> is the package name.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>What's in OSS</h2>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {ossHighlights.map((card) => <FeatureCard title={card.title} body={card.body} />)}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>OSS vs Pro</h2>
+    <p class="mt-2 text-tp-mute">Every row canonical per the messaging standard. OSS is not a trial — it is the product.</p>
+    <div class="mt-6">
+      <ComparisonTable />
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Source + package</h2>
+    <ul class="mt-4 space-y-2">
+      <li><a href={config.github_repo}>GitHub — {config.github_repo.replace('https://github.com/', '')}</a></li>
+      <li><a href={config.pypi_repo}>PyPI — {config.package_public}</a></li>
+      <li><a href={config.cta_urls.read_docs}>Docs — {config.docs_base_url}</a></li>
+    </ul>
+  </section>
+
+  <CTASection heading="Ready to try it?" body={`${config.package_public} runs entirely on your machine. Nothing to sign up for.`} />
+</BaseLayout>

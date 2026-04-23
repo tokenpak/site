@@ -1,0 +1,17 @@
+---
+interface Props {
+  language?: string;
+  title?: string;
+  copyable?: boolean;
+}
+const { language = 'bash', title, copyable = false } = Astro.props;
+---
+<figure class="rounded-card overflow-hidden border border-tp-rule">
+  {title && (
+    <figcaption class="flex items-center justify-between bg-tp-ink text-tp-paper text-caption font-mono px-4 py-2">
+      <span>{title}</span>
+      <span class="text-tp-mute">{language}</span>
+    </figcaption>
+  )}
+  <pre class="bg-tp-charcoal text-tp-paper text-small font-mono px-4 py-3 overflow-x-auto leading-relaxed"><code><slot /></code></pre>
+</figure>
