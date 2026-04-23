@@ -80,6 +80,7 @@ async function main() {
       published_at: r.published_at ?? r.created_at,
       title: r.name?.trim() || `TokenPak ${version}`,
       summary: firstParagraph(r.body),
+      body_markdown: r.body ?? '',
       changelog_url: `https://github.com/${OWNER}/${REPO}/blob/main/CHANGELOG.md`,
       github_release_url: r.html_url,
       pypi_url: `https://pypi.org/project/${REPO}/${version}/`,
