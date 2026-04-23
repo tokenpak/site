@@ -84,11 +84,26 @@ const noInPro = [
       <code class="font-mono">{config.package_paid}</code> is the package name. They are
       deliberately different per <a href={config.docs_base_url + '/'}>the naming rule</a>.
     </p>
-    <div class="mt-4">
-      <CodeBlock language="bash" title="pip">
-{`pip install ${config.package_paid} --index-url ${config.private_index_url_public_label}`}
+    <p class="mt-4 text-small text-tp-mute">
+      The real <code class="font-mono">{config.package_paid}</code> package is distributed from
+      a private, license-gated index at <code class="font-mono">{config.private_index_url_public_label}</code>.
+      Once you hold a Pro license, install it with:
+    </p>
+    <div class="mt-2">
+      <CodeBlock language="bash" title="pip — licensed install">
+{`pip install \\
+    --index-url ${config.private_index_url_public_label} \\
+    --extra-index-url https://pypi.org/simple \\
+    ${config.package_paid}`}
       </CodeBlock>
     </div>
+    <p class="mt-6 text-small text-tp-mute">
+      If you ran <code class="font-mono">pip install tokenpak-paid-stub</code> from public
+      PyPI first, you found the thin discovery stub we ship there. The stub prints the same
+      guidance on <code class="font-mono">python -m tokenpak_paid_stub</code>. Two distinct
+      package names keep pip's index resolution unambiguous — the stub never shadows the
+      real paid package.
+    </p>
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
