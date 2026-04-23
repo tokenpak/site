@@ -1,3 +1,86 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Brand tokens exposed as CSS custom properties for non-Tailwind consumers
+ * (inline styles, third-party snippets, etc.). Canonical source is 05 §5.1.
+ */
+:root {
+  --tp-ink: #0B0F14;
+  --tp-paper: #F6F7F9;
+  --tp-charcoal: #1A1F26;
+  --tp-accent: #00C389;
+  --tp-signal-value: #EDE085;
+  --tp-warn: #F5A623;
+  --tp-danger: #E5484D;
+  --tp-mute: #6B7280;
+  --tp-rule: #E4E7EB;
+
+  --panel: var(--tp-paper);
+  --panel-ink: var(--tp-ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --panel: var(--tp-charcoal);
+    --panel-ink: var(--tp-paper);
+  }
+}
+
+@layer base {
+  html {
+    font-family: theme('fontFamily.sans');
+    color: var(--panel-ink);
+    background-color: var(--panel);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply text-body leading-relaxed;
+  }
+
+  h1 {
+    @apply text-h1 font-bold;
+  }
+
+  h2 {
+    @apply text-h2 font-bold;
+  }
+
+  h3 {
+    @apply text-h3 font-semibold;
+  }
+
+  code,
+  pre {
+    font-family: theme('fontFamily.mono');
+  }
+
+  a {
+    color: var(--tp-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/*
+ * Motion kill-switch. All non-essential transitions + animations stop
+ * when the user has requested reduced motion. Components adding new
+ * animation must respect this (22 §10).
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
