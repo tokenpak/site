@@ -35,8 +35,9 @@ const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
     <p class="mt-4 text-small text-tp-ink">{release.summary}</p>
   )}
   <div class="mt-4 flex flex-wrap gap-3 text-small">
-    {release.github_release_url && <a href={release.github_release_url} class="text-tp-accent">GitHub</a>}
-    {release.pypi_url           && <a href={release.pypi_url}           class="text-tp-accent">PyPI</a>}
-    {release.changelog_url      && <a href={release.changelog_url}      class="text-tp-accent">Changelog</a>}
+    {/* Links inherit baseline a{} from global.css — tp-ink + underline, per 05 §5.2. */}
+    {release.github_release_url && <a href={release.github_release_url}>GitHub</a>}
+    {release.pypi_url           && <a href={release.pypi_url}>PyPI</a>}
+    {release.changelog_url      && <a href={release.changelog_url}>Changelog</a>}
   </div>
 </article>

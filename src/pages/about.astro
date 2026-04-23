@@ -21,9 +21,9 @@ import { config } from '../lib/config';
   <section class="mx-auto max-w-prose px-6 py-6">
     <h2>Where things live</h2>
     <ul class="mt-4 space-y-2 text-small">
-      <li><a href={config.github_repo} class="text-tp-accent">{config.github_repo.replace('https://', '')}</a> — OSS source</li>
-      <li><a href={config.pypi_repo} class="text-tp-accent">{config.pypi_repo.replace('https://', '')}</a> — published package</li>
-      <li><a href={config.cta_urls.read_docs} class="text-tp-accent">{config.docs_base_url.replace('https://', '')}</a> — user + protocol documentation</li>
+      <li><a href={config.github_repo}>{config.github_repo.replace('https://', '')}</a> — OSS source</li>
+      <li><a href={config.pypi_repo}>{config.pypi_repo.replace('https://', '')}</a> — published package</li>
+      <li><a href={config.cta_urls.read_docs}>{config.docs_base_url.replace('https://', '')}</a> — user + protocol documentation</li>
     </ul>
   </section>
 
