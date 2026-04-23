@@ -1,0 +1,41 @@
+name: sync-docs-links
+
+on:
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: [docs-links-updated]
+  schedule:
+    # Safety net: resync daily at 07:30 UTC.
+    - cron: '30 7 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Regenerate data/docs-links.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx tsx scripts/sync-docs-links.ts
+      - name: Validate + build (smoke)
+        run: npm run build
+      - name: Commit + push if changed
+        run: |
+          if ! git diff --quiet -- data/docs-links.json; then
+            git config user.name  "tokenpak"
+            git config user.email "hello@tokenpak.ai"
+            git add data/docs-links.json
+            git commit -m "site(data): refresh docs-links.json from tokenpak/docs"
+            git push origin main
+          else
+            echo "docs-links.json unchanged; nothing to commit."
+          fi
