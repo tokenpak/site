@@ -1,10 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ModuleCard from '../components/ModuleCard.astro';
 import CTASection from '../components/CTASection.astro';
 import { config } from '../lib/config';
+
+// All content sourced from Constitution §1 (mission), §2 (identity),
+// §13 (TokenPak / TIP / MCP), 01 §11 (multi-repo topology). No
+// invented narrative; no founder mythology per kickoff §3 PR#10.
+
+const surfaces = [
+  {
+    label: 'Package',
+    title: 'tokenpak',
+    body: 'The Python package — proxy, companion, CLI, integrations. Published to PyPI; Apache 2.0. What a user installs.',
+  },
+  {
+    label: 'Docs',
+    title: 'docs.tokenpak.ai',
+    body: 'MkDocs-rendered user docs + TIP-1.0 normative spec. Sourced from the tokenpak/docs repo.',
+  },
+  {
+    label: 'Registry',
+    title: 'tokenpak/registry',
+    body: 'Machine-readable TIP-1.0 schemas, manifest schemas, capability catalog, adapter + plugin manifests. Published as tokenpak-tip-validator on PyPI.',
+  },
+  {
+    label: 'Site',
+    title: 'tokenpak.ai',
+    body: 'This page — the public marketing surface. Astro static site; source in tokenpak/site.',
+  },
+];
 ---
-<BaseLayout title="About — TokenPak" description="TokenPak's mission and approach.">
-  <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
+<BaseLayout title="About — TokenPak" description="Cut LLM token spend by 30–50% for agent workloads, with zero code changes. TokenPak is the local layer between a developer's LLM client and the provider.">
+  <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">About</p>
     <h1>Cut LLM token spend by 30–50% for agent workloads, with zero code changes.</h1>
     <p class="mt-6 text-body">
@@ -12,19 +40,50 @@ import { config } from '../lib/config';
       context before the wire, routes requests intelligently, and tells the user what was saved —
       without touching their credentials or their code.
     </p>
-    <p class="mt-4 text-body text-tp-mute">
-      Apache 2.0 at the core. Built locally because that is where control, privacy, and latency all
-      win at once.
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Product identity</h2>
+    <p class="mt-4 text-body">
+      <strong>TokenPak is a local proxy that compresses context before it hits the LLM API.</strong>
+      That sentence goes in the README, the homepage, and every pitch. The identity is deliberate:
+      local-first (no cloud to fail, no credentials to store), proxy-shaped (drops in under the
+      tools you already use), compression-focused (one job, done deterministically).
+    </p>
+    <p class="mt-4 text-body">
+      Compression is one job, not the whole story. Routing, caching, telemetry, and a local
+      dashboard all ship in the same package — because a team running agents in production
+      needs all four at the same layer.
     </p>
   </section>
 
-  <section class="mx-auto max-w-prose px-6 py-6">
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>TIP-1.0 — the TokenPak Integration Protocol</h2>
+    <p class="mt-4 text-body">
+      TokenPak is the <strong>reference implementation</strong> of the TokenPak Integration
+      Protocol, version 1.0 — a small specification that defines what TokenPak-compatible behavior
+      means: canonical headers, metadata fields, telemetry event schemas, capability labels,
+      manifest shapes. TIP is a profile/spec, not a transport; the normative text lives in the
+      docs repo and the machine-readable schemas live in the registry repo.
+    </p>
+    <p class="mt-4 text-body text-tp-mute">
+      TokenPak adopts <a href="https://modelcontextprotocol.io/">MCP (Model Context Protocol)</a>
+      as its default control-plane substrate. MCP and TIP are different layers: MCP is the
+      transport; TIP is the semantics.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Where things live</h2>
-    <ul class="mt-4 space-y-2 text-small">
-      <li><a href={config.github_repo}>{config.github_repo.replace('https://', '')}</a> — OSS source</li>
-      <li><a href={config.pypi_repo}>{config.pypi_repo.replace('https://', '')}</a> — published package</li>
-      <li><a href={config.cta_urls.read_docs}>{config.docs_base_url.replace('https://', '')}</a> — user + protocol documentation</li>
-    </ul>
+    <p class="mt-2 text-tp-mute">Four public surfaces. Each owns one concern.</p>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {surfaces.map((s) => <ModuleCard label={s.label} title={s.title} body={s.body} />)}
+    </div>
+    <p class="mt-6 text-small">
+      Source on <a href={config.github_repo}>github.com/tokenpak</a> ·
+      Published on <a href={config.pypi_repo}>PyPI</a> ·
+      Docs at <a href={config.cta_urls.read_docs}>docs.tokenpak.ai</a>.
+    </p>
   </section>
 
   <CTASection heading="Ready to try it?" body={`pip install ${config.package_public}. Works with the LLM clients you already use.`} />
