@@ -11,8 +11,14 @@ const navItems = [
 ---
 <header class="border-b border-tp-rule bg-tp-paper">
   <div class="mx-auto max-w-prose-wide px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+    {/* Split-color wordmark per 05 §4.1. Parent <a> carries the
+        accessible name via aria-label; the two visible spans remain
+        in reading order. The 'Pak' span's tp-accent-on-tp-paper
+        contrast is the documented 05 §5.2 wordmark exception and is
+        suppressed from the a11y audit via scripts/audit-a11y.ts
+        exclude list. */}
     <a href="/" class="font-bold text-h3 no-underline shrink-0" aria-label={config.brand_name}>
-      <span class="text-tp-ink">Token</span><span class="text-tp-accent">Pak</span>
+      <span class="text-tp-ink">Token</span><span class="text-tp-accent" data-wordmark-accent>Pak</span>
     </a>
     <nav aria-label="Primary" class="flex items-center gap-4 sm:gap-6 text-small">
       {/* Auxiliary nav hidden below sm (640px). At 375px mobile the wordmark

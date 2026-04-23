@@ -58,14 +58,27 @@
     font-family: theme('fontFamily.mono');
   }
 
+  /*
+   * Links use panel-ink (not tp-accent) per 05 §5.2. tp-accent on
+   * tp-paper is 2.13:1 (fails WCAG AA 4.5:1); underline is the
+   * affordance, not the color. Hover thickens the underline; color
+   * may optionally shift to tp-accent in per-component overrides
+   * (hover-state feedback is AA-exempt).
+   */
   a {
-    color: var(--tp-accent);
+    color: var(--panel-ink);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
   a:hover {
     text-decoration-thickness: 2px;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--tp-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 

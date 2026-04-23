@@ -6,8 +6,11 @@ const year = new Date().getFullYear();
 <footer class="border-t border-tp-rule bg-tp-paper mt-16">
   <div class="mx-auto max-w-prose-wide px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-small">
     <div>
+      {/* Decorative wordmark per 05 §4.1. 05 §5.2 wordmark exception
+          for tp-accent-on-tp-paper; suppressed from a11y audit via
+          scripts/audit-a11y.ts exclude list. */}
       <div class="font-bold text-body">
-        <span class="text-tp-ink">Token</span><span class="text-tp-accent">Pak</span>
+        <span class="text-tp-ink">Token</span><span class="text-tp-accent" data-wordmark-accent>Pak</span>
       </div>
       <p class="text-tp-mute mt-2">Compression, caching, routing, telemetry — for every LLM client you already use.</p>
     </div>
