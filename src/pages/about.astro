@@ -31,10 +31,16 @@ const surfaces = [
   },
 ];
 ---
-<BaseLayout title="About — TokenPak" description="Cut LLM token spend by 30–50% for agent workloads, with zero code changes. TokenPak is the local layer between a developer's LLM client and the provider.">
+<BaseLayout title="About — TokenPak" description="Up to 90%+ savings on direct API/CLI and other favorable uncached workloads. Observed savings vary by integration path and provider-side cache behavior.">
   <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">About</p>
-    <h1>Cut LLM token spend by 30–50% for agent workloads, with zero code changes.</h1>
+    <h1>Up to 90%+ savings on direct API/CLI and other favorable uncached workloads, with zero code changes.</h1>
+    <p class="mt-4 text-tp-mute text-small">
+      Observed savings vary by integration path and provider-side cache behavior.
+      Provider-cached flows (Claude Code and similar) may show lower incremental
+      gains because TokenPak only affects the user-controlled portion of the
+      token pool.
+    </p>
     <p class="mt-6 text-body">
       TokenPak is the local layer between a developer's LLM client and the provider. It compresses
       context before the wire, routes requests intelligently, and tells the user what was saved —
