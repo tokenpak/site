@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "version": "1.3.7",
+    "published_at": "2026-04-23T02:26:44Z",
+    "title": "TokenPak v1.3.7",
+    "summary": "### Added — TIP-SC+1: proxy semantic invariants",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.7",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.3.7/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.0",
+    "published_at": "2026-04-23T03:45:22Z",
+    "title": "TokenPak v1.2.0",
+    "summary": "### Changed\n- **BREAKING** — Paid tier commands (Pro/Team/Enterprise) split out into the separate `tokenpak-paid` private package. The OSS `tokenpak` package now contains upgrade stubs for 25 command modules; real implementations ship separately and are installed via `tokenpak install-tier <tier>`. Tier-package-separation initiative (`2026-04-21`).\n- **Removed ~5,150 LOC of paid implementation** from the OSS package: `cli/commands/{optimize, route, compression, diff, prune, retain, fingerprint, replay, debug, last, template, dashboard, savings, metrics, budget, serve, trigger, exec, workflow, ",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.0/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.0.1",
+    "published_at": "2026-04-23T03:45:16Z",
+    "title": "TokenPak v1.0.1",
+    "summary": "Release v1.0.1",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.0.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.0.1/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.3.6",
+    "published_at": "2026-04-22T23:44:57Z",
+    "title": "TokenPak v1.3.6",
+    "summary": "### Fixed — release-gate hotfix-3 (pin validity + preflight coverage)",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.6",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.3.6/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.3.002",
+    "published_at": "2026-04-23T03:46:19Z",
+    "title": "TokenPak v1.3.002 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.002",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.3.002/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
+    "version": "1.3.001",
+    "published_at": "2026-04-23T03:46:15Z",
+    "title": "TokenPak v1.3.001 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.001",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.3.001/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.3.0",
+    "published_at": "2026-04-23T03:46:12Z",
+    "title": "TokenPak v1.3.0 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.3.0/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.093",
+    "published_at": "2026-04-23T03:46:07Z",
+    "title": "TokenPak v1.2.093 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.093",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.093/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.092",
+    "published_at": "2026-04-23T03:46:03Z",
+    "title": "TokenPak v1.2.092 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.092",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.092/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.091",
+    "published_at": "2026-04-23T03:45:59Z",
+    "title": "TokenPak v1.2.091 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.091",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.091/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.9",
+    "published_at": "2026-04-23T03:45:55Z",
+    "title": "TokenPak v1.2.9 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.9",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.9/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.8",
+    "published_at": "2026-04-23T03:45:51Z",
+    "title": "TokenPak v1.2.8 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.8",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.8/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.7",
+    "published_at": "2026-04-23T03:45:47Z",
+    "title": "TokenPak v1.2.7 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.7",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.7/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.6",
+    "published_at": "2026-04-23T03:45:43Z",
+    "title": "TokenPak v1.2.6 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.6",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.6/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.5",
+    "published_at": "2026-04-23T03:45:40Z",
+    "title": "TokenPak v1.2.5 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.5",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.5/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.4",
+    "published_at": "2026-04-23T03:45:36Z",
+    "title": "TokenPak v1.2.4 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.4",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.4/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.3",
+    "published_at": "2026-04-23T03:45:32Z",
+    "title": "TokenPak v1.2.3 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.3",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.3/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.2.1",
+    "published_at": "2026-04-23T03:45:26Z",
+    "title": "TokenPak v1.2.1 (retroactive attestation)",
+    "summary": "**Retroactive SHA256SUMS attestation.**",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.2.1/",
+    "prerelease": false,
+    "latest": false
+  }
+]
