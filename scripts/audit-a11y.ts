@@ -77,8 +77,14 @@ async function auditRoute(browser: Browser, route: typeof ROUTES[number]): Promi
   await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
 
   // --- Desktop axe pass ---
+  // 05 §5.2 wordmark exception: the split-color 'Pak' span is the
+  // one permitted tp-accent-on-tp-paper usage. The parent <a>
+  // carries the accessible name; the span is decorative brand
+  // typography. Excluded from axe so CI fails on real regressions,
+  // not on the documented exception.
   const desktopResults = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .exclude('[data-wordmark-accent]')
     .analyze();
   const axeDesktop = toFindings(desktopResults);
   fs.writeFileSync(
@@ -93,6 +99,7 @@ async function auditRoute(browser: Browser, route: typeof ROUTES[number]): Promi
 
   const mobileResults = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .exclude('[data-wordmark-accent]')
     .analyze();
   const axeMobile = toFindings(mobileResults);
   fs.writeFileSync(

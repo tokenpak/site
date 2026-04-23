@@ -24,7 +24,7 @@ const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
       {release.changelog_url      && <a href={release.changelog_url}>CHANGELOG</a>}
     </div>
     <div class="mt-10">
-      <a href="/releases/" class="text-tp-accent">← All releases</a>
+      <a href="/releases/">← All releases</a>
     </div>
     <slot />
   </section>
