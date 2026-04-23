@@ -53,6 +53,20 @@ async function main() {
   }
 
   const res = await fetch(API, { headers });
+  if (res.status === 404 || res.status === 403) {
+    // Source repo may be private and unreadable by the default workflow
+    // GITHUB_TOKEN (which is scoped to this repo only). Degrade gracefully:
+    // write an empty array so downstream pages render their empty-state
+    // rather than failing the whole build. Setting a cross-repo-read PAT
+    // as MAIN_REPO_TOKEN (and wiring it in sync-release-data.yml) flips
+    // this on once tokenpak/tokenpak is readable.
+    console.warn(
+      `GitHub API ${res.status} on ${API}. Source likely private for this token; ` +
+      `writing empty releases.json and exiting cleanly.`,
+    );
+    fs.writeFileSync(outPath, '[]\n', 'utf8');
+    return;
+  }
   if (!res.ok) {
     throw new Error(`GitHub API ${res.status} ${res.statusText}`);
   }
