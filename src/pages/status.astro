@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// C3 (PM/GTM v2 Phase 3, 2026-04-23): public status surface.
+// KEVIN-DECISION-C: canonical machine-readable status at
+// app.tokenpak.ai/status (MTC-owned license server endpoint).
+// This apex page is the human-readable summary; it never probes
+// the API directly (static site per standard 22) — manual updates
+// on the "Last update" line below when state changes.
+//
+// Components covered match the current v2 public surface. Update
+// the per-component cells when services change state.
+
+const components = [
+  {
+    name: 'Public package index (tokenpak on PyPI)',
+    status: 'operational',
+    note: 'pip install tokenpak is serving v1.3.7.',
+  },
+  {
+    name: 'Discovery stub (tokenpak-paid-stub on PyPI)',
+    status: 'operational',
+    note: 'pip install tokenpak-paid-stub serves v0.1.0.',
+  },
+  {
+    name: 'Marketing site (tokenpak.ai)',
+    status: 'operational',
+    note: 'You are reading it.',
+  },
+  {
+    name: 'Documentation (docs.tokenpak.ai)',
+    status: 'operational',
+    note: 'Rendered from github.com/tokenpak/docs.',
+  },
+  {
+    name: 'Pro tier — license server (app.tokenpak.ai)',
+    status: 'pending-deploy',
+    note:
+      'Code complete; initial deploy pending. This is the surface that serves the machine-readable JSON endpoint at app.tokenpak.ai/status.',
+  },
+  {
+    name: 'Pro tier — private package index (pypi.tokenpak.ai)',
+    status: 'pending-deploy',
+    note:
+      'R2-backed index; activates alongside the license server.',
+  },
+];
+
+const statusStyles = {
+  'operational':    { dot: 'bg-green-500',  label: 'Operational' },
+  'degraded':       { dot: 'bg-yellow-500', label: 'Degraded' },
+  'outage':         { dot: 'bg-red-500',    label: 'Outage' },
+  'pending-deploy': { dot: 'bg-gray-400',   label: 'Pending deploy' },
+};
+
+const lastUpdated = '2026-04-23';
+---
+<BaseLayout
+  title="Status — TokenPak"
+  description="TokenPak service status: package indexes, docs, marketing site, Pro-tier infrastructure."
+>
+  <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Status</p>
+    <h1>TokenPak service status.</h1>
+    <p class="mt-6 text-body">
+      Human-readable summary across every TokenPak-operated service. The canonical
+      machine-readable endpoint is
+      <code class="font-mono">https://app.tokenpak.ai/status</code> (JSON, rate-limited),
+      which comes online with the Pro-tier license server.
+    </p>
+    <p class="mt-2 text-small text-tp-mute">
+      Last updated: {lastUpdated}. This page is a static site — values here are
+      maintained by hand. If you see something broken that this page says is
+      operational, write to <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a>.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Components</h2>
+    <div class="mt-6 space-y-3">
+      {components.map((c) => {
+        const s = statusStyles[c.status];
+        return (
+          <div class="rounded-card border border-tp-rule p-4 bg-tp-paper flex gap-4 items-start">
+            <span class={`inline-block w-3 h-3 rounded-full mt-1.5 shrink-0 ${s.dot}`} aria-hidden="true"></span>
+            <div class="flex-1">
+              <div class="flex justify-between gap-4 items-baseline flex-wrap">
+                <div class="font-semibold text-tp-ink">{c.name}</div>
+                <div class="text-small text-tp-mute">{s.label}</div>
+              </div>
+              <p class="mt-1 text-small text-tp-mute">{c.note}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Incident history</h2>
+    <p class="mt-2 text-body">
+      No reported incidents in the last 30 days.
+    </p>
+    <p class="mt-2 text-small text-tp-mute">
+      We post incidents here with a root-cause write-up once resolved.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <div class="rounded-card border border-tp-rule p-8 bg-tp-paper">
+      <h2>Subscribe to updates</h2>
+      <p class="mt-2 text-body">
+        No automated subscription yet. Write to
+        <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a> with the subject
+        <code class="font-mono">status-updates subscribe</code> and we'll add you to
+        the incident-notification list manually until a real subscribe endpoint lands.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

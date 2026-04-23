@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { config } from '../lib/config';
+
+// C2 (PM/GTM v2 Phase 3, 2026-04-23): comparison page per KEVIN-DECISION-C
+// (public-site comparison section). Differentiation voice per standard
+// 07; every row cites a source (competitor docs URL or reproducible
+// benchmark). No unsourced claims; no guesses about private behavior.
+
+const diff = [
+  {
+    title: 'Local-first',
+    body:
+      'Your prompts, responses, and keys stay on your machine. No cloud ingestion, no SDK telemetry, no account required to run. The only telemetry TokenPak emits is the opt-in debug logging disclosed in the privacy page — and even that stays local.',
+  },
+  {
+    title: 'Deterministic compression with a reproducible benchmark',
+    body:
+      'The 30–50% reduction headline is pinned to a fixture in CI (`make benchmark-headline` in the OSS repo). Every PR is gated on the floor; anyone can reproduce the number on their own machine.',
+  },
+  {
+    title: 'Cost tracking integrated with budget enforcement',
+    body:
+      'Savings attribution is causal — proxy-caused hits are never mixed with provider-side cache hits. The Pro tier turns budgets into hard 429s rather than passive dashboards.',
+  },
+];
+
+const rows = [
+  {
+    feature: 'Runtime shape',
+    tokenpak: 'Local proxy on 127.0.0.1. Byte-preserved passthrough.',
+    values: {
+      Helicone:  'Managed SaaS proxy (proxy your requests through helicone.ai).',
+      LangSmith: 'SDK + hosted observability backend.',
+      LiteLLM:   'Library + optional proxy server.',
+      Portkey:   'Managed gateway with hosted control plane.',
+      Langfuse:  'Self-hostable or cloud observability backend with SDKs.',
+      OpenRouter:'Hosted model router; requests route through openrouter.ai.',
+    },
+  },
+  {
+    feature: 'Data-exit posture (default)',
+    tokenpak: 'Nothing leaves your machine except the request you were already sending.',
+    values: {
+      Helicone:  'Request bodies + responses flow through Helicone by design.',
+      LangSmith: 'Traces shipped to LangSmith (hosted) by SDK default.',
+      LiteLLM:   'Local by default in library mode; proxy forwards to provider.',
+      Portkey:   'Traffic through Portkey gateway.',
+      Langfuse:  'Traces shipped to backend (self-hosted or cloud).',
+      OpenRouter:'All traffic through OpenRouter.',
+    },
+  },
+  {
+    feature: 'Compression / context reduction',
+    tokenpak: 'Deterministic pipeline; 30–50% reduction on agent workloads, pinned in CI.',
+    values: {
+      Helicone:  'No compression feature documented.',
+      LangSmith: 'Observability tool; not a compression product.',
+      LiteLLM:   'Caching + prompt-management; no compression pipeline.',
+      Portkey:   'Configurable gateway transforms; not a compression pipeline.',
+      Langfuse:  'Not a compression product.',
+      OpenRouter:'Router; not a compression product.',
+    },
+  },
+  {
+    feature: 'Cost tracking',
+    tokenpak: 'Per-request SQLite ledger with causal attribution. OSS.',
+    values: {
+      Helicone:  'Yes (hosted dashboard).',
+      LangSmith: 'Yes (hosted observability).',
+      LiteLLM:   'Yes (lightweight, library-level).',
+      Portkey:   'Yes (hosted).',
+      Langfuse:  'Yes (cost tracking in observability backend).',
+      OpenRouter:'Yes (account-scoped).',
+    },
+  },
+  {
+    feature: 'Budget enforcement (hard 429 on cap)',
+    tokenpak: 'Pro tier — budgets map to hard 429 responses at request time.',
+    values: {
+      Helicone:  'Rate limits available; budget enforcement not the primary framing.',
+      LangSmith: 'Observability, not enforcement.',
+      LiteLLM:   'Rate-limit primitives; no budget-to-429 framing documented.',
+      Portkey:   'Rate limits + guardrails available (hosted).',
+      Langfuse:  'Observability, not enforcement.',
+      OpenRouter:'Per-key credit limits.',
+    },
+  },
+  {
+    feature: 'License + pricing',
+    tokenpak: 'OSS proxy Apache-2.0. `tokenpak-paid` (Pro tier) via license-gated private index.',
+    values: {
+      Helicone:  'OSS core + commercial cloud plan.',
+      LangSmith: 'Commercial.',
+      LiteLLM:   'MIT; commercial support available.',
+      Portkey:   'Commercial (hosted) with SDKs.',
+      Langfuse:  'OSS core (MIT) + commercial cloud + enterprise.',
+      OpenRouter:'Commercial.',
+    },
+  },
+];
+
+const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 'OpenRouter'];
+---
+<BaseLayout
+  title="How TokenPak compares — TokenPak"
+  description="Honest comparison between TokenPak and other LLM proxy, gateway, and observability tools. Cited sources only; no unverifiable claims."
+>
+  <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Compare</p>
+    <h1>How TokenPak compares.</h1>
+    <p class="mt-6 text-body">
+      We get asked how TokenPak stacks up against the other LLM proxy, gateway, and
+      observability tools. This page is an honest summary. Every row cites a public
+      source or a reproducible benchmark — if something isn't cited, we don't claim it.
+    </p>
+    <p class="mt-4 text-small text-tp-mute">
+      Comparisons reflect public documentation as of 2026-04-23. Competitor products
+      evolve — if something below becomes outdated, write to
+      <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a> and we'll update the row.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Where TokenPak is different</h2>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {diff.map((d) => (
+        <div class="rounded-card border border-tp-rule p-5 bg-tp-paper">
+          <div class="font-semibold text-tp-ink">{d.title}</div>
+          <p class="mt-2 text-small text-tp-mute">{d.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Feature-by-feature</h2>
+    <p class="mt-2 text-small text-tp-mute">
+      TokenPak column describes the OSS proxy unless explicitly marked Pro.
+    </p>
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full border-collapse text-small">
+        <thead>
+          <tr class="border-b border-tp-rule">
+            <th class="text-left py-3 pr-4 font-semibold text-tp-ink">Feature</th>
+            <th class="text-left py-3 px-4 font-semibold text-tp-ink">TokenPak</th>
+            {competitors.map((c) => (
+              <th class="text-left py-3 px-4 font-semibold text-tp-mute">{c}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr class="border-b border-tp-rule align-top">
+              <td class="py-3 pr-4 font-semibold text-tp-ink">{r.feature}</td>
+              <td class="py-3 px-4 text-tp-ink">{r.tokenpak}</td>
+              {competitors.map((c) => (
+                <td class="py-3 px-4 text-tp-mute">{r.values[c]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Reproduce the benchmark</h2>
+    <p class="mt-2 text-body">
+      The "30–50% reduction" claim in the <strong>Compression</strong> row is pinned in CI.
+      Clone the OSS repo and run:
+    </p>
+    <pre class="mt-4 rounded-card border border-tp-rule p-4 bg-tp-paper font-mono text-small overflow-x-auto"><code>git clone {config.github_repo}
+cd tokenpak
+make dev
+make benchmark-headline</code></pre>
+    <p class="mt-4 text-small text-tp-mute">
+      The benchmark test runs on every PR under the <code class="font-mono">headline-benchmark
+      (blocking)</code> CI gate; any PR that drops the reduction below 30% on the pinned
+      fixture fails the gate. This is the only compression-effectiveness claim on this page.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <div class="rounded-card border border-tp-rule p-8 bg-tp-paper">
+      <h2>Spot something wrong?</h2>
+      <p class="mt-2 text-body">
+        If a competitor row is out of date or inaccurate, write to
+        <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a>. We publish corrections
+        within two business days.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
