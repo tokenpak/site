@@ -48,6 +48,22 @@ const bodyHtml = release.body_markdown ? renderMarkdown(release.body_markdown) :
    * lists, code, tables, links — matching brand tokens from global.css
    * via CSS variables (05 §5.1).
    */
+  /* Container-level wrapping: long unbroken identifiers (e.g.,
+     tokenpak.core.contracts.capabilities.SELF_CAPABILITIES_PROXY) from
+     inline <code> in release bodies would otherwise force horizontal
+     scroll on narrow viewports. overflow-wrap: anywhere is the broadest
+     CSS instruction to break long tokens at any grapheme; min-width: 0
+     is the flex-item escape hatch that lets the section actually shrink. */
+  .release-body {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .release-body :global(code) {
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
   .release-body :global(h1),
   .release-body :global(h2) {
     margin-top: 2rem;
