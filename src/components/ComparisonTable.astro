@@ -1,0 +1,54 @@
+---
+/*
+ * OSS vs Pro comparison. Rows canonical per 07 §5.1 + §5.2.
+ * Never invent rows here — add in 07 first, propagate.
+ */
+interface Row {
+  feature: string;
+  oss: string;
+  pro: string;
+}
+
+interface Props {
+  rows?: Row[];
+}
+
+const defaultRows: Row[] = [
+  { feature: 'Context compression (full engine)', oss: 'Included', pro: 'Included' },
+  { feature: 'Local proxy at 127.0.0.1',          oss: 'Included', pro: 'Included' },
+  { feature: 'Client integrations (9 tools)',     oss: 'Included', pro: 'Included' },
+  { feature: 'Model routing with fallback rules', oss: 'Included', pro: 'Included' },
+  { feature: 'Local cost tracking + telemetry',   oss: 'Included', pro: 'Included' },
+  { feature: 'Vault indexing + semantic search',  oss: 'Included', pro: 'Included' },
+  { feature: 'Local dashboard',                   oss: 'Included', pro: 'Included' },
+  { feature: 'A/B testing + request replay',      oss: 'Included', pro: 'Included' },
+  { feature: '50 built-in compression recipes',   oss: 'Included', pro: 'Included' },
+  { feature: 'Team dashboard (multi-seat cost attribution)', oss: '—', pro: 'Pro' },
+  { feature: 'Advanced routing policies (cost-aware, SLA-aware)', oss: '—', pro: 'Pro' },
+  { feature: 'Enterprise credential mgmt (SSO, rotation hooks)', oss: '—', pro: 'Pro' },
+  { feature: 'Priority support and SLA',          oss: '—', pro: 'Pro' },
+  { feature: 'Custom recipes + compliance rulesets', oss: '—', pro: 'Pro' },
+];
+
+const { rows = defaultRows } = Astro.props;
+---
+<div class="overflow-x-auto rounded-card border border-tp-rule">
+  <table class="w-full text-small">
+    <thead class="bg-tp-paper">
+      <tr>
+        <th class="text-left font-semibold px-4 py-3">Feature</th>
+        <th class="text-left font-semibold px-4 py-3 w-32">OSS (free)</th>
+        <th class="text-left font-semibold px-4 py-3 w-32">Pro</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr class="border-t border-tp-rule">
+          <td class="px-4 py-3 text-tp-ink">{row.feature}</td>
+          <td class="px-4 py-3 text-tp-ink">{row.oss}</td>
+          <td class="px-4 py-3 text-tp-ink">{row.pro}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
