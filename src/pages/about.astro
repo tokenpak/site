@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTASection from '../components/CTASection.astro';
+import { config } from '../lib/config';
+---
+<BaseLayout title="About — TokenPak" description="TokenPak's mission and approach.">
+  <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">About</p>
+    <h1>Cut LLM token spend by 30–50% for agent workloads, with zero code changes.</h1>
+    <p class="mt-6 text-body">
+      TokenPak is the local layer between a developer's LLM client and the provider. It compresses
+      context before the wire, routes requests intelligently, and tells the user what was saved —
+      without touching their credentials or their code.
+    </p>
+    <p class="mt-4 text-body text-tp-mute">
+      Apache 2.0 at the core. Built locally because that is where control, privacy, and latency all
+      win at once.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-prose px-6 py-6">
+    <h2>Where things live</h2>
+    <ul class="mt-4 space-y-2 text-small">
+      <li><a href={config.github_repo} class="text-tp-accent">{config.github_repo.replace('https://', '')}</a> — OSS source</li>
+      <li><a href={config.pypi_repo} class="text-tp-accent">{config.pypi_repo.replace('https://', '')}</a> — published package</li>
+      <li><a href={config.cta_urls.read_docs} class="text-tp-accent">{config.docs_base_url.replace('https://', '')}</a> — user + protocol documentation</li>
+    </ul>
+  </section>
+
+  <CTASection heading="Ready to try it?" body={`pip install ${config.package_public}. Works with the LLM clients you already use.`} />
+</BaseLayout>
