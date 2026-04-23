@@ -33,6 +33,7 @@ jobs:
       - name: Validate + build (smoke)
         run: npm run build
       - name: Commit + push if changed
+        id: commit
         run: |
           if ! git diff --quiet -- data/releases.json; then
             git config user.name  "tokenpak"
@@ -40,6 +41,13 @@ jobs:
             git add data/releases.json
             git commit -m "site(data): refresh releases.json from GitHub Releases"
             git push origin main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "releases.json unchanged; nothing to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Trigger deploy if data changed
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main
