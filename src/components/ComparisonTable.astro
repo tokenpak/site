@@ -32,7 +32,12 @@ const defaultRows: Row[] = [
 
 const { rows = defaultRows } = Astro.props;
 ---
-<div class="overflow-x-auto rounded-card border border-tp-rule">
+<div
+  class="overflow-x-auto rounded-card border border-tp-rule"
+  role="region"
+  aria-label="OSS vs Pro feature comparison"
+  tabindex="0"
+>
   <table class="w-full text-small">
     <thead class="bg-tp-paper">
       <tr>
