@@ -1,0 +1,31 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { ReleaseEntry } from '../lib/releases';
+
+interface Props {
+  release: ReleaseEntry;
+}
+const { release } = Astro.props;
+const title = `${release.title} — TokenPak releases`;
+const description = release.summary?.slice(0, 160) ?? `TokenPak ${release.version} release notes.`;
+const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
+  year: 'numeric', month: 'short', day: 'numeric',
+});
+---
+<BaseLayout title={title} description={description}>
+  <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide">Release</p>
+    <h1 class="mt-1">{release.title}</h1>
+    <p class="mt-2 font-mono text-small text-tp-mute">v{release.version} · {dateText}</p>
+    {release.summary && <p class="mt-6 text-body">{release.summary}</p>}
+    <div class="mt-6 flex flex-wrap gap-3 text-small">
+      {release.github_release_url && <a href={release.github_release_url}>Full notes on GitHub</a>}
+      {release.pypi_url           && <a href={release.pypi_url}>PyPI package</a>}
+      {release.changelog_url      && <a href={release.changelog_url}>CHANGELOG</a>}
+    </div>
+    <div class="mt-10">
+      <a href="/releases/" class="text-tp-accent">← All releases</a>
+    </div>
+    <slot />
+  </section>
+</BaseLayout>

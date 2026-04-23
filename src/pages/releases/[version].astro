@@ -1,0 +1,14 @@
+---
+import ReleaseLayout from '../../layouts/ReleaseLayout.astro';
+import { releases } from '../../lib/releases';
+
+export function getStaticPaths() {
+  return releases.map((release) => ({
+    params: { version: release.version },
+    props: { release },
+  }));
+}
+
+const { release } = Astro.props;
+---
+<ReleaseLayout release={release} />

@@ -4,6 +4,10 @@ import Hero from '../components/Hero.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import ModuleCard from '../components/ModuleCard.astro';
 import CTASection from '../components/CTASection.astro';
+import ReleaseCard from '../components/ReleaseCard.astro';
+import { latestRelease } from '../lib/releases';
+
+const latest = latestRelease();
 
 // Why-cards copy sourced verbatim from 07-messaging-positioning-guide.md §2
 // proof points 2–5. Do not paraphrase — canonical phrasing lives there.
@@ -56,6 +60,16 @@ const steps = [
       ))}
     </div>
   </section>
+
+  {latest && (
+    <section class="mx-auto max-w-prose-wide px-6 py-8">
+      <h2>Latest release</h2>
+      <p class="mt-2 text-tp-mute">Refreshed automatically on every release + on a daily safety-net schedule.</p>
+      <div class="mt-6">
+        <ReleaseCard release={latest} />
+      </div>
+    </section>
+  )}
 
   <CTASection />
 </BaseLayout>

@@ -1,0 +1,19 @@
+---
+interface Props {
+  label: string;
+  value: string;
+  note?: string;
+  savings?: boolean;
+}
+const { label, value, note, savings = false } = Astro.props;
+---
+<div class="rounded-card border border-tp-rule p-4 bg-tp-paper">
+  <p class="text-caption text-tp-mute uppercase tracking-wide">{label}</p>
+  <p
+    class="mt-1 font-mono font-bold text-h2"
+    style={savings ? 'color: var(--tp-ink); background-color: var(--tp-signal-value); display: inline-block; padding: 0 0.5rem; border-radius: 4px;' : ''}
+  >
+    {value}
+  </p>
+  {note && <p class="mt-1 text-caption text-tp-mute">{note}</p>}
+</div>

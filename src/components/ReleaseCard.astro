@@ -1,0 +1,42 @@
+---
+import type { ReleaseEntry } from '../lib/releases';
+
+interface Props {
+  release: ReleaseEntry;
+  compact?: boolean;
+}
+
+const { release, compact = false } = Astro.props;
+const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
+  year: 'numeric', month: 'short', day: 'numeric',
+});
+---
+<article class="rounded-card border border-tp-rule p-6 bg-tp-paper">
+  <div class="flex items-center justify-between gap-3">
+    <div>
+      <p class="text-caption text-tp-mute uppercase tracking-wide">Release</p>
+      <h3 class="mt-1">
+        <a href={`/releases/${release.version}/`} class="text-tp-ink no-underline hover:text-tp-accent">
+          {release.title}
+        </a>
+      </h3>
+      <p class="mt-1 font-mono text-small text-tp-mute">v{release.version} · {dateText}</p>
+    </div>
+    {release.latest && (
+      <span
+        class="font-mono text-caption px-2 py-1 rounded-input"
+        style="background-color: var(--tp-signal-value); color: var(--tp-ink);"
+      >
+        latest
+      </span>
+    )}
+  </div>
+  {!compact && release.summary && (
+    <p class="mt-4 text-small text-tp-ink">{release.summary}</p>
+  )}
+  <div class="mt-4 flex flex-wrap gap-3 text-small">
+    {release.github_release_url && <a href={release.github_release_url} class="text-tp-accent">GitHub</a>}
+    {release.pypi_url           && <a href={release.pypi_url}           class="text-tp-accent">PyPI</a>}
+    {release.changelog_url      && <a href={release.changelog_url}      class="text-tp-accent">Changelog</a>}
+  </div>
+</article>
