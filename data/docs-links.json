@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "title": "Getting Started",
+    "url": "https://docs.tokenpak.ai/quickstart/",
+    "section": "starter",
+    "description": "Install TokenPak and see savings in one command."
+  },
+  {
+    "title": "Installation",
+    "url": "https://docs.tokenpak.ai/install/",
+    "section": "starter",
+    "description": "pip install options, OS notes, troubleshooting install failures."
+  },
+  {
+    "title": "CLI Reference",
+    "url": "https://docs.tokenpak.ai/cli/",
+    "section": "reference",
+    "description": "Every tokenpak verb, flag, and exit code."
+  },
+  {
+    "title": "Architecture",
+    "url": "https://docs.tokenpak.ai/architecture/",
+    "section": "reference",
+    "description": "Proxy-centered model; three planes; 18 subsystems at a glance."
+  },
+  {
+    "title": "Troubleshooting",
+    "url": "https://docs.tokenpak.ai/troubleshooting/",
+    "section": "support",
+    "description": "Common symptoms and the fixes that work."
+  }
+]
