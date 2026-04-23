@@ -13,7 +13,7 @@ Cross-surface check: every canonical claim the site makes matches the same claim
 
 ## Surfaces audited
 
-- `tokenpak/site:src+data` — 55827 chars loaded
+- `tokenpak/site:src+data` — 79440 chars loaded
 - `tokenpak/tokenpak:README.md` — 5703 chars loaded
 - `tokenpak/docs:docs/quickstart.md` — empty / unreachable
 - `tokenpak/docs:docs/install.md` — empty / unreachable

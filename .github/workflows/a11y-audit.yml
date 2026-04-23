@@ -29,24 +29,24 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
-      - name: Run audit
+      - name: Install Playwright browsers (Chromium + Firefox + WebKit)
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Run audit (cross-browser)
         env:
           AUDIT_BASE_URL: ${{ github.event.inputs.base_url || 'https://tokenpak.ai' }}
-          AUDIT_OUT_DIR: ${{ runner.temp }}/phase-2-audit
+          AUDIT_OUT_DIR: ${{ runner.temp }}/a11y-audit
           AUDIT_TOLERATE_FINDINGS: ${{ github.event.inputs.tolerate == 'true' && '1' || '' }}
         run: npm run audit:a11y
       - name: Upload audit artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: a11y-audit-${{ github.run_id }}
-          path: ${{ runner.temp }}/phase-2-audit
+          name: a11y-audit-xbrowser-${{ github.run_id }}
+          path: ${{ runner.temp }}/a11y-audit
           retention-days: 30
       - name: Print summary to job log
         if: always()
         run: |
-          if [ -f "${{ runner.temp }}/phase-2-audit/index.md" ]; then
-            head -40 "${{ runner.temp }}/phase-2-audit/index.md"
+          if [ -f "${{ runner.temp }}/a11y-audit/index.md" ]; then
+            head -60 "${{ runner.temp }}/a11y-audit/index.md"
           fi
