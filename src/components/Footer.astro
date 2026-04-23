@@ -1,0 +1,30 @@
+---
+import { config } from '../lib/config';
+
+const year = new Date().getFullYear();
+---
+<footer class="border-t border-tp-rule bg-tp-paper mt-16">
+  <div class="mx-auto max-w-prose-wide px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-small">
+    <div>
+      <div class="font-bold text-body">
+        <span class="text-tp-ink">Token</span><span class="text-tp-accent">Pak</span>
+      </div>
+      <p class="text-tp-mute mt-2">Compression, caching, routing, telemetry — for every LLM client you already use.</p>
+    </div>
+    <div>
+      <div class="font-semibold text-tp-ink">Project</div>
+      <ul class="mt-2 space-y-1">
+        <li><a href={config.cta_urls.view_on_github} class="text-tp-ink no-underline hover:text-tp-accent">GitHub</a></li>
+        <li><a href={config.pypi_repo}               class="text-tp-ink no-underline hover:text-tp-accent">PyPI</a></li>
+        <li><a href={config.cta_urls.read_docs}      class="text-tp-ink no-underline hover:text-tp-accent">Docs</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-semibold text-tp-ink">Legal</div>
+      <ul class="mt-2 space-y-1 text-tp-mute">
+        <li>Apache 2.0 licensed</li>
+        <li>© {year} TokenPak</li>
+      </ul>
+    </div>
+  </div>
+</footer>

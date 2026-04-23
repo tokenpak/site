@@ -1,0 +1,22 @@
+{
+  "brand_name": "TokenPak",
+  "package_public": "tokenpak",
+  "package_paid": "tokenpak-paid",
+  "github_repo": "https://github.com/tokenpak/tokenpak",
+  "pypi_repo": "https://pypi.org/project/tokenpak",
+  "private_index_url_public_label": "https://pypi.tokenpak.ai",
+  "docs_base_url": "https://docs.tokenpak.ai",
+  "feature_flags": {
+    "analytics": false,
+    "show_paid_page": true,
+    "show_product_page": false
+  },
+  "cta_urls": {
+    "get_started": "https://docs.tokenpak.ai/quickstart",
+    "view_on_github": "https://github.com/tokenpak/tokenpak",
+    "read_docs": "https://docs.tokenpak.ai",
+    "explore_pro": "/paid",
+    "see_latest_release": "/releases",
+    "request_access": "mailto:hello@tokenpak.ai"
+  }
+}

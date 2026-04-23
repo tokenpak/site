@@ -1,0 +1,29 @@
+---
+import { config } from '../lib/config';
+
+const navItems = [
+  { label: 'Open Source',  href: '/open-source' },
+  { label: 'Releases',     href: config.cta_urls.see_latest_release },
+  { label: 'Docs',         href: config.cta_urls.read_docs },
+  ...(config.feature_flags.show_product_page ? [{ label: 'Product', href: '/product' }] : []),
+  ...(config.feature_flags.show_paid_page    ? [{ label: 'Pro',     href: config.cta_urls.explore_pro }] : []),
+];
+---
+<header class="border-b border-tp-rule bg-tp-paper">
+  <div class="mx-auto max-w-prose-wide px-6 py-4 flex items-center justify-between gap-6">
+    <a href="/" class="font-bold text-h3 no-underline" aria-label={config.brand_name}>
+      <span class="text-tp-ink">Token</span><span class="text-tp-accent">Pak</span>
+    </a>
+    <nav class="flex items-center gap-6 text-small">
+      {navItems.map((item) => (
+        <a href={item.href} class="text-tp-ink no-underline hover:text-tp-accent">{item.label}</a>
+      ))}
+      <a
+        href={config.cta_urls.get_started}
+        class="rounded-card bg-tp-accent px-4 py-2 font-semibold text-tp-ink no-underline"
+      >
+        Get Started
+      </a>
+    </nav>
+  </div>
+</header>
