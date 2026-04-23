@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// C1 (PM/GTM v2 Phase 2, 2026-04-23): Sub-processor list.
+// Mirrors the data-flow map referenced in /compliance/privacy and the
+// DPA's §5 (Sub-processors) + §9 (Data transfer). Notifications of new
+// sub-processors land here first with a visible "effective date".
+---
+<BaseLayout
+  title="Sub-processors — TokenPak"
+  description="Third-party services that handle TokenPak data."
+>
+  <div class="mx-auto max-w-prose-wide px-6 py-12 prose">
+    <div class="rounded-lg border border-tp-rule bg-tp-signal-value p-4 mb-8 text-small">
+      <strong>Templates pending legal review.</strong> This list is maintained
+      alongside the <a href="/compliance/dpa">DPA</a> and
+      <a href="/compliance/privacy">Privacy page</a>. Material changes to this
+      list will appear here at least 30 days before they take effect.
+    </div>
+
+    <h1>Sub-processors</h1>
+
+    <p class="text-tp-mute">Last updated: 2026-04-23 (draft).</p>
+
+    <p>
+      The OSS local proxy runs entirely on the Customer's machine and has
+      <em>no</em> Sub-processors — your prompts and business data never cross
+      TokenPak's boundary. The Sub-processors below apply only to the Pro-tier
+      services (license server, private package index, portal).
+    </p>
+
+    <h2>Current Sub-processors</h2>
+
+    <table class="w-full border-collapse text-small">
+      <thead>
+        <tr class="border-b border-tp-rule">
+          <th class="text-left py-2">Sub-processor</th>
+          <th class="text-left py-2">Purpose</th>
+          <th class="text-left py-2">Data categories</th>
+          <th class="text-left py-2">Jurisdiction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-b border-tp-rule align-top">
+          <td class="py-3"><strong>Stripe, Inc.</strong></td>
+          <td class="py-3">Payment processing for Pro-tier purchases.</td>
+          <td class="py-3">Billing email, payment method metadata, transaction records.</td>
+          <td class="py-3">United States</td>
+        </tr>
+        <tr class="border-b border-tp-rule align-top">
+          <td class="py-3"><strong>Cloudflare, Inc.</strong> (R2 + DNS + Email Routing)</td>
+          <td class="py-3">Storage backing the private package index (<code>pypi.tokenpak.ai</code>); DNS for all TokenPak subdomains; email routing for <code>hello@tokenpak.ai</code>.</td>
+          <td class="py-3">Package wheels (no Customer prompt content); DNS queries; email-forwarding headers (envelope routing only).</td>
+          <td class="py-3">United States</td>
+        </tr>
+        <tr class="border-b border-tp-rule align-top">
+          <td class="py-3"><strong>Fly.io, Inc.</strong></td>
+          <td class="py-3">Hosting for the license server.</td>
+          <td class="py-3">License tokens, seat allocations, verification logs. No Customer prompt content.</td>
+          <td class="py-3">United States</td>
+        </tr>
+        <tr class="border-b border-tp-rule align-top">
+          <td class="py-3"><strong>GitHub, Inc.</strong></td>
+          <td class="py-3">Source-code hosting (public OSS + private engineering repos) + public PyPI stub distribution once live.</td>
+          <td class="py-3">No Customer data is stored in GitHub repositories.</td>
+          <td class="py-3">United States</td>
+        </tr>
+        <tr class="align-top">
+          <td class="py-3"><strong>Python Package Index (PyPI, PSF)</strong></td>
+          <td class="py-3">Public distribution of the <code>tokenpak</code> OSS package (and the forthcoming <code>tokenpak-paid</code> discovery stub, per distribution model E2).</td>
+          <td class="py-3">No Customer data. Public package metadata only.</td>
+          <td class="py-3">United States</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Not Sub-processors (for clarity)</h2>
+    <ul>
+      <li>
+        <strong>LLM providers</strong> (Anthropic, OpenAI, Google, etc.) — when TokenPak
+        forwards a request to a provider, the Customer (not TokenPak) is the one
+        sharing data with that provider using the Customer's own credentials.
+        TokenPak is a transparent pass-through for the provider relationship.
+      </li>
+      <li>
+        <strong>Anonymous usage metrics</strong> — TokenPak <em>does not collect</em>
+        anonymous usage metrics by default and has no telemetry ingest
+        endpoint. If that ever changes, it will land here first.
+      </li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>
+      Objections or questions about a sub-processor:
+      <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a>.
+    </p>
+  </div>
+</BaseLayout>
