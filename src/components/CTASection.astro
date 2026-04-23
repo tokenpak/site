@@ -1,0 +1,33 @@
+---
+import { config } from '../lib/config';
+
+interface Props {
+  heading?: string;
+  body?: string;
+}
+
+const {
+  heading = 'See savings in one command.',
+  body = 'pip install tokenpak && tokenpak integrate claude-code --apply. No cloud, no credentials stored, no code changes.',
+} = Astro.props;
+---
+<section class="mx-auto max-w-prose-wide px-6 py-16">
+  <div class="rounded-card border border-tp-rule p-8 bg-tp-paper text-center">
+    <h2>{heading}</h2>
+    <p class="mt-3 text-body text-tp-ink">{body}</p>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <a
+        href={config.cta_urls.get_started}
+        class="inline-flex items-center rounded-card bg-tp-accent px-5 py-3 font-semibold text-tp-ink no-underline"
+      >
+        Get Started
+      </a>
+      <a
+        href={config.cta_urls.read_docs}
+        class="inline-flex items-center rounded-card border border-tp-rule px-5 py-3 font-semibold text-tp-ink no-underline hover:border-tp-accent"
+      >
+        Read the docs
+      </a>
+    </div>
+  </div>
+</section>

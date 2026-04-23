@@ -1,9 +1,61 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import ModuleCard from '../components/ModuleCard.astro';
+import CTASection from '../components/CTASection.astro';
+
+// Why-cards copy sourced verbatim from 07-messaging-positioning-guide.md §2
+// proof points 2–5. Do not paraphrase — canonical phrasing lives there.
+const whyCards = [
+  {
+    title: 'Low latency',
+    body: 'Under 50ms compression overhead on typical agent prompts. Your agent does not feel slower.',
+  },
+  {
+    title: 'Zero-config install',
+    body: 'pip install tokenpak && tokenpak integrate claude-code --apply. One command wires the proxy into your tools.',
+  },
+  {
+    title: 'Works with what you already use',
+    body: 'Claude Code, Cursor, Cline, Continue, Aider, OpenAI SDK, Anthropic SDK, LiteLLM, Codex. No plugin rewrites.',
+  },
+  {
+    title: 'Local and private',
+    body: 'No cloud component. No credentials stored. Requests still go to your model providers, but compression happens on your machine.',
+  },
+];
+
+// How-it-works strip — three steps. Placeholder pending the real diagram in
+// a later phase (kickoff §3 PR#6 calls out a stub here is acceptable).
+const steps = [
+  { label: 'Step 1', title: 'Install',   body: 'pip install tokenpak. Runs at 127.0.0.1 as a local proxy.' },
+  { label: 'Step 2', title: 'Integrate', body: 'tokenpak integrate <client> --apply wires your existing LLM tools.' },
+  { label: 'Step 3', title: 'Save',      body: 'Every request is compressed deterministically; savings logged locally.' },
+];
 ---
-<BaseLayout title="tokenpak">
-  <section class="mx-auto max-w-prose-wide px-6 py-16">
-    <h1>TokenPak site placeholder</h1>
-    <p class="mt-4 text-tp-mute">Homepage content lands in PR#6. This page exists so the Astro build produces a valid <code>dist/</code>.</p>
+<BaseLayout title="TokenPak — local LLM proxy">
+  <Hero />
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Why TokenPak</h2>
+    <p class="mt-2 text-tp-mute">Built for the parts of an agent workload you cannot renegotiate.</p>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {whyCards.map((card) => (
+        <FeatureCard title={card.title} body={card.body} />
+      ))}
+    </div>
   </section>
+
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>How it works</h2>
+    <p class="mt-2 text-tp-mute">Three steps. No cloud, no rewrites.</p>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {steps.map((step) => (
+        <ModuleCard label={step.label} title={step.title} body={step.body} />
+      ))}
+    </div>
+  </section>
+
+  <CTASection />
 </BaseLayout>
