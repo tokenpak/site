@@ -1,0 +1,47 @@
+---
+import { config } from '../lib/config';
+
+interface Props {
+  tagline?: string;
+  lede?: string;
+}
+
+const {
+  tagline = 'Local. Cheaper. Faster.',
+  lede = 'TokenPak is a local proxy that compresses your LLM context before it hits the API — fewer tokens, lower cost, same results.',
+} = Astro.props;
+---
+<section class="mx-auto max-w-prose-wide px-6 pt-16 pb-12">
+  <div class="grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-10 items-center">
+    <div>
+      <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">TokenPak — local LLM proxy</p>
+      <h1 class="text-display leading-tight">{tagline}</h1>
+      <p class="mt-4 text-body text-tp-ink max-w-prose">{lede}</p>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <a
+          href={config.cta_urls.get_started}
+          class="inline-flex items-center rounded-card bg-tp-accent px-5 py-3 font-semibold text-tp-ink no-underline"
+        >
+          Get Started
+        </a>
+        <a
+          href={config.cta_urls.view_on_github}
+          class="inline-flex items-center rounded-card border border-tp-rule px-5 py-3 font-semibold text-tp-ink no-underline hover:border-tp-accent"
+        >
+          View on GitHub
+        </a>
+      </div>
+    </div>
+    <aside class="rounded-card border border-tp-rule p-6 bg-tp-paper">
+      <p class="text-caption text-tp-mute uppercase tracking-wide">README demo</p>
+      <p class="mt-2 font-mono text-small text-tp-ink">747 → 502 tokens</p>
+      <p
+        class="mt-1 font-mono font-bold text-h1 inline-block px-2 rounded-input"
+        style="background-color: var(--tp-signal-value); color: var(--tp-ink);"
+      >
+        32.8% saved
+      </p>
+      <p class="mt-2 text-caption text-tp-mute">$0.00073 per call. Workload-dependent; typical agent workloads land 30–50%.</p>
+    </aside>
+  </div>
+</section>
