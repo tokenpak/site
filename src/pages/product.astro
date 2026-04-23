@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTASection from '../components/CTASection.astro';
+import { config } from '../lib/config';
+---
+<BaseLayout title="Product — TokenPak" description="A local proxy that compresses context before it hits the LLM API.">
+  <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Product overview</p>
+    <h1>A local proxy that compresses context before it hits the LLM API.</h1>
+    <p class="mt-6 text-body">
+      TokenPak runs on <code class="font-mono">127.0.0.1</code> between your LLM client (Claude Code, Cursor,
+      Cline, and six others) and the model provider. Every outbound request flows through a deterministic
+      compression pipeline that trims context — repeated boilerplate, redundant file contents, stale
+      system-prompt prefix — without changing the meaning of the prompt. Your agent gets the same answers
+      for fewer tokens.
+    </p>
+    <p class="mt-4 text-body">
+      The proxy is the <strong>reference implementation of TIP-1.0</strong>, the TokenPak Integration
+      Protocol. Routing, caching, and telemetry are first-class concerns — the compression pipeline is
+      one of five planes, not the whole story.
+    </p>
+    <p class="mt-6 text-small text-tp-mute">
+      More detail on the architecture — 18 subsystems, three planes, proxy-centered design —
+      lives on <a href={config.docs_base_url + '/architecture/'} class="text-tp-accent">docs.tokenpak.ai/architecture</a>.
+    </p>
+  </section>
+
+  <CTASection
+    heading="Try it locally."
+    body={`pip install ${config.package_public} && ${config.package_public} integrate claude-code --apply. Takes a minute.`}
+  />
+</BaseLayout>
