@@ -33,6 +33,7 @@ jobs:
       - name: Validate + build (smoke)
         run: npm run build
       - name: Commit + push if changed
+        id: commit
         run: |
           if ! git diff --quiet -- data/docs-links.json; then
             git config user.name  "tokenpak"
@@ -40,6 +41,16 @@ jobs:
             git add data/docs-links.json
             git commit -m "site(data): refresh docs-links.json from tokenpak/docs"
             git push origin main
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "docs-links.json unchanged; nothing to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Trigger deploy if data changed
+        if: steps.commit.outputs.changed == 'true'
+        # Pushes authored by the workflow's default GITHUB_TOKEN do NOT
+        # auto-trigger other workflows (GitHub's anti-loop rule). Fire
+        # deploy.yml explicitly so live site picks up the new manifest.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main
