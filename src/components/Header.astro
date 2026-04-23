@@ -3,6 +3,7 @@ import { config } from '../lib/config';
 
 const navItems = [
   { label: 'Open Source',  href: '/open-source' },
+  { label: 'Compare',      href: '/compare' },
   { label: 'Releases',     href: config.cta_urls.see_latest_release },
   { label: 'Docs',         href: config.cta_urls.read_docs },
   ...(config.feature_flags.show_product_page ? [{ label: 'Product', href: '/product' }] : []),
