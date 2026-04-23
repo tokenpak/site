@@ -1,0 +1,15 @@
+---
+import type { DocLinkEntry } from '../lib/docs-links';
+
+interface Props {
+  link: DocLinkEntry;
+}
+const { link } = Astro.props;
+---
+<article class="rounded-card border border-tp-rule p-5 bg-tp-paper h-full">
+  <p class="text-caption text-tp-mute uppercase tracking-wide">{link.section}</p>
+  <h3 class="mt-1">
+    <a href={link.url} class="text-tp-ink no-underline hover:text-tp-accent">{link.title}</a>
+  </h3>
+  <p class="mt-2 text-small text-tp-ink">{link.description}</p>
+</article>

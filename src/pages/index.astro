@@ -6,8 +6,11 @@ import ModuleCard from '../components/ModuleCard.astro';
 import CTASection from '../components/CTASection.astro';
 import ReleaseCard from '../components/ReleaseCard.astro';
 import { latestRelease } from '../lib/releases';
+import DocLinkCard from '../components/DocLinkCard.astro';
+import { docsLinks } from '../lib/docs-links';
 
 const latest = latestRelease();
+const featuredDocs = docsLinks.slice(0, 6);
 
 // Why-cards copy sourced verbatim from 07-messaging-positioning-guide.md §2
 // proof points 2–5. Do not paraphrase — canonical phrasing lives there.
@@ -67,6 +70,16 @@ const steps = [
       <p class="mt-2 text-tp-mute">Refreshed automatically on every release + on a daily safety-net schedule.</p>
       <div class="mt-6">
         <ReleaseCard release={latest} />
+      </div>
+    </section>
+  )}
+
+  {featuredDocs.length > 0 && (
+    <section class="mx-auto max-w-prose-wide px-6 py-8">
+      <h2>Documentation highlights</h2>
+      <p class="mt-2 text-tp-mute">Curated entry points sourced from <a href="https://github.com/tokenpak/docs">tokenpak/docs</a>.</p>
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {featuredDocs.map((link) => <DocLinkCard link={link} />)}
       </div>
     </section>
   )}

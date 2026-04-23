@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "tokenpak-site docs-links manifest",
+  "description": "Build-time snapshot of curated documentation entry points sourced from tokenpak/docs' docs-links.yaml. Consumed by the homepage 'Documentation Highlights' section. See 22-public-website-standard.md §5.3 and site design doc §4.3.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["title", "url", "section", "description"],
+    "properties": {
+      "title":        { "type": "string", "minLength": 1 },
+      "url":          { "type": "string", "format": "uri" },
+      "section":      { "type": "string", "enum": ["starter", "reference", "support", "protocol"] },
+      "description":  { "type": "string", "minLength": 1 },
+      "updated_at":   { "type": "string", "format": "date-time" },
+      "source_hint":  { "type": "string" }
+    }
+  }
+}
