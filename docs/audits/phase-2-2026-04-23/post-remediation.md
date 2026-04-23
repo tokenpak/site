@@ -1,4 +1,6 @@
-# Phase 2 — accessibility + 375 px mobile baseline (2026-04-23)
+# Phase 2 — post-remediation audit (2026-04-23)
+
+> Captured against the **live** site after `d879f55f` (PR#16) deployed. Companion to `index.md` (pre-remediation baseline). Delta vs. baseline: **7/7 routes overflow → 0**, `scrollable-region-focusable` serious → **0**, `tp-mute`-on-`tp-ink` serious → **0**. Only remaining class is the `tp-accent`-on-`tp-paper` brand-token contrast (class D hard stop), unchanged — 1 per route × 7 routes = 7 serious totals below.
 
 Base URL: `https://tokenpak.ai`  
 Tool: Playwright + @axe-core/playwright (WCAG 2.1 AA)  
