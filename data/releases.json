@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.5.1",
+    "published_at": "2026-05-08T05:08:13Z",
+    "title": "TokenPak v1.5.1 — TIP Spend Guard OSS",
+    "summary": "**Headline:** Proxy-side pre-send circuit breaker that blocks runaway LLM spend before it hits the provider.",
+    "body_markdown": "**Headline:** Proxy-side pre-send circuit breaker that blocks runaway LLM spend before it hits the provider.\n\n## TIP Spend Guard\n\nAvailable out of the box at `enabled: true` with sensible defaults:\n- **block** at $10 / 500K tokens per request (holds request, prompts user)\n- **session-cumulative** at $10 / 1h (death-by-1000-cuts defense)\n- **hard-block** at $50 / 1M tokens (immutable, cannot be bypassed)\n\nWhen the guard fires you get HTTP 402 with structured `tokenpak_spend_guard_blocked` JSON. Release with a Yes-reply or `[TIP: allow=once max=\\$X]` directive prefix. Headless agents can pre-declare.\n\nWire contract: Standard 29 — TIP Spend Guard Agent Contract.\nUser guide: `docs/spend-guard.md`.\n\n## Acceptance lock proven\n\n`tests/test_spend_guard_spike_replay.py` replays the actual 2026-05-07 09:28-10:56 trace (384 requests, $99.67 total). With the guard + reflexive 'no':\n- Block fires at minute 09:38:12, running cost $9.85\n- Total forwarded: ~$9.85 vs actual $99.67 — **91% reduction**\n\n## Also in this release\n\n- **Validator fix**: `tokenpak start` now correctly accepts ANTHROPIC_API_KEY env var bypass.\n- **CI hygiene**: hostname genericization in 15 files; determinism workflow tolerant of skip-only state.\n\n## PRs\n\n- #97 (TSG-OSS, initiative 2026-05-07-tip-spend-guard-oss)\n- #99 (CI hygiene)\n- #100 (release merge)\n- #98 (validator fix, closed as subsumed)\n\n149 spend-guard tests + 40 validator tests, all green.\n\n```\npip install -U tokenpak\n```\n\n— Sue, on behalf of the fleet",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.5.1/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.5.0",
     "published_at": "2026-05-03T19:19:18Z",
     "title": "TokenPak v1.5.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.5.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.4.0",
