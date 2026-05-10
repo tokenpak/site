@@ -1,5 +1,41 @@
 [
   {
+    "version": "1.5.5",
+    "published_at": "2026-05-10T00:51:56Z",
+    "title": "TokenPak v1.5.5",
+    "summary": "Release v1.5.5",
+    "body_markdown": "Release v1.5.5\n\n## Installation\n\n```bash\npip install tokenpak==1.5.5\n```\n\n## What's New\n\nSee [CHANGELOG.md](https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md) for details.\n\n## Checksums\n\n```\n21749f66acc20eb066eb0e786d8c3e8d435221e094a30887c5d3af1651d1f46d  tokenpak-1.5.5-py3-none-any.whl\n5f9ea7a920204235eab37e58f7ec04f29f489407c6e130c64c6b3ffe8a469308  tokenpak-1.5.5.tar.gz\n```\n\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.5",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.5.5/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
+    "version": "1.5.4",
+    "published_at": "2026-05-09T14:52:07Z",
+    "title": "TokenPak v1.5.4",
+    "summary": "Release v1.5.4",
+    "body_markdown": "Release v1.5.4\n\n## Installation\n\n```bash\npip install tokenpak==1.5.4\n```\n\n## What's New\n\nSee [CHANGELOG.md](https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md) for details.\n\n## Checksums\n\n```\na3344eb45ea0033d131b5442ba35bf2f46d4a0975e384b08117676996cfba147  tokenpak-1.5.4-py3-none-any.whl\n0fdaf70ceed321174210c0661af8e2ab5d8a0832341b03071cb0bb820d22cd87  tokenpak-1.5.4.tar.gz\n```\n\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.4",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.5.4/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
+    "version": "1.5.3",
+    "published_at": "2026-05-09T14:36:45Z",
+    "title": "TokenPak v1.5.3",
+    "summary": "> ⚠️ **PyPI publish failed for v1.5.3 — use v1.5.4 instead.**\n>\n> The `Release TokenPak` workflow ran on the `v1.5.3` tag. The `Run Tests`, `Build Distribution`, and `Create GitHub Release` jobs all completed green, proving the TSR-04/05/06 test-suite recovery work landed correctly. The final `Publish to PyPI` step failed with `InvalidDistribution: Unknown distribution format: 'SHA256SUMS'` because the prior `release.yml` placed `SHA256SUMS` inside `dist/` and `pypa/gh-action-pypi-publish` enumerates `dist/*` and rejects every non-`.whl`/`.tar.gz` entry. This was a pre-existing release-workflo",
+    "body_markdown": "> ⚠️ **PyPI publish failed for v1.5.3 — use v1.5.4 instead.**\n>\n> The `Release TokenPak` workflow ran on the `v1.5.3` tag. The `Run Tests`, `Build Distribution`, and `Create GitHub Release` jobs all completed green, proving the TSR-04/05/06 test-suite recovery work landed correctly. The final `Publish to PyPI` step failed with `InvalidDistribution: Unknown distribution format: 'SHA256SUMS'` because the prior `release.yml` placed `SHA256SUMS` inside `dist/` and `pypa/gh-action-pypi-publish` enumerates `dist/*` and rejects every non-`.whl`/`.tar.gz` entry. This was a pre-existing release-workflow defect, not a v1.5.3 content defect.\n>\n> **Action for users:** install [`tokenpak==1.5.4`](https://github.com/tokenpak/tokenpak/releases/tag/v1.5.4) — it contains every line of v1.5.3 plus the workflow fix, and is the first TSR-08-line release on PyPI.\n>\n> **Action for the repo:** the workflow defect is fixed in v1.5.4 (see PR #154): SHA256SUMS now lives at the repo root and never inside `dist/`; new pre-upload + pre-publish dist-purity guards prevent regression.\n>\n> v1.5.3 is retained as a historical GitHub-tag-only release. The tag is **not** retagged or force-pushed.\n\n---\n\n## Original release notes\n\nRelease v1.5.3\n\n### Installation (use v1.5.4)\n\n```bash\npip install tokenpak==1.5.4\n```\n\n### What's New\n\nSee [CHANGELOG.md](https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md) for details (entries for both v1.5.3 and v1.5.4).\n\n### Checksums\n\n```\n981fbecf4a4f684a0be623343c41f63d5089d276a2b3d2c57031c721badd079a  tokenpak-1.5.3-py3-none-any.whl\ndaba3059b7293aa0b05e5f9faa06c1a566ee420fe833415f9e6e3285ae235374  tokenpak-1.5.3.tar.gz\n```",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.3",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.5.3/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
     "version": "1.5.2",
     "published_at": "2026-05-08T14:21:38Z",
     "title": "TokenPak v1.5.2 — MultiPak Pro Phase 0 + Phase 1 OSS surface",
@@ -9,7 +45,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.2",
     "pypi_url": "https://pypi.org/project/tokenpak/1.5.2/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.5.1",
