@@ -10,8 +10,8 @@ import { config } from '../lib/config';
 
 const capabilities = [
   {
-    title: 'Context compression',
-    body: 'Deterministic pipeline that trims repeated boilerplate, redundant file contents, and stale system-prompt prefix before your request hits the wire. Same answer, fewer tokens.',
+    title: 'Prompt Packing',
+    body: 'TokenPak selects, reduces, and structures context into a Pak before each request hits the wire. The compression stage inside Prompt Packing is deterministic and under 50ms. Same answer, fewer tokens.',
   },
   {
     title: 'Model routing',
@@ -22,8 +22,8 @@ const capabilities = [
     body: 'Byte-preserved passthrough keeps provider-side cache hits intact. When TokenPak caches something itself it says so in the telemetry store — never mixed with provider cache hits.',
   },
   {
-    title: 'Telemetry + cost tracking',
-    body: 'Every request logged to a local SQLite store with a version-controlled schema. Savings are attributed: proxy-caused, client-caused, or unclassified — never conflated.',
+    title: 'Savings Ledger',
+    body: 'Every request logged to a local SQLite store. Savings are attributed by cause (Prompt Packing, cache hit) and origin (proxy vs. provider) — never conflated. Surfaces in the local dashboard and via tokenpak savings.',
   },
 ];
 
@@ -51,14 +51,15 @@ const planes = [
     <h1>A local proxy that compresses context before it hits the LLM API.</h1>
     <p class="mt-6 text-body">
       TokenPak runs on <code class="font-mono">127.0.0.1</code> between your LLM client and the
-      model provider. Every outbound request flows through a deterministic pipeline that trims
-      context — repeated boilerplate, redundant file contents, stale system-prompt prefix —
-      without changing the meaning of the prompt. Your agent gets the same answers for fewer
-      tokens.
+      model provider. Every outbound request goes through <strong>Prompt Packing</strong>: TokenPak
+      selects, reduces, and structures context into a <strong>Pak</strong> before it hits the wire.
+      Paks move through TIP (the TokenPak Integration Protocol) as the request flows to the provider.
+      What was saved is logged in the <strong>Savings Ledger</strong> — tokens, cost, and cause, per
+      request.
     </p>
     <p class="mt-4 text-body">
-      Compression is one of four first-class concerns. Routing, caching, and telemetry all live
-      at the same layer: your traffic, your machine, your rules.
+      Prompt Packing is one of four first-class concerns. Routing, caching, and the Savings Ledger all
+      live at the same layer: your traffic, your machine, your rules.
     </p>
   </section>
 
