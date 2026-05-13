@@ -36,9 +36,9 @@ const whyCards = [
 // How-it-works strip — three steps. Placeholder pending the real diagram in
 // a later phase (kickoff §3 PR#6 calls out a stub here is acceptable).
 const steps = [
-  { label: 'Step 1', title: 'Install',   body: 'pip install tokenpak. Runs at 127.0.0.1 as a local proxy.' },
-  { label: 'Step 2', title: 'Setup',     body: 'tokenpak setup — interactive wizard wires your keys + starts the proxy. Point your LLM client at http://127.0.0.1:8766 via one env var.' },
-  { label: 'Step 3', title: 'Save',      body: 'Every request is compressed deterministically; savings logged locally.' },
+  { label: 'Step 1', title: 'Install',        body: 'pip install tokenpak. Runs at 127.0.0.1 as a local proxy.' },
+  { label: 'Step 2', title: 'Prompt Packing', body: 'tokenpak setup — interactive wizard wires your keys + starts the proxy. Every outbound request goes through Prompt Packing: TokenPak selects, reduces, and structures context into a Pak, then moves it through TIP (the TokenPak Integration Protocol) to the provider.' },
+  { label: 'Step 3', title: 'Savings Ledger', body: 'Tokens saved and costs avoided are logged per-request in the Savings Ledger — attributable to cause (Prompt Packing, cache hit) and origin (proxy vs. provider).' },
 ];
 ---
 <BaseLayout title="TokenPak — local LLM proxy">
