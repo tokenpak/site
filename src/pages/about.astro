@@ -54,11 +54,18 @@ const surfaces = [
       <strong>TokenPak is a local proxy that compresses context before it hits the LLM API.</strong>
       That sentence goes in the README, the homepage, and every pitch. The identity is deliberate:
       local-first (no cloud to fail, no credentials to store), proxy-shaped (drops in under the
-      tools you already use), compression-focused (one job, done deterministically).
+      tools you already use), Prompt Packing–focused (one job, done deterministically).
     </p>
     <p class="mt-4 text-body">
-      Compression is one job, not the whole story. Routing, caching, telemetry, and a local
-      dashboard all ship in the same package — because a team running agents in production
+      <strong>Prompt Packing</strong> is the high-level process: TokenPak selects, reduces, and
+      structures context into a <strong>Pak</strong> before each request hits the wire.
+      Compression is the wire-side technical stage inside Prompt Packing. The <strong>Savings
+      Ledger</strong> records what each Pak saved — tokens, cost, cause, and cache origin —
+      per request.
+    </p>
+    <p class="mt-4 text-body">
+      Prompt Packing is one job, not the whole story. Routing, caching, the Savings Ledger, and
+      a local dashboard all ship in the same package — because a team running agents in production
       needs all four at the same layer.
     </p>
   </section>

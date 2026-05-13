@@ -23,9 +23,9 @@ const proGroups = [
       'SSO for the dashboard, credential-rotation hooks, audit-log export. Priority support with an SLA. Compliance rulesets that plug into the compression pipeline.',
   },
   {
-    title: 'Custom recipes',
+    title: 'Compression profiles',
     body:
-      'Ship your own compression recipes alongside the 50 built-in OSS ones. Team-specific segmentation, domain-specific alias dictionaries, policy-constrained redaction for regulated workloads.',
+      'Ship your own compression profiles alongside the 50 built-in OSS ones. Team-specific segmentation, domain-specific alias dictionaries, policy-constrained redaction for regulated workloads. (A compression profile is the YAML strategy that configures a Prompt Packing stage; called a "recipe" in code and schemas.)',
   },
 ];
 
@@ -40,10 +40,11 @@ const noInPro = [
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Pro tier</p>
     <h1>TokenPak Pro.</h1>
     <p class="mt-6 text-body">
-      Everything <a href="/open-source">the OSS core</a> ships — proxy, compression engine,
-      client integrations, local dashboard, telemetry store, 50 built-in recipes — stays in
-      place. Pro adds the features a team running TokenPak at scale needs: shared cost
-      attribution, policy tooling, enterprise credential management, priority support.
+      Everything <a href="/open-source">the OSS core</a> ships — local proxy, Prompt Packing
+      engine, TIP-1.0 protocol support, client integrations, local dashboard, Savings Ledger, 50
+      built-in compression profiles — stays in place. Pro adds the features a team running
+      TokenPak at scale needs: shared cost attribution, policy tooling, enterprise credential
+      management, priority support.
     </p>
     <p class="mt-4 text-body text-tp-mute">
       Pro access is gated during v1. Drop us a line with how you're using TokenPak today and
