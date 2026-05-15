@@ -1,26 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// C3 (PM/GTM v2 Phase 3, 2026-04-23): public status surface.
-// KEVIN-DECISION-C: canonical machine-readable status at
-// app.tokenpak.ai/status (MTC-owned license server endpoint).
-// This apex page is the human-readable summary; it never probes
-// the API directly (static site per standard 22) — manual updates
-// on the "Last update" line below when state changes.
-//
-// Components covered match the current v2 public surface. Update
-// the per-component cells when services change state.
+// OSS-beta status surface. Pro-tier infrastructure rows are parked while
+// the OSS beta is the focus — they will return when Pro launches publicly.
+// Manual updates here on the "Last update" line below when state changes.
 
 const components = [
   {
     name: 'Public package index (tokenpak on PyPI)',
     status: 'operational',
-    note: 'pip install tokenpak is serving v1.3.7.',
-  },
-  {
-    name: 'Discovery stub (tokenpak-paid-stub on PyPI)',
-    status: 'operational',
-    note: 'pip install tokenpak-paid-stub serves v0.1.0.',
+    note: 'pip install tokenpak is serving v1.5.6.',
   },
   {
     name: 'Marketing site (tokenpak.ai)',
@@ -33,16 +22,9 @@ const components = [
     note: 'Rendered from github.com/tokenpak/docs.',
   },
   {
-    name: 'Pro tier — license server (app.tokenpak.ai)',
-    status: 'pending-deploy',
-    note:
-      'Code complete; initial deploy pending. This is the surface that serves the machine-readable JSON endpoint at app.tokenpak.ai/status.',
-  },
-  {
-    name: 'Pro tier — private package index (pypi.tokenpak.ai)',
-    status: 'pending-deploy',
-    note:
-      'R2-backed index; activates alongside the license server.',
+    name: 'GitHub repository (tokenpak/tokenpak)',
+    status: 'operational',
+    note: 'Public OSS source, Apache 2.0.',
   },
 ];
 
@@ -51,25 +33,23 @@ const statusStyles = {
   'degraded':       { dot: 'bg-yellow-500', label: 'Degraded' },
   'outage':         { dot: 'bg-red-500',    label: 'Outage' },
   'pending-deploy': { dot: 'bg-gray-400',   label: 'Pending deploy' },
+  'beta':           { dot: 'bg-tp-accent',  label: 'Beta' },
 };
 
-// Timestamp bumped after a GitHub Pages deploy-queue hiccup on 2026-04-23
-// (stuck "in progress" state from an earlier Phase 4 audit commit blocked
-// the C3 initial deploy; a follow-up push cleared the queue).
-const lastUpdated = '2026-04-23';
+const lastUpdated = '2026-05-15';
 ---
 <BaseLayout
   title="Status — TokenPak"
-  description="TokenPak service status: package indexes, docs, marketing site, Pro-tier infrastructure."
+  description="TokenPak service status: package index, docs, marketing site, repository."
 >
   <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Status</p>
     <h1>TokenPak service status.</h1>
     <p class="mt-6 text-body">
-      Human-readable summary across every TokenPak-operated service. The canonical
-      machine-readable endpoint is
-      <code class="font-mono">https://app.tokenpak.ai/status</code> (JSON, rate-limited),
-      which comes online with the Pro-tier license server.
+      Human-readable summary of every TokenPak public service. TokenPak is a
+      <strong>local proxy</strong> — the package on your machine has no dependency
+      on any cloud component, so a TokenPak outage on this page never affects a
+      running install.
     </p>
     <p class="mt-2 text-small text-tp-mute">
       Last updated: {lastUpdated}. This page is a static site — values here are
