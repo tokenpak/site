@@ -6,22 +6,24 @@ import FeatureCard from '../components/FeatureCard.astro';
 import CTASection from '../components/CTASection.astro';
 import { config } from '../lib/config';
 
-// Copy sourced verbatim from 07-messaging-positioning-guide.md §5 and §2.
-// Claim boundaries from 07 §3 respected.
+// OSS-beta positioning. Pro-tier framing is parked during beta — only OSS
+// features that ship today are surfaced here.
 const ossHighlights = [
-  { title: 'Full Prompt Packing pipeline', body: 'Deterministic Prompt Packing for every request — selects, reduces, and structures context into a Pak before it hits the wire. Not a limited demo — the OSS package is the full product.' },
+  { title: 'Full Prompt Packing pipeline', body: 'Deterministic Prompt Packing for every request — selects, reduces, and structures context into a Pak before it hits the wire. The OSS package is the full pipeline, not a limited demo.' },
   { title: 'Local proxy, no cloud',         body: 'Runs at 127.0.0.1. No data leaves your machine; no credentials stored in a third party.' },
   { title: 'Nine client integrations',      body: 'Claude Code, Cursor, Cline, Continue, Aider, OpenAI SDK, Anthropic SDK, LiteLLM, Codex.' },
-  { title: 'Savings Ledger + vault search', body: 'Local telemetry store, A/B replay, 50 built-in compression profiles, semantic vault indexing. Per-Pak savings logged by cause and origin.' },
+  { title: 'Savings Ledger + Spend Guard',  body: 'Local telemetry store, A/B replay, 50 built-in compression profiles, semantic vault indexing, and a pre-send circuit breaker (Spend Guard) that blocks runaway requests before they reach the provider.' },
 ];
 ---
-<BaseLayout title="Open source — TokenPak" description="TokenPak's OSS core is Apache 2.0 licensed and full-featured. Install in one command.">
+<BaseLayout title="Open source — TokenPak" description="TokenPak's OSS core is Apache 2.0 licensed. Install in one command.">
   <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
-    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Open source core</p>
-    <h1>TokenPak OSS is the full product.</h1>
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Open source · beta</p>
+    <h1>TokenPak is open source.</h1>
     <p class="mt-4 text-body text-tp-ink max-w-prose">
-      The core proxy, Prompt Packing engine, client integrations, local dashboard, and Savings Ledger are all
-      <strong>Apache 2.0 licensed</strong>. Pro adds team-scale features on top of the same core — it does not unlock the OSS engine.
+      The proxy, Prompt Packing engine, client integrations, local dashboard,
+      Savings Ledger, and Spend Guard are <strong>Apache 2.0 licensed</strong> and
+      run entirely on your machine. This is the beta surface — features that
+      ship today, no marketing of anything that doesn't.
     </p>
   </section>
 
@@ -30,26 +32,26 @@ const ossHighlights = [
     <div class="mt-4 grid grid-cols-1 gap-4">
       <CodeBlock language="bash" title="pip">
 {`pip install ${config.package_public}
-${config.package_public} integrate claude-code --apply`}
+${config.package_public} setup`}
       </CodeBlock>
     </div>
     <p class="mt-3 text-small text-tp-mute">
-      Pro is delivered as the <code class="font-mono">{config.package_paid}</code> package via a separate index
-      (<a href={config.private_index_url_public_label}>{config.private_index_url_public_label}</a>).
-      <strong class="text-tp-ink">Pro</strong> is the tier name; <code class="font-mono">{config.package_paid}</code> is the package name.
+      One command to install, one to set up. The setup wizard detects API keys,
+      picks a compression profile, and starts the proxy on
+      <code class="font-mono">127.0.0.1:8766</code>.
     </p>
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>What's in OSS</h2>
+    <h2>What's in the OSS beta</h2>
     <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
       {ossHighlights.map((card) => <FeatureCard title={card.title} body={card.body} />)}
     </div>
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>OSS vs Pro</h2>
-    <p class="mt-2 text-tp-mute">Every row canonical per the messaging standard. OSS is not a trial — it is the product.</p>
+    <h2>What ships today</h2>
+    <p class="mt-2 text-tp-mute">Beta-honest inventory of every OSS feature in the current release.</p>
     <div class="mt-6">
       <ComparisonTable />
     </div>

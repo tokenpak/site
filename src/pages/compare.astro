@@ -19,9 +19,9 @@ const diff = [
       'The 30–50% reduction headline is pinned to a fixture in CI (`make benchmark-headline` in the OSS repo). Every PR is gated on the floor; anyone can reproduce the number on their own machine.',
   },
   {
-    title: 'Cost tracking integrated with budget enforcement',
+    title: 'Causal cost attribution + a pre-send circuit breaker',
     body:
-      'Savings attribution is causal — proxy-caused hits are never mixed with provider-side cache hits. The Pro tier turns budgets into hard 429s rather than passive dashboards.',
+      'Savings attribution is causal — proxy-caused hits are never mixed with provider-side cache hits. Spend Guard catches runaway requests before they reach the provider, returning HTTP 402 with a release directive instead of letting a single agent burn through a budget.',
   },
 ];
 
@@ -75,20 +75,20 @@ const rows = [
     },
   },
   {
-    feature: 'Budget enforcement (hard 429 on cap)',
-    tokenpak: 'Pro tier — budgets map to hard 429 responses at request time.',
+    feature: 'Pre-send spend control (Spend Guard)',
+    tokenpak: 'OSS — pre-send circuit breaker with rolling caps. Blocks before the request reaches the provider and returns a release directive.',
     values: {
-      Helicone:  'Rate limits available; budget enforcement not the primary framing.',
+      Helicone:  'Rate limits available; pre-send budget enforcement not the primary framing.',
       LangSmith: 'Observability, not enforcement.',
-      LiteLLM:   'Rate-limit primitives; no budget-to-429 framing documented.',
+      LiteLLM:   'Rate-limit primitives; no pre-send budget enforcement documented.',
       Portkey:   'Rate limits + guardrails available (hosted).',
       Langfuse:  'Observability, not enforcement.',
       OpenRouter:'Per-key credit limits.',
     },
   },
   {
-    feature: 'License + pricing',
-    tokenpak: 'OSS proxy Apache-2.0. `tokenpak-paid` (Pro tier) via license-gated private index.',
+    feature: 'License',
+    tokenpak: 'Apache 2.0 — full package, no gated features in the OSS beta.',
     values: {
       Helicone:  'OSS core + commercial cloud plan.',
       LangSmith: 'Commercial.',
@@ -136,7 +136,7 @@ const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Feature-by-feature</h2>
     <p class="mt-2 text-small text-tp-mute">
-      TokenPak column describes the OSS proxy unless explicitly marked Pro.
+      TokenPak column describes the OSS beta as it ships today.
     </p>
     <div class="mt-6 overflow-x-auto">
       <table class="w-full border-collapse text-small">
