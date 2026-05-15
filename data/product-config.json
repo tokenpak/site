@@ -8,7 +8,7 @@
   "docs_base_url": "https://docs.tokenpak.ai",
   "feature_flags": {
     "analytics": false,
-    "show_paid_page": true,
+    "show_paid_page": false,
     "show_product_page": false
   },
   "cta_urls": {

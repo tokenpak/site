@@ -1,12 +1,13 @@
 ---
 /*
- * OSS vs Pro comparison. Rows canonical per 07 §5.1 + §5.2.
- * Never invent rows here — add in 07 first, propagate.
+ * OSS-beta feature inventory. The historical "OSS vs Pro" two-column form
+ * is parked while the OSS beta is the focus — Pro is not on the public
+ * surface during beta. To restore the Pro column, revert to the row schema
+ * with `oss` and `pro` keys and re-add the header cells.
  */
 interface Row {
   feature: string;
-  oss: string;
-  pro: string;
+  status: string;
 }
 
 interface Props {
@@ -14,20 +15,19 @@ interface Props {
 }
 
 const defaultRows: Row[] = [
-  { feature: 'Prompt Packing (full pipeline)',     oss: 'Included', pro: 'Included' },
-  { feature: 'Local proxy at 127.0.0.1',           oss: 'Included', pro: 'Included' },
-  { feature: 'Client integrations (9 tools)',      oss: 'Included', pro: 'Included' },
-  { feature: 'Model routing with fallback rules',  oss: 'Included', pro: 'Included' },
-  { feature: 'Savings Ledger + local telemetry',   oss: 'Included', pro: 'Included' },
-  { feature: 'Vault indexing + semantic search',   oss: 'Included', pro: 'Included' },
-  { feature: 'Local dashboard',                    oss: 'Included', pro: 'Included' },
-  { feature: 'A/B testing + request replay',       oss: 'Included', pro: 'Included' },
-  { feature: '50 built-in compression profiles',   oss: 'Included', pro: 'Included' },
-  { feature: 'Team dashboard (multi-seat cost attribution)', oss: '—', pro: 'Pro' },
-  { feature: 'Advanced routing policies (cost-aware, SLA-aware)', oss: '—', pro: 'Pro' },
-  { feature: 'Enterprise credential mgmt (SSO, rotation hooks)', oss: '—', pro: 'Pro' },
-  { feature: 'Priority support and SLA',           oss: '—', pro: 'Pro' },
-  { feature: 'Custom compression profiles + compliance rulesets', oss: '—', pro: 'Pro' },
+  { feature: 'Prompt Packing (full pipeline)',                     status: 'Shipped' },
+  { feature: 'Local proxy at 127.0.0.1',                           status: 'Shipped' },
+  { feature: 'Client integrations (Claude Code, Cursor, Aider, Cline, Continue, Codex, OpenAI SDK, Anthropic SDK, LiteLLM)', status: 'Shipped' },
+  { feature: 'Model routing with fallback rules',                  status: 'Shipped' },
+  { feature: 'Savings Ledger + local telemetry',                   status: 'Shipped' },
+  { feature: 'Vault indexing + semantic search',                   status: 'Shipped' },
+  { feature: 'Local dashboard (TUI + web)',                        status: 'Shipped' },
+  { feature: 'A/B testing + request replay',                       status: 'Shipped' },
+  { feature: '50 built-in compression profiles',                   status: 'Shipped' },
+  { feature: 'Spend Guard — pre-send circuit breaker, rolling caps', status: 'Shipped' },
+  { feature: 'TIP-1.0 protocol contracts + conformance gate',      status: 'Shipped' },
+  { feature: 'Pak recall data plane (storage, FTS, inspect)',      status: 'Shipped' },
+  { feature: 'PAKPlan preview / explain / report (read-only)',     status: 'Shipped' },
 ];
 
 const { rows = defaultRows } = Astro.props;
@@ -35,23 +35,21 @@ const { rows = defaultRows } = Astro.props;
 <div
   class="overflow-x-auto rounded-card border border-tp-rule"
   role="region"
-  aria-label="OSS vs Pro feature comparison"
+  aria-label="OSS beta feature inventory"
   tabindex="0"
 >
   <table class="w-full text-small">
     <thead class="bg-tp-paper">
       <tr>
         <th class="text-left font-semibold px-4 py-3">Feature</th>
-        <th class="text-left font-semibold px-4 py-3 w-32">OSS (free)</th>
-        <th class="text-left font-semibold px-4 py-3 w-32">Pro</th>
+        <th class="text-left font-semibold px-4 py-3 w-32">OSS beta</th>
       </tr>
     </thead>
     <tbody>
       {rows.map((row) => (
         <tr class="border-t border-tp-rule">
           <td class="px-4 py-3 text-tp-ink">{row.feature}</td>
-          <td class="px-4 py-3 text-tp-ink">{row.oss}</td>
-          <td class="px-4 py-3 text-tp-ink">{row.pro}</td>
+          <td class="px-4 py-3 text-tp-ink">{row.status}</td>
         </tr>
       ))}
     </tbody>

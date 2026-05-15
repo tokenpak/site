@@ -14,11 +14,11 @@ import { config } from '../../lib/config';
 >
   <div class="mx-auto max-w-prose-wide px-6 py-12 prose">
     <div class="rounded-lg border border-tp-rule bg-tp-signal-value p-4 mb-8 text-small">
-      <strong>Templates pending legal review.</strong> This page is drafted by the
-      TokenPak team as an honest, plain-English summary of current data-handling
-      behavior. It is not a substitute for legal advice and has not been
-      reviewed by counsel. Authoritative contract terms will land in
-      <a href="/compliance/dpa">the DPA</a> once legal review completes.
+      <strong>OSS beta — plain-English data-handling summary.</strong> This page
+      describes what TokenPak does on your machine today. It is not a substitute
+      for legal advice and has not been reviewed by counsel. TokenPak is a local
+      proxy with no cloud component, so the disclosures here describe local file
+      paths and opt-in escape hatches — not a service operated on your behalf.
     </div>
 
     <h1>Privacy</h1>
@@ -38,9 +38,8 @@ import { config } from '../../lib/config';
 
     <h2>What TokenPak stores locally on your machine</h2>
     <ul>
-      <li>A SQLite ledger at <code>~/.tokenpak/monitor.db</code> with per-request metadata (model, token counts, latency, cost, cache-origin). Default retention: 90 days of rolling history.</li>
-      <li>Configuration at <code>~/.tokenpak/config.yaml</code>. Contains profile selection, port, compression knobs. Never contains API keys or prompts.</li>
-      <li>Optional license key at <code>~/.tokenpak/license.key</code> (mode 600). Applies only if you've activated a Pro tier. Never transmitted except to the license server for signature verification.</li>
+      <li>A SQLite ledger at <code>~/.tokenpak/monitor.db</code> (or <code>~/.tpk/monitor.db</code> on fresh installs) with per-request metadata (model, token counts, latency, cost, cache-origin). Default retention: 90 days of rolling history.</li>
+      <li>Configuration at <code>~/.tokenpak/config.yaml</code> (or <code>~/.tpk/config.yaml</code> on fresh installs). Contains profile selection, port, compression knobs. Never contains API keys or prompts.</li>
     </ul>
 
     <h2>Optional debug/logging escape hatches — full disclosure</h2>
@@ -68,15 +67,18 @@ import { config } from '../../lib/config';
     <p>Only what you ask TokenPak to proxy:</p>
     <ul>
       <li><strong>LLM requests</strong> — forwarded to the provider you configured (Anthropic, OpenAI, etc.), using <em>your</em> credentials on the way out. TokenPak does not intercept, log to our infrastructure, or mirror the payload.</li>
-      <li><strong>License verification</strong> — if you activated a Pro license, the signed license token is presented to <code>{config.private_index_url_public_label}</code> to authorize package downloads and to the license server for tier checks.</li>
     </ul>
 
     <h2>Third parties</h2>
-    <p>See <a href="/compliance/sub-processors">Sub-processors</a>.</p>
+    <p>
+      TokenPak OSS has no sub-processors. Your prompts, completions, and
+      credentials never cross any TokenPak-operated boundary — only the upstream
+      LLM provider you configure (Anthropic, OpenAI, Google, etc.).
+    </p>
 
     <h2>Your controls</h2>
     <ul>
-      <li><code>rm -rf ~/.tokenpak</code> removes every local artifact TokenPak has ever created.</li>
+      <li><code>rm -rf ~/.tokenpak ~/.tpk</code> removes every local artifact TokenPak has ever created (legacy + canonical paths).</li>
       <li>Unset any optional escape-hatch env var to disable that source of data collection.</li>
       <li>Uninstalling the package (<code>pip uninstall tokenpak</code>) stops all TokenPak execution on your machine.</li>
     </ul>
