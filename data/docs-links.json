@@ -12,6 +12,60 @@
     "description": "pip install options, OS notes, troubleshooting install failures."
   },
   {
+    "title": "Claude Code guide",
+    "url": "https://docs.tokenpak.ai/guides/claude-code/",
+    "section": "starter",
+    "description": "Route Claude Code through TokenPak with one environment variable."
+  },
+  {
+    "title": "OpenAI SDK guide",
+    "url": "https://docs.tokenpak.ai/guides/openai-sdk/",
+    "section": "starter",
+    "description": "Point the OpenAI Python SDK at TokenPak with OPENAI_BASE_URL."
+  },
+  {
+    "title": "Anthropic SDK guide",
+    "url": "https://docs.tokenpak.ai/guides/anthropic-sdk/",
+    "section": "starter",
+    "description": "Point the Anthropic Python SDK at TokenPak with ANTHROPIC_BASE_URL."
+  },
+  {
+    "title": "Cline guide",
+    "url": "https://docs.tokenpak.ai/guides/cline/",
+    "section": "starter",
+    "description": "Route Cline through TokenPak with a custom compatible base URL."
+  },
+  {
+    "title": "Codex CLI guide",
+    "url": "https://docs.tokenpak.ai/guides/codex/",
+    "section": "starter",
+    "description": "Route Codex CLI's ChatGPT-subscription traffic through TokenPak with OPENAI_BASE_URL."
+  },
+  {
+    "title": "Cursor guide",
+    "url": "https://docs.tokenpak.ai/guides/cursor/",
+    "section": "starter",
+    "description": "Route Cursor through TokenPak with an OpenAI-compatible base URL."
+  },
+  {
+    "title": "Gemini CLI guide",
+    "url": "https://docs.tokenpak.ai/guides/gemini-cli/",
+    "section": "starter",
+    "description": "Route Gemini CLI through TokenPak with GOOGLE_GEMINI_BASE_URL."
+  },
+  {
+    "title": "Aider guide",
+    "url": "https://docs.tokenpak.ai/guides/aider/",
+    "section": "starter",
+    "description": "Route Aider through TokenPak with --openai-api-base and openai/<model>."
+  },
+  {
+    "title": "Continue.dev guide",
+    "url": "https://docs.tokenpak.ai/guides/continue/",
+    "section": "starter",
+    "description": "Route Continue.dev through TokenPak with ~/.continue/config.json."
+  },
+  {
     "title": "CLI Reference",
     "url": "https://docs.tokenpak.ai/cli/",
     "section": "reference",
