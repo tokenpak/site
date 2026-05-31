@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.7.0",
+    "published_at": "2026-05-30T18:41:49Z",
+    "title": "TokenPak v1.7.0",
+    "summary": "Release v1.7.0",
+    "body_markdown": "Release v1.7.0\n\n## Installation\n\n```bash\npip install tokenpak==1.7.0\n```\n\n## What's New\n\nSee [CHANGELOG.md](https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md) for details.\n\n## Checksums\n\n```\n9bb39a5c4010aa9452963db622abfaaf4280dde4d5ec2a0787f3395d87bd498d  tokenpak-1.7.0-py3-none-any.whl\na4885c0eca35f263cb5b45368b184251eea4493aa0360bd67bb2fefebd1a6dba  tokenpak-1.7.0.tar.gz\n```\n\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.7.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.7.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.6.1",
     "published_at": "2026-05-17T21:00:06Z",
     "title": "TokenPak v1.6.1",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.6.1",
     "pypi_url": "https://pypi.org/project/tokenpak/1.6.1/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.5.6",
