@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.7.1",
+    "published_at": "2026-06-04T14:39:30Z",
+    "title": "TokenPak v1.7.1",
+    "summary": "Surgical patch release: fixes, hardening, and public-safety/CI hygiene only. No new\nfeatures, no default-behavior changes, no breaking changes. (The install-footprint\nextras split remains parked for a future minor — see the Unreleased section below.)",
+    "body_markdown": "\nSurgical patch release: fixes, hardening, and public-safety/CI hygiene only. No new\nfeatures, no default-behavior changes, no breaking changes. (The install-footprint\nextras split remains parked for a future minor — see the Unreleased section below.)\n\n### Fixed\n\n- **proxy:** evict upstream inflight keys when the in-flight counter reaches zero,\n  preventing an upstream RSS leak under sustained load.\n- **proxy:** consolidate `CLAUDE_CODE_HEADER_ALLOWLIST` to a single canonical definition.\n- **companion:** `check_budget` no longer presents its result as authoritative total spend.\n- **companion:** lazy-load sentence-transformers so the MCP server starts quickly\n  (cold-start fix); launch the MCP server with a safe Python path (`-P`).\n- **companion:** defensive guard for truncated provider streams.\n- **pakplan:** read Pak recall from `recall.db` instead of a stale `journal.db`.\n- **spend-guard:** attribution-clear rolling-cap `402` response body.\n- **cli:** banner shows the live installed package version instead of a hardcoded string.\n- **paths:** fail-loud subdir allowlist in `_paths.under()` (and allow the `dispatch/` subdir).\n- **telemetry:** skip the RBAC admin bootstrap during snapshot generation.\n\n### Changed\n\n- **docs:** audit and compliance CLI stubs reworded as Pro-tier features; corrected\n  protocol terminology to TIP per the glossary.\n\n### Dependencies\n\n- Bump `websockets` to `>=16.0`; bump CI actions `codecov-action` 4→6,\n  `download-artifact` 4→8, `sticky-pull-request-comment` 2→3.\n\n### Internal\n\n- Suppress the ephemeral RBAC admin password from release-gate snapshot-validation CI\n  logs; snapshot generation now sets `TOKENPAK_SNAPSHOT_GEN=1` to skip the first-run\n  admin bootstrap during introspection.\n- CI: quarantine runner-sensitive perf/SLA tests from the blocking matrix; refresh the\n  release-gate workflow-steps snapshot; validate the release tag is reachable from the\n  release branch before build; mask functional identifiers in the identity check.\n\n### Note — licensing\n\n- The `tokenpak activate` licensing integration that landed on `main` during the v1.7.0\n  line ships to PyPI for the first time in **1.7.1**; users on the published 1.7.0 wheel\n  do not have it.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.7.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.7.1/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.7.0",
     "published_at": "2026-05-30T18:41:49Z",
     "title": "TokenPak v1.7.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.7.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.7.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.6.1",
