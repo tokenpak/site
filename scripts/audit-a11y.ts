@@ -53,7 +53,7 @@ const ROUTES: Array<{ path: string; label: string; slug: string }> = [
   { path: '/',                    label: 'Home',                    slug: 'home' },
   { path: '/open-source/',        label: 'Open Source',             slug: 'open-source' },
   { path: '/product/',            label: 'Product',                 slug: 'product' },
-  { path: '/paid/',               label: 'Pro',                     slug: 'paid' },
+  // '/paid/' (Pro) parked since 95c78b9 — page absent from public site build; dropped from a11y ROUTES to stop false hardFindings. Restore when the Pro page ships.
   { path: '/about/',              label: 'About',                   slug: 'about' },
   { path: '/releases/',           label: 'Releases (index)',        slug: 'releases' },
   { path: '/releases/1.3.7/',     label: 'Release detail (1.3.7)',  slug: 'release-detail' },
