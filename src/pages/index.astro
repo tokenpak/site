@@ -2,66 +2,123 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import FeatureCard from '../components/FeatureCard.astro';
-import ModuleCard from '../components/ModuleCard.astro';
 import CTASection from '../components/CTASection.astro';
 import ReleaseCard from '../components/ReleaseCard.astro';
 import { latestRelease } from '../lib/releases';
 import DocLinkCard from '../components/DocLinkCard.astro';
 import { docsLinks } from '../lib/docs-links';
+import DiagramRequestFlow from '../components/DiagramRequestFlow.astro';
+import DiagramWhereItFits from '../components/DiagramWhereItFits.astro';
 
 const latest = latestRelease();
 const featuredDocs = docsLinks.slice(0, 6);
 
-// Why-cards copy sourced verbatim from 07-messaging-positioning-guide.md §2
-// proof points 2–5. Do not paraphrase — canonical phrasing lives there.
-const whyCards = [
-  {
-    title: 'Low latency',
-    body: 'Under 50ms compression overhead on typical agent prompts. Your agent does not feel slower.',
-  },
-  {
-    title: 'One-command setup',
-    body: 'pip install tokenpak && tokenpak setup. Interactive wizard detects your API keys, picks a compression profile, and starts the proxy. Per-client auto-integration (tokenpak integrate) is on the roadmap.',
-  },
-  {
-    title: 'Works with what you already use',
-    body: 'Claude Code, Cursor, Cline, Continue, Aider, OpenAI SDK, Anthropic SDK, LiteLLM, Codex. No plugin rewrites.',
-  },
-  {
-    title: 'Local and private',
-    body: 'No cloud component. Your credentials stay in your environment and the provider flow you already use; compression happens on your machine before the request leaves.',
-  },
+// Six-card capability grid. Render as a grid, NEVER an arrow pipeline.
+const pillars = [
+  { title: 'Pack',     body: 'Deterministically pack context before it goes on the wire — stop re-sending the same boilerplate, file contents, and system prompts.' },
+  { title: 'Route',    body: 'Send each request to the right model, with fallback rules you control.' },
+  { title: 'Reuse',    body: 'Recall and reuse context from local PAKs instead of rebuilding it every session.' },
+  { title: 'Guard',    body: 'Spend and safety guardrails run as a side-channel gatehouse across every request.' },
+  { title: 'Dispatch', body: 'The Dispatch Center coordinates multi-step and multi-agent work.' },
+  { title: 'Receipt',  body: 'Every request produces a receipt — what was sent, reused, observed, and charged.' },
 ];
 
-// How-it-works strip — three steps. Placeholder pending the real diagram in
-// a later phase (kickoff §3 PR#6 calls out a stub here is acceptable).
-const steps = [
-  { label: 'Step 1', title: 'Install',        body: 'pip install tokenpak. Runs at 127.0.0.1 as a local proxy.' },
-  { label: 'Step 2', title: 'Prompt Packing', body: 'tokenpak setup — interactive wizard wires your keys + starts the proxy. Every outbound request goes through Prompt Packing: TokenPak selects, reduces, and structures context into a Pak, then moves it through TIP (the TokenPak Integration Protocol) to the provider.' },
-  { label: 'Step 3', title: 'Savings Ledger', body: 'Tokens saved and costs avoided are logged per-request in the Savings Ledger — attributable to cause (Prompt Packing, cache hit) and origin (proxy vs. provider).' },
+// "Where TokenPak fits" — 3-row comparison. Observability row uses the interim
+// safe wording (no integration arrow); MCP row uses "composes with".
+const fitsRows = [
+  { type: 'Gateways / routers',     overlap: 'routing',                    adds: 'deterministic context packing + reusable PAKs',                together: 'Run both.' },
+  { type: 'Observability tools',    overlap: 'measurement',                adds: 'pre-send packing + context-level attribution via receipts',    together: 'Run both.' },
+  { type: 'MCP-based workflows',    overlap: 'ecosystem coordination',     adds: 'a semantic contract (TIP) for packing, routing, cost, telemetry', together: 'Composes.' },
 ];
 ---
-<BaseLayout title="TokenPak — local LLM proxy">
+<BaseLayout title="TokenPak — open logistics layer for AI context">
+  <!-- Live hero preserved as-is (do NOT overwrite). The evolved hero headline
+       ("Pack every AI request before it ships.") is staged as a separate
+       sign-off proposal, not applied here. -->
   <Hero />
 
+  <!-- Narrative band -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>Why TokenPak</h2>
-    <p class="mt-2 text-tp-mute">Built for the parts of an agent workload you cannot renegotiate.</p>
-    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {whyCards.map((card) => (
-        <FeatureCard title={card.title} body={card.body} />
-      ))}
+    <h2>TokenPak doesn't replace your AI stack.</h2>
+    <p class="mt-2 text-tp-mute">
+      It adds the missing logistics layer: packing, routing, reusable context,
+      guardrails, orchestration, and receipts.
+    </p>
+  </section>
+
+  <!-- Six-card capability grid (grid, never arrows) -->
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Six capabilities</h2>
+    <p class="mt-2 text-tp-mute">The logistics layer, as a capability grid.</p>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {pillars.map((p) => <FeatureCard title={p.title} body={p.body} />)}
     </div>
   </section>
 
+  <!-- Diagram A — request flow -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>How it works</h2>
-    <p class="mt-2 text-tp-mute">Three steps. No cloud, no rewrites.</p>
-    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-      {steps.map((step) => (
-        <ModuleCard label={step.label} title={step.title} body={step.body} />
-      ))}
+    <h2>How a request flows</h2>
+    <p class="mt-2 text-tp-mute">One linear path, packed and receipted locally before it leaves your machine.</p>
+    <div class="mt-6">
+      <DiagramRequestFlow />
     </div>
+  </section>
+
+  <!-- "Where TokenPak fits" + Diagram B -->
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Where TokenPak fits</h2>
+    <p class="mt-2 text-tp-mute">
+      TokenPak overlaps with tools you may already run — and adds a layer they
+      don't. Run them together.
+    </p>
+
+    <div class="mt-6">
+      <DiagramWhereItFits />
+    </div>
+
+    <div class="mt-6 overflow-x-auto rounded-card border border-tp-rule" role="region" aria-label="Where TokenPak fits alongside other tools" tabindex="0">
+      <table class="w-full text-small">
+        <thead class="bg-tp-paper">
+          <tr>
+            <th class="text-left font-semibold px-4 py-3">Tool type</th>
+            <th class="text-left font-semibold px-4 py-3">Overlaps on</th>
+            <th class="text-left font-semibold px-4 py-3">TokenPak adds</th>
+            <th class="text-left font-semibold px-4 py-3 w-28">Together?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {fitsRows.map((r) => (
+            <tr class="border-t border-tp-rule align-top">
+              <td class="px-4 py-3 text-tp-ink font-medium">{r.type}</td>
+              <td class="px-4 py-3 text-tp-mute">{r.overlap}</td>
+              <td class="px-4 py-3 text-tp-ink">{r.adds}</td>
+              <td class="px-4 py-3 text-tp-mute">{r.together}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Savings posture (qualitative only — no numeric % on v1) -->
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Savings</h2>
+    <p class="mt-2 text-tp-ink">
+      Reduce the repeated context your agents re-send. Improve cache reuse.
+      Receipt-backed measurement is coming from benchmarked workloads.
+    </p>
+  </section>
+
+  <!-- OSS vs Pro -->
+  <section class="mx-auto max-w-prose-wide px-6 py-8">
+    <h2>Open source &amp; Pro</h2>
+    <p class="mt-2 text-tp-ink">
+      TokenPak's core is open source (Apache-2.0). Pro adds team dashboards,
+      advanced routing, and enterprise controls.
+    </p>
+    <p class="mt-2 text-small text-tp-mute">
+      Pro is delivered as the <code>tokenpak-paid</code> package via a separate index.
+    </p>
   </section>
 
   {latest && (

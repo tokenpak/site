@@ -1,0 +1,45 @@
+---
+/*
+ * Diagram A — request flow (literal). Render rules:
+ *   - Linear flow: Raw context -> Packing Station -> Route -> Send -> Provider -> Receipt.
+ *   - "Reuse" (PAKs) is a FEED into the Packing Station, NOT a stage on the line.
+ *   - "Guard" (Gatehouse) is a side-channel OVERLAY before Send, never an inline
+ *     box between two stages.
+ *   - "Dispatch" does NOT appear in this per-request flow.
+ * Static, no motion.
+ */
+const stages = ['Raw context', 'Packing Station', 'Route', 'Send', 'Provider', 'Receipt'];
+---
+<figure
+  class="rounded-card border border-tp-rule bg-tp-paper p-6"
+  role="group"
+  aria-label="TokenPak request flow: raw context is packed, routed, sent to the provider, and receipted. Reusable PAKs feed the Packing Station; a Guard gatehouse overlays the request before Send."
+>
+  <figcaption class="text-small text-tp-mute mb-4">Request flow</figcaption>
+
+  <!-- main linear line -->
+  <ol class="flex flex-wrap items-center gap-2 list-none p-0 m-0">
+    {stages.map((stage, i) => (
+      <>
+        <li class="rounded-card border border-tp-rule px-3 py-2 text-small text-tp-ink bg-white whitespace-nowrap">
+          {stage}
+        </li>
+        {i < stages.length - 1 && (
+          <li aria-hidden="true" class="text-tp-mute select-none">&rarr;</li>
+        )}
+      </>
+    ))}
+  </ol>
+
+  <!-- side-channel feeds / overlays -->
+  <div class="mt-4 grid gap-3 sm:grid-cols-2">
+    <p class="text-small text-tp-mute m-0">
+      <span class="font-semibold text-tp-ink">Reuse feed:</span> PAKs feed into the
+      Packing Station — recall and reuse context instead of rebuilding it.
+    </p>
+    <p class="text-small text-tp-mute m-0">
+      <span class="font-semibold text-tp-ink">Gatehouse (Guard):</span> spend and
+      safety guardrails run as a side-channel overlay before Send.
+    </p>
+  </div>
+</figure>
