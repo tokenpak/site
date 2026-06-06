@@ -1,0 +1,45 @@
+---
+/*
+ * Diagram B — "where it fits". Render rules:
+ *   - A single row of boxes, ALL retained. NO "X" over any tool.
+ *   - TokenPak is one box in a row of boxes that all stay.
+ *   - Dispatch Center is shown as an orchestration surface AROUND the flow,
+ *     not as a per-request send step.
+ * Static, no motion. Stacks vertically on small screens.
+ */
+const boxes = [
+  { title: 'Your agent', lines: ['Claude Code', 'Cursor · Cline'] },
+  { title: 'TokenPak (local)', lines: ['pack · measure', 'guard · receipt'], accent: true },
+  { title: 'Your gateway', lines: ['LiteLLM /', 'OpenRouter / …'] },
+  { title: 'Model provider', lines: ['Anthropic · OpenAI', 'Google Gemini'] },
+];
+---
+<figure
+  class="rounded-card border border-tp-rule bg-tp-paper p-6"
+  role="group"
+  aria-label="Where TokenPak fits: your agent sends to TokenPak running locally, which packs, measures, guards, and receipts before the request continues to your gateway and model provider. Every layer is retained. A Dispatch Center orchestrates multi-step and multi-agent work around the flow."
+>
+  <figcaption class="text-small text-tp-mute mb-4">Where it fits</figcaption>
+
+  <ol class="flex flex-col sm:flex-row sm:items-stretch gap-2 list-none p-0 m-0">
+    {boxes.map((box, i) => (
+      <>
+        <li class={`flex-1 rounded-card border px-4 py-3 ${box.accent ? 'border-tp-accent bg-white' : 'border-tp-rule bg-white'}`}>
+          <p class={`text-small font-semibold m-0 ${box.accent ? 'text-tp-accent' : 'text-tp-ink'}`}>{box.title}</p>
+          {box.lines.map((l) => <p class="text-small text-tp-mute m-0">{l}</p>)}
+        </li>
+        {i < boxes.length - 1 && (
+          <li aria-hidden="true" class="hidden sm:flex items-center text-tp-mute select-none">&rarr;</li>
+        )}
+      </>
+    ))}
+  </ol>
+
+  <!-- Dispatch Center: orchestration surface around the flow, not a per-request step -->
+  <div class="mt-3 rounded-card border border-dashed border-tp-rule px-4 py-2">
+    <p class="text-small text-tp-mute m-0">
+      <span class="font-semibold text-tp-ink">Dispatch Center</span> — orchestration
+      for multi-step and multi-agent work, around the flow.
+    </p>
+  </div>
+</figure>
