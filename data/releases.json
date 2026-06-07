@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.8.0",
+    "published_at": "2026-06-07T16:12:16Z",
+    "title": "TokenPak v1.8.0",
+    "summary": "Minor release: companion **memory-source ingestion** — point the companion at\nyour own Markdown notes (\"bring your own knowledge base\"). Additive only: no\nchanges to existing behavior, no breaking changes.",
+    "body_markdown": "\nMinor release: companion **memory-source ingestion** — point the companion at\nyour own Markdown notes (\"bring your own knowledge base\"). Additive only: no\nchanges to existing behavior, no breaking changes.\n\n### Added\n\n- **companion:** memory-source ingest library API — `ingest_from_dir()` and\n  `ingest_sources()` in `tokenpak.companion.memory.lesson_ingest` ingest lessons\n  from arbitrary directories of Markdown notes (scanned recursively),\n  independent of the built-in memory schema. `ingest_sources()` returns a\n  per-source status report whose `reason` distinguishes *no source configured*\n  from *missing* / *not-a-directory* / *present but no matching files* / *ok*.\n- **companion:** `TOKENPAK_COMPANION_MEMORY_DIRS` configuration — an\n  OS-path-separator- or comma-separated list of extra memory directories,\n  parsed into `CompanionConfig.memory_dirs` (`~` expanded; empty entries\n  dropped; fail-open, never raises).\n- **companion (MCP):** the `session_info` tool now reports the configured\n  `memory_dirs` and surfaces a hint when no memory source is set, so an empty\n  ingest is self-explaining.\n\n### Tests & docs\n\n- `tests/test_companion_memory_source.py` — coverage for the env-var parser,\n  `ingest_from_dir`, and the `ingest_sources` status contract.\n- Companion guide: a \"Memory sources — bring your own knowledge base\" section\n  documenting the env var, the library API, and the MCP surface.\n\n### Internal\n\n- Regenerated the public-API snapshot. Beyond the companion additions above,\n  this is a ratchet correction that absorbs already-public `tokenpak.proxy`\n  symbols the committed snapshot had drifted from — no new public API in this\n  release other than the companion additions.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.8.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.8.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.7.1",
     "published_at": "2026-06-04T14:39:30Z",
     "title": "TokenPak v1.7.1",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.7.1",
     "pypi_url": "https://pypi.org/project/tokenpak/1.7.1/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.7.0",
