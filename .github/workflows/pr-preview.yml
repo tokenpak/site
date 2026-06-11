@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
@@ -24,3 +25,38 @@ jobs:
           path: dist
           retention-days: 7
           if-no-files-found: error
+
+      # --- a11y gate (shift-left) ---------------------------------------------
+      # Audit the just-built site against a LOCAL preview and fail the PR on any
+      # serious/critical WCAG AA finding. This catches accessibility regressions
+      # pre-merge; previously the cross-browser audit ran only on a schedule /
+      # manual dispatch against the live site, so regressions were only found
+      # post-deploy. Deterministic: fixed port, explicit wait-for-server, and no
+      # dependency on the live site. Mirrors a11y-audit.yml (same script, same
+      # three browsers) so this PR gate and the scheduled gate are equivalent.
+      - name: Install Playwright browsers (Chromium + Firefox + WebKit)
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Start preview server (dist/ on 127.0.0.1:4321)
+        run: |
+          npm run preview -- --port 4321 --host 127.0.0.1 &
+          for i in $(seq 1 60); do
+            if curl -fsS -o /dev/null "http://127.0.0.1:4321/"; then
+              echo "preview ready after ${i}s"; exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::preview server did not become ready on 127.0.0.1:4321 within 60s"
+          exit 1
+      - name: a11y audit (local preview — fail on serious/critical)
+        env:
+          AUDIT_BASE_URL: http://127.0.0.1:4321
+          AUDIT_OUT_DIR: ${{ runner.temp }}/a11y-pr
+        run: npm run audit:a11y
+      - name: Upload a11y artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-pr-${{ github.event.pull_request.number }}
+          path: ${{ runner.temp }}/a11y-pr
+          retention-days: 7
+          if-no-files-found: ignore
