@@ -43,6 +43,37 @@ function firstParagraph(body: string | null): string {
   return (idx === -1 ? trimmed : trimmed.slice(0, idx)).slice(0, 600);
 }
 
+// Public-safe defaults: private home-config paths (e.g. `~/.<tool>/…` or
+// `/home/<user>/.<tool>/…`) should not appear in published release notes.
+// Upstream GitHub Release bodies are copied verbatim by this sync, so
+// genericize those paths on import — this keeps the generated
+// data/releases.json (and the deployed /releases pages) public-safe on EVERY
+// sync, so a newly-published release body containing such a path cannot
+// re-leak it. This is the durable recurrence-prevention layer behind any
+// one-shot data scrub.
+//
+// Allowlisted home-config dirs are preserved (and normalized to ~-form):
+// the product's own `~/.tokenpak/*`, the generic `~/.openclaw-governor/*`
+// placeholder, and the documented third-party CLI config dirs `~/.codex/*`
+// and `~/.claude/*` (generic, no host/user disclosure — kept by review).
+// Every other `~/.<tool>` / `/home/<user>/.<tool>` home-config prefix
+// (e.g. the fleet's own runtime dir, or any future unknown tool) is replaced
+// with a neutral `<config-dir>` placeholder while the meaningful tail is kept.
+// The bare integration name (e.g. "OpenClaw") is allowlisted and untouched —
+// only private *paths* are genericized.
+const ALLOWED_DOTDIRS = new Set(['tokenpak', 'openclaw-governor', 'codex', 'claude']);
+
+export function sanitizeBody(body: string | null): string | null {
+  if (body == null) return body;
+  return body.replace(
+    /(?:~|\/home\/[A-Za-z0-9._-]+)\/\.([A-Za-z0-9._-]+)/g,
+    (match: string, dotdir: string) =>
+      ALLOWED_DOTDIRS.has(dotdir)
+        ? match.replace(/^\/home\/[A-Za-z0-9._-]+/, '~')
+        : '<config-dir>',
+  );
+}
+
 async function main() {
   const headers: Record<string, string> = {
     Accept: 'application/vnd.github+json',
@@ -75,12 +106,13 @@ async function main() {
   const published = ghReleases.filter((r) => !r.draft);
   const mapped = published.map((r) => {
     const version = tagToVersion(r.tag_name);
+    const body = sanitizeBody(r.body);
     return {
       version,
       published_at: r.published_at ?? r.created_at,
       title: r.name?.trim() || `TokenPak ${version}`,
-      summary: firstParagraph(r.body),
-      body_markdown: r.body ?? '',
+      summary: firstParagraph(body),
+      body_markdown: body ?? '',
       changelog_url: `https://github.com/${OWNER}/${REPO}/blob/main/CHANGELOG.md`,
       github_release_url: r.html_url,
       pypi_url: `https://pypi.org/project/${REPO}/${version}/`,
@@ -101,7 +133,15 @@ async function main() {
   console.log(`Wrote ${final.length} releases to ${outPath}; latest=${final[latestIdx]?.version ?? '(none)'}`);
 }
 
-main().catch((err) => {
-  console.error('sync-releases failed:', err.message);
-  process.exit(1);
-});
+// Only run the network sync when invoked directly (`tsx scripts/sync-releases.ts`).
+// Importing this module (e.g. from the unit test) must not fire the API call.
+const invokedDirectly =
+  !!process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (invokedDirectly) {
+  main().catch((err) => {
+    console.error('sync-releases failed:', err.message);
+    process.exit(1);
+  });
+}
