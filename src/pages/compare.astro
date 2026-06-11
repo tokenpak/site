@@ -16,7 +16,7 @@ const diff = [
   {
     title: 'Deterministic compression with a reproducible benchmark',
     body:
-      'The 30–50% reduction headline is pinned to a fixture in CI (`make benchmark-headline` in the OSS repo). Every PR is gated on the floor; anyone can reproduce the number on their own machine.',
+      'The headline reduction is pinned to an agent-style fixture in CI (`make benchmark-headline`) and gated on every PR — reproduce the current number yourself.',
   },
   {
     title: 'Causal cost attribution + a pre-send circuit breaker',
@@ -52,7 +52,7 @@ const rows = [
   },
   {
     feature: 'Compression / context reduction',
-    tokenpak: 'Deterministic pipeline. Up to 90%+ on direct-API/CLI/uncached; ≥30% floor pinned in CI on an agent-style fixture. Provider-cached flows (Claude Code) show lower incremental savings — the provider cache already absorbs most of the token pool.',
+    tokenpak: 'Deterministic pipeline; optimizes the user-controlled token pool. Reduction pinned to an agent-style CI fixture (reproduce with `make benchmark-headline`). Provider-cached flows (Claude Code) show lower incremental savings.',
     values: {
       Helicone:  'No compression feature documented.',
       LangSmith: 'Observability tool; not a compression product.',
@@ -165,22 +165,22 @@ const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>Reproduce the benchmark floor</h2>
+    <h2>Reproduce the headline benchmark</h2>
     <p class="mt-2 text-body">
-      The ≥30% compression floor in the <strong>Compression</strong> row is pinned in CI
-      on an agent-style fixture. On favorable direct-API / CLI / uncached workloads
-      measured savings routinely reach 90%+. Clone the OSS repo and run:
+      The reduction shown in the <strong>Compression</strong> row is pinned by a CI
+      regression gate on a fixed agent-style fixture — run <code class="font-mono">make benchmark-headline</code>
+      to see the current value. On favorable direct-API / CLI / uncached workloads it can
+      reach up to 90%+. Clone the OSS repo and run:
     </p>
     <pre class="mt-4 rounded-card border border-tp-rule p-4 bg-tp-paper font-mono text-small overflow-x-auto"><code>git clone {config.github_repo}
 cd tokenpak
 make dev
 make benchmark-headline</code></pre>
     <p class="mt-4 text-small text-tp-mute">
-      The benchmark test runs on every PR under the <code class="font-mono">headline-benchmark
-      (blocking)</code> CI gate; any PR that drops the reduction below 30% on the pinned
-      fixture fails the gate. The 90%+ upper-end is what favorable uncached workloads
-      measure on the same fixture with the full pipeline engaged — the pinned floor is
-      the minimum promise, not the ceiling.
+      The benchmark runs on every PR under the <code class="font-mono">headline-benchmark
+      (blocking)</code> CI gate, which pins a minimum reduction on the fixed agent-style
+      fixture. These are fixture measurements you can reproduce — not a guaranteed savings
+      promise; your results vary by workload and provider cache.
     </p>
   </section>
 
