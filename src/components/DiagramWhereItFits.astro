@@ -25,7 +25,7 @@ const boxes = [
     {boxes.map((box, i) => (
       <>
         <li class={`flex-1 rounded-card border px-4 py-3 ${box.accent ? 'border-tp-accent bg-white' : 'border-tp-rule bg-white'}`}>
-          <p class={`text-small font-semibold m-0 ${box.accent ? 'text-tp-accent' : 'text-tp-ink'}`}>{box.title}</p>
+          <p class="text-small font-semibold m-0 text-tp-ink">{box.title}</p>
           {box.lines.map((l) => <p class="text-small text-tp-mute m-0">{l}</p>)}
         </li>
         {i < boxes.length - 1 && (
