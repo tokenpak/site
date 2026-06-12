@@ -21,7 +21,7 @@ import { chromium, firefox, webkit, type Browser, type BrowserType, type Page } 
 import { AxeBuilder } from '@axe-core/playwright';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -49,15 +49,136 @@ function resolveBrowsers(): typeof ALL_BROWSERS {
 
 const BROWSERS = resolveBrowsers();
 
-const ROUTES: Array<{ path: string; label: string; slug: string }> = [
-  { path: '/',                    label: 'Home',                    slug: 'home' },
-  { path: '/open-source/',        label: 'Open Source',             slug: 'open-source' },
-  { path: '/product/',            label: 'Product',                 slug: 'product' },
-  // '/paid/' (Pro) parked since 95c78b9 — page absent from public site build; dropped from a11y ROUTES to stop false hardFindings. Restore when the Pro page ships.
-  { path: '/about/',              label: 'About',                   slug: 'about' },
-  { path: '/releases/',           label: 'Releases (index)',        slug: 'releases' },
-  { path: '/releases/1.3.7/',     label: 'Release detail (1.3.7)',  slug: 'release-detail' },
+type Route = { path: string; label: string; slug: string };
+
+// Routes are DERIVED from the built `dist/` page tree (see deriveRoutes
+// below) so every new/removed page is audited automatically — no hand-edit
+// of this file per page. Source of truth settled on the dist tree (over the
+// manifest/sitemap) by the originating blocker analysis.
+const DIST_DIR = process.env.AUDIT_DIST_DIR ?? path.join(repoRoot, 'dist');
+
+// Templated collections: every member shares one source template (e.g.
+// `releases/[version].astro` → 40+ pages). Auditing all of them would blow the
+// CI a11y quota for zero extra template coverage, so we audit the
+// index plus a single newest representative. Add a prefix here to collapse a
+// new collection the same way.
+const COLLECTION_PREFIXES = ['/releases/'];
+
+// Static fallback used ONLY when no built `dist/` tree is present — e.g. a CI
+// job that runs the audit without a preceding `npm run build`. Mirrors the
+// historical hand-maintained set so behavior is unchanged where dist is absent.
+// '/paid/' (Pro) stays out: parked since 95c78b9, absent from the public build.
+const FALLBACK_ROUTES: Route[] = [
+  { path: '/',                label: 'Home',                   slug: 'home' },
+  { path: '/open-source/',    label: 'Open Source',            slug: 'open-source' },
+  { path: '/product/',        label: 'Product',                slug: 'product' },
+  { path: '/about/',          label: 'About',                  slug: 'about' },
+  { path: '/releases/',       label: 'Releases (index)',       slug: 'releases' },
+  { path: '/releases/1.3.7/', label: 'Release detail (1.3.7)', slug: 'release-detail' },
 ];
+
+function slugForPath(routePath: string): string {
+  if (routePath === '/') return 'home';
+  return routePath.replace(/^\/+|\/+$/g, '').replace(/\//g, '-');
+}
+
+function titleCaseSegment(seg: string): string {
+  return seg.split('-').map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w)).join(' ');
+}
+
+function labelForPath(routePath: string): string {
+  if (routePath === '/') return 'Home';
+  return routePath.replace(/^\/+|\/+$/g, '').split('/').map(titleCaseSegment).join(' / ');
+}
+
+// Walk `dist/` for index.html files → site routes ('/foo/bar/'). Pure
+// filesystem; no new dependency.
+function discoverRoutesFromDist(distDir: string): string[] {
+  const routes: string[] = [];
+  const walk = (dir: string): void => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.isFile() && entry.name === 'index.html') {
+        const rel = path.relative(distDir, path.dirname(full));
+        routes.push(rel === '' ? '/' : `/${rel.split(path.sep).join('/')}/`);
+      }
+    }
+  };
+  walk(distDir);
+  return routes;
+}
+
+// Descending numeric-segment compare for version-like strings ('1.10.0' > '1.9.0').
+function compareVersionDesc(a: string, b: string): number {
+  const pa = a.split('.');
+  const pb = b.split('.');
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const x = parseInt(pa[i] ?? '0', 10) || 0;
+    const y = parseInt(pb[i] ?? '0', 10) || 0;
+    if (x !== y) return y - x;
+  }
+  return b.localeCompare(a);
+}
+
+function buildRoutes(allPaths: string[]): Route[] {
+  const singletons: string[] = [];
+  const collections = new Map<string, string[]>();
+
+  for (const p of allPaths) {
+    const prefix = COLLECTION_PREFIXES.find((cp) => p.startsWith(cp) && p !== cp);
+    if (prefix) {
+      const members = collections.get(prefix) ?? [];
+      members.push(p);
+      collections.set(prefix, members);
+    } else {
+      singletons.push(p);
+    }
+  }
+
+  const routes: Route[] = singletons.map((p) => ({ path: p, label: labelForPath(p), slug: slugForPath(p) }));
+
+  // One newest representative per templated collection.
+  for (const [prefix, members] of collections) {
+    const versions = members.map((m) => m.slice(prefix.length).replace(/\/$/, ''));
+    versions.sort(compareVersionDesc);
+    const rep = versions[0];
+    const singular = prefix.replace(/^\/+|\/+$/g, '').replace(/s$/, ''); // 'releases' -> 'release'
+    routes.push({
+      path: `${prefix}${rep}/`,
+      label: `${titleCaseSegment(singular)} detail (${rep})`,
+      slug: `${singular}-detail`,
+    });
+  }
+
+  // Deterministic order: home first, then by path (keeps artifact/markdown order stable).
+  return routes.sort((a, b) => (a.path === '/' ? -1 : b.path === '/' ? 1 : a.path.localeCompare(b.path)));
+}
+
+function deriveRoutes(): Route[] {
+  let stat: fs.Stats | undefined;
+  try {
+    stat = fs.statSync(DIST_DIR);
+  } catch {
+    stat = undefined;
+  }
+  if (!stat?.isDirectory()) {
+    console.warn(
+      `[routes] no built tree at ${DIST_DIR}; using static fallback ROUTES — ` +
+      `run "npm run build" before the audit to cover the full page tree.`,
+    );
+    return FALLBACK_ROUTES;
+  }
+  const discovered = discoverRoutesFromDist(DIST_DIR);
+  if (discovered.length === 0) {
+    console.warn(`[routes] ${DIST_DIR} present but no index.html found; using static fallback ROUTES.`);
+    return FALLBACK_ROUTES;
+  }
+  return buildRoutes(discovered);
+}
+
+const ROUTES: Route[] = deriveRoutes();
 
 const MOBILE_VIEWPORT = { width: 375, height: 667 };
 const DESKTOP_VIEWPORT = { width: 1280, height: 800 };
@@ -329,7 +450,15 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error('audit-a11y failed:', err);
-  process.exit(1);
-});
+// Only run the audit when invoked directly (`tsx scripts/audit-a11y.ts`).
+// Guarding lets the route-derivation be imported and inspected without
+// launching browsers or hitting the network.
+const invokedDirectly = !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (invokedDirectly) {
+  main().catch((err) => {
+    console.error('audit-a11y failed:', err);
+    process.exit(1);
+  });
+}
+
+export { deriveRoutes, type Route };
