@@ -138,7 +138,7 @@ const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 
     <p class="mt-2 text-small text-tp-mute">
       TokenPak column describes the OSS beta as it ships today.
     </p>
-    <div class="mt-6 overflow-x-auto">
+    <div class="mt-6 overflow-x-auto" tabindex="0" role="region" aria-label="Feature comparison table">
       <table class="w-full border-collapse text-small">
         <thead>
           <tr class="border-b border-tp-rule">
@@ -172,7 +172,7 @@ const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 
       to see the current value. On favorable direct-API / CLI / uncached workloads it can
       reach up to 90%+. Clone the OSS repo and run:
     </p>
-    <pre class="mt-4 rounded-card border border-tp-rule p-4 bg-tp-paper font-mono text-small overflow-x-auto"><code>git clone {config.github_repo}
+    <pre class="mt-4 rounded-card border border-tp-rule p-4 bg-tp-paper font-mono text-small overflow-x-auto" tabindex="0" role="region" aria-label="Quick-start commands"><code>git clone {config.github_repo}
 cd tokenpak
 make dev
 make benchmark-headline</code></pre>
