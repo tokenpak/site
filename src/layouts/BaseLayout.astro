@@ -9,6 +9,31 @@ interface Props {
 }
 
 const { title, description = 'Compression, caching, routing, telemetry — for every LLM client you already use.' } = Astro.props;
+
+// Self-referential canonical + social-share metadata. Astro.site is set in
+// astro.config (https://tokenpak.ai), so these resolve to absolute URLs at
+// build time. Reuses the page title/description — no new copy or claims.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const siteName = 'TokenPak';
+
+// Structured data (schema.org) — factual entity graph only: name, url, logo,
+// and the canonical GitHub repo. Deliberately no pricing / ratings / claim
+// fields. Emitted as an application/ld+json data block (not executable JS, so
+// not subject to the script-src CSP).
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: siteName,
+      url: Astro.site.href,
+      logo: new URL('/favicon.svg', Astro.site).href,
+      sameAs: ['https://github.com/tokenpak/tokenpak'],
+    },
+    { '@type': 'WebSite', name: siteName, url: Astro.site.href },
+  ],
+};
+const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="en">
@@ -25,8 +50,21 @@ const { title, description = 'Compression, caching, routing, telemetry — for e
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href={canonical} />
+    {/* OpenGraph + Twitter card metadata for link previews. Text ("summary")
+        card — no share image asset exists yet; add og:image + switch to
+        summary_large_image when a 1200x630 image is provided (design item). */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <script type="application/ld+json" set:html={structuredDataJson} />
     <title>{title}</title>
   </head>
   <body class="min-h-screen flex flex-col">
