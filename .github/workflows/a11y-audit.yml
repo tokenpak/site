@@ -29,6 +29,10 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      # Build so the audit derives its route set from the freshly-built dist/
+      # page tree (matching the pr-preview gate). Without dist/, audit-a11y.ts
+      # falls back to its static route list and skips dist-derived coverage.
+      - run: npm run build
       - name: Install Playwright browsers (Chromium + Firefox + WebKit)
         run: npx playwright install --with-deps chromium firefox webkit
       - name: Run audit (cross-browser)
