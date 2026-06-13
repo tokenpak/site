@@ -7,31 +7,25 @@ This repo is the fifth public surface in the TokenPak topology. It is **marketin
 ## Stack
 
 - [Astro](https://astro.build/) (static output)
-- [Tailwind CSS](https://tailwindcss.com/) with brand tokens from `05-brand-style-guide.md`
+- [Tailwind CSS](https://tailwindcss.com/) with the project's brand tokens
 - TypeScript
 - GitHub Pages (custom domain: `tokenpak.ai`)
 
 ## Status
 
-Phase 1 bootstrap. See the internal kickoff doc for the planned PR sequence.
+Phase 1 bootstrap — the site is being built out through a planned, governed PR sequence.
 
 ## Contributing
 
-Before you touch this repo, read — in order:
+This site follows strict, governed rules covering stack, information architecture, components, motion, SEO, accessibility, public-trust, brand tokens (color, typography, spacing, motion), and messaging (voice, CTAs, tier-vs-package naming).
 
-1. `22-public-website-standard.md` — the authoritative standard for everything here (stack, IA, components, motion, SEO, accessibility, public-trust audit).
-2. `05-brand-style-guide.md` — color tokens, typography, spacing, motion.
-3. `07-messaging-positioning-guide.md` — voice, CTAs, tier-vs-package naming.
-4. `2026-04-22-tokenpak-site-phase-1.md` — the Phase 1 design plan.
-5. `2026-04-22-tokenpak-site-phase-1-kickoff.md` — the ordered PR sequence.
-
-All five documents live in the internal tokenpak standards vault. External contributors: please open an issue first — the visual and editorial rules are strict and governed.
+Because those visual and editorial rules are tightly enforced, **external contributors: please open an issue first** to discuss any change before opening a PR.
 
 ### Commit + PR rules
 
 - Branches: `feat/<kebab>` (no `fix/`, `chore/` in Phase 1).
 - Commits: imperative mood, `site: <verb> <noun>`.
-- Author and committer identity: **`tokenpak <hello@tokenpak.ai>`** (lowercase, per `20-github-governance.md §8.2`). Pre-push hook enforces.
+- Author and committer identity: **`tokenpak <hello@tokenpak.ai>`** (lowercase). Pre-push hook enforces.
 - No `--no-verify`, ever. No force-push to `main`. Squash-merge via PR only.
 
 ## Public surfaces
