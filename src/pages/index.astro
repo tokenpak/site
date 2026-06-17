@@ -20,14 +20,14 @@ const pillars = [
   { title: 'Reuse',    body: 'Recall and reuse context from local PAKs instead of rebuilding it every session.' },
   { title: 'Guard',    body: 'Spend and safety guardrails run as a side-channel gatehouse across every request.' },
   { title: 'Dispatch', body: 'Coordinate scoped, multi-step and multi-agent work. Preview (alpha) — not yet in a published release.' },
-  { title: 'Receipt',  body: 'Every request produces a receipt — what was sent, reused, observed, and charged.' },
+  { title: 'Record',   body: 'Every request leaves a local record — what was sent, reused, observed, and charged.' },
 ];
 
 // "Where TokenPak fits" — 3-row comparison. Observability row uses the interim
 // safe wording (no integration arrow); MCP row uses "composes with".
 const fitsRows = [
   { type: 'Gateways / routers',     overlap: 'routing',                    adds: 'deterministic context packing + reusable PAKs',                together: 'Run both.' },
-  { type: 'Observability tools',    overlap: 'measurement',                adds: 'pre-send packing + context-level attribution via receipts',    together: 'Run both.' },
+  { type: 'Observability tools',    overlap: 'measurement',                adds: 'pre-send packing + per-request context-level attribution',    together: 'Run both.' },
   { type: 'MCP-based workflows',    overlap: 'ecosystem coordination',     adds: 'a semantic contract (TIP) for packing, routing, cost, telemetry', together: 'Composes.' },
 ];
 ---
@@ -40,7 +40,7 @@ const fitsRows = [
     <h2>TokenPak doesn't replace your AI stack.</h2>
     <p class="mt-2 text-tp-mute">
       It adds the missing logistics layer: packing, routing, reusable context,
-      guardrails, orchestration, and receipts.
+      guardrails, orchestration, and per-request records.
     </p>
   </section>
 
@@ -56,7 +56,7 @@ const fitsRows = [
   <!-- Diagram A — request flow -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>How a request flows</h2>
-    <p class="mt-2 text-tp-mute">One linear path, packed and receipted locally before it leaves your machine.</p>
+    <p class="mt-2 text-tp-mute">One linear path, packed and recorded locally before it leaves your machine.</p>
     <div class="mt-6">
       <DiagramRequestFlow />
     </div>
