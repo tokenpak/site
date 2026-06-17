@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.9.1",
+    "published_at": "2026-06-16T16:34:23Z",
+    "title": "TokenPak v1.9.1",
+    "summary": "Patch release: privacy/security hardening, honest telemetry, license alignment,\nand a dispatch reliability fix. Additive; no breaking changes.",
+    "body_markdown": "\nPatch release: privacy/security hardening, honest telemetry, license alignment,\nand a dispatch reliability fix. Additive; no breaking changes.\n\n### Security & privacy\n- **spend-guard:** credential headers (authorization, api-key, cookie, …) are\n  never persisted to disk in the spend-guard pending/replay path.\n\n### Added — telemetry\n- **telemetry:** honest platform-origin attribution + a coverage metric surfaced\n  in `tokenpak doctor`; session/agent/cycle ids threaded into the monitor.db\n  write path for accurate per-source accounting.\n\n### Fixed — dispatch\n- **dispatch:** delivered dispatch runs now persist a receipt (receipt builder\n  wired into the fulfillment flow); dispatch registry/schema files ship in the wheel.\n\n### Docs\n- **license:** package READMEs + PYPI_READINESS corrected from `MIT` to\n  `Apache-2.0` to match the canonical Apache-2.0 LICENSE.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.9.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.9.1/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.9.0",
     "published_at": "2026-06-14T17:05:58Z",
     "title": "TokenPak v1.9.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.9.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.9.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.8.0",
