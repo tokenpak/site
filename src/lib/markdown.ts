@@ -40,7 +40,7 @@ const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
     a: ['href', 'title', 'rel', 'target'],
     img: ['src', 'alt', 'title', 'width', 'height'],
     code: ['class'], // marked emits `class="language-xyz"` on code blocks
-    pre: ['class'],
+    pre: ['class', 'tabindex'],
     th: ['align', 'colspan', 'rowspan', 'scope'],
     td: ['align', 'colspan', 'rowspan'],
   },
@@ -56,6 +56,13 @@ const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
         ...attribs,
         rel: 'noopener noreferrer',
         ...(attribs.href && /^https?:/.test(attribs.href) ? { target: '_blank' } : {}),
+      },
+    }),
+    pre: (tagName, attribs) => ({
+      tagName,
+      attribs: {
+        ...attribs,
+        tabindex: '0',
       },
     }),
   },
