@@ -1,0 +1,126 @@
+name: Identity & language check
+
+# Public-safe content gate for tokenpak/site. Two scans:
+#   1. Delta scan — files added/modified in the PR (any public-surface text).
+#   2. Full-tree data scan — data/releases.json on every run, because the
+#      ingested release data is committed and a delta-only gate would not catch
+#      a leak that is already on disk.
+# A match in either scan fails the job. See CONTRIBUTING / the scrub helper
+# (scripts/scrub-forbidden-terms.ts) for the matching neutralization layer.
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  identity-language:
+    name: No internal identity / governance language on public surfaces
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for forbidden identity / language
+        run: |
+          set -euo pipefail
+
+          # ---- forbidden-pattern register -----------------------------------
+          # Case-sensitive group: internal author names (word-boundary so
+          # "Sue" matches the name but not "ensue"/"issue"), internal reference
+          # numbers, name-embedded decision IDs, governance attribution headers,
+          # and infra-private tokens. These are never lowercase in fleet usage,
+          # so case-sensitivity avoids false positives on ordinary prose.
+          CS_PATTERNS=(
+            '\b(Sue|Cali|Trix|Suki|Aya|Dee|ReiPo)\b'
+            '\bStd [0-9]+'
+            '\bKEVIN-[A-Z0-9-]+'
+            '^[[:space:]]*(Approved-by|Ratified-by|Signed-off-by|Authorized-by|Reviewed-by|Acked-by)[[:space:]]*:'
+            '\.claude/projects'
+            'trixxie168'
+          )
+          # Case-insensitive group: the maintainer name and private home paths.
+          # Scoped to fleet usernames so the CI runner's own /home/runner path
+          # is not matched.
+          CI_PATTERNS=(
+            '\bkevin\b'
+            '~/vault'
+            '/home/(sue|trix|cali|dee|aya|reipo|suki|kevin)/'
+          )
+          # NOTE (intentional non-goals, mirroring the package public-language
+          # allowlist): the product brand "OpenClaw", the functional lowercase
+          # `openclaw` provider/header tokens, the public `tokenpak fleet`
+          # capability, and product code paths like `tokenpak/vault/...` are
+          # legitimate public surface and are NOT in the register.
+
+          # Files excluded from the delta scan: the gate itself and the scrub
+          # helper both carry the register literals by design.
+          EXCLUDE_RE='^(\.github/workflows/identity-language-check\.yml|scripts/scrub-forbidden-terms\.ts)$'
+
+          # scan_file <path>: print "file:line:match" for every register hit.
+          # Returns 0 if the file is clean, 1 if any pattern matched.
+          scan_file() {
+            local f="$1" rc=0 hits
+            for p in "${CS_PATTERNS[@]}"; do
+              hits=$(grep -nE "$p" "$f" || true)
+              if [ -n "$hits" ]; then
+                echo "$hits" | sed "s#^#${f}:#"
+                while IFS= read -r line; do
+                  ln=$(echo "$line" | cut -d: -f1)
+                  echo "::error file=$f,line=$ln::Forbidden internal identity / language."
+                done <<< "$hits"
+                rc=1
+              fi
+            done
+            for p in "${CI_PATTERNS[@]}"; do
+              hits=$(grep -niE "$p" "$f" || true)
+              if [ -n "$hits" ]; then
+                echo "$hits" | sed "s#^#${f}:#"
+                while IFS= read -r line; do
+                  ln=$(echo "$line" | cut -d: -f1)
+                  echo "::error file=$f,line=$ln::Forbidden internal identity / language."
+                done <<< "$hits"
+                rc=1
+              fi
+            done
+            return $rc
+          }
+
+          fail=0
+
+          # ---- scan 1: delta (changed files in the PR) ----------------------
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          git diff --name-only --diff-filter=AM "$base" "$head" \
+            | grep -E '\.(md|py|yml|yaml|json|toml|sh|js|ts|tsx|mts|cts|mjs|cjs|astro)$' \
+            | grep -vE "$EXCLUDE_RE" \
+            > changed-files.txt || true
+          echo "Delta scan — changed files:"
+          sed 's/^/  /' changed-files.txt || true
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            scan_file "$f" || fail=1
+          done < changed-files.txt
+
+          # ---- scan 2: full-tree data scan (always) -------------------------
+          echo "Full-tree data scan — data/*.json:"
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            echo "  $f"
+            scan_file "$f" || fail=1
+          done < <(find data -type f -name '*.json' 2>/dev/null | sort)
+
+          if [ "$fail" -ne 0 ]; then
+            echo
+            echo "Forbidden internal identity / governance language found on a public surface."
+            echo "Neutralize via scripts/scrub-forbidden-terms.ts (re-run the release sync) or edit the source."
+            exit 1
+          fi
+          echo "Identity / language check OK."
