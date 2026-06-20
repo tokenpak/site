@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.9.2",
+    "published_at": "2026-06-19T17:30:03Z",
+    "title": "TokenPak v1.9.2",
+    "summary": "Release v1.9.2",
+    "body_markdown": "Release v1.9.2\n\n## Installation\n\n```bash\npip install tokenpak==1.9.2\n```\n\n## What's New\n\nSee [CHANGELOG.md](https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md) for details.\n\n## Checksums\n\n```\n7f9dd6daa27ca554f3e0dcc90cc8ec6633f99d57405557ce08a9fee45bf3e9a3  tokenpak-1.9.2-py3-none-any.whl\n79b1d38eb1343bcef49ac45972f6fb4612404698ea7e813e0fa34238cfc8175d  tokenpak-1.9.2.tar.gz\n```\n\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.9.2",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.9.2/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.9.1",
     "published_at": "2026-06-16T16:34:23Z",
     "title": "TokenPak v1.9.1",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.9.1",
     "pypi_url": "https://pypi.org/project/tokenpak/1.9.1/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.9.0",
