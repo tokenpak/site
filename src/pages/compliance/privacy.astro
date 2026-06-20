@@ -27,14 +27,20 @@ import { config } from '../../lib/config';
 
     <h2>What runs where</h2>
     <p>
-      TokenPak is a <strong>local proxy</strong>. Every compression, routing,
-      caching, and telemetry decision happens on your machine. Your prompts,
-      completions, code, and business data are <em>not</em> sent to TokenPak
-      infrastructure by default, at any point, for any reason.
+      TokenPak is a <strong>local proxy</strong> with no cloud component. Every
+      compression, routing, caching, and telemetry decision happens on your
+      machine, and there is no TokenPak-operated service that your prompts,
+      completions, code, or business data are sent to. The requests you ask
+      TokenPak to proxy still travel to the upstream LLM provider you configure,
+      using your credentials — that flow is unchanged.
     </p>
 
     <h2>What we collect by default</h2>
-    <p>Nothing. Zero opt-in-required telemetry. No usage pings. No install counters.</p>
+    <p>
+      By default, TokenPak collects no telemetry: no usage pings and no install
+      counters. The opt-in debug and logging controls described below can expand
+      what is stored <em>locally on your machine</em> when you enable them.
+    </p>
 
     <h2>What TokenPak stores locally on your machine</h2>
     <ul>
@@ -71,9 +77,10 @@ import { config } from '../../lib/config';
 
     <h2>Third parties</h2>
     <p>
-      TokenPak OSS has no sub-processors. Your prompts, completions, and
-      credentials never cross any TokenPak-operated boundary — only the upstream
-      LLM provider you configure (Anthropic, OpenAI, Google, etc.).
+      TokenPak OSS has no sub-processors and no TokenPak-operated cloud boundary.
+      Your credentials stay on your machine; the only network destination for the
+      requests you proxy is the upstream LLM provider you configure (Anthropic,
+      OpenAI, Google, etc.), reached using your own credentials.
     </p>
 
     <h2>Your controls</h2>

@@ -10,6 +10,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { scrubForbiddenTerms } from './scrub-forbidden-terms';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -106,13 +107,18 @@ async function main() {
   const published = ghReleases.filter((r) => !r.draft);
   const mapped = published.map((r) => {
     const version = tagToVersion(r.tag_name);
-    const body = sanitizeBody(r.body);
+    // Two-layer public-safe pipeline: sanitizeBody() genericizes private
+    // home-config dot-dir paths; scrubForbiddenTerms() removes the
+    // internal-governance / maintainer-name / private-path / internal-reference
+    // tokens. Applied at ingestion so EVERY sync writes a public-safe
+    // releases.json.
+    const body = scrubForbiddenTerms(sanitizeBody(r.body));
     return {
       version,
       published_at: r.published_at ?? r.created_at,
-      title: r.name?.trim() || `TokenPak ${version}`,
+      title: scrubForbiddenTerms(r.name?.trim() || `TokenPak ${version}`),
       summary: firstParagraph(body),
-      body_markdown: body ?? '',
+      body_markdown: body,
       changelog_url: `https://github.com/${OWNER}/${REPO}/blob/main/CHANGELOG.md`,
       github_release_url: r.html_url,
       pypi_url: `https://pypi.org/project/${REPO}/${version}/`,
