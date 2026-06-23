@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.9.3",
+    "published_at": "2026-06-22T18:53:16Z",
+    "title": "TokenPak v1.9.3",
+    "summary": "Security patch: path-safety hardening for `pak` install and a default-deny CORS\npolicy on the proxy's content routes. Additive; one behavior change noted below.",
+    "body_markdown": "\nSecurity patch: path-safety hardening for `pak` install and a default-deny CORS\npolicy on the proxy's content routes. Additive; one behavior change noted below.\n\n### Security\n- **pak install:** added a path-traversal guard (archive entries are resolved and\n  confirmed within the target directory), symlinked entries are skipped during\n  extraction, and checksum-verified messaging is now honest about what was checked.\n- **proxy CORS:** the `/tpk/v1/*` JSON routes no longer emit\n  `Access-Control-Allow-Origin: *`. CORS is now **default-deny** with an\n  exact-origin allowlist.\n\n### Changed\n- **proxy CORS (behavior change):** a browser app fetching `/tpk/v1/*` from a\n  different origin must now set `TOKENPAK_PROXY_CORS_ORIGINS` (comma-separated\n  exact origins). A matching request `Origin` is echoed back with `Vary: Origin`,\n  never `*`. CLI / SDK / MCP clients are unaffected — CORS applies to browsers only.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.9.3",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.9.3/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.9.2",
     "published_at": "2026-06-19T17:30:03Z",
     "title": "TokenPak v1.9.2",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.9.2",
     "pypi_url": "https://pypi.org/project/tokenpak/1.9.2/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.9.1",
