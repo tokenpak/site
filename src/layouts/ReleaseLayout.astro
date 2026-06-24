@@ -1,14 +1,18 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import type { ReleaseEntry } from '../lib/releases';
-import { renderMarkdown } from '../lib/markdown';
+import { renderMarkdown, toPlainText } from '../lib/markdown';
 
 interface Props {
   release: ReleaseEntry;
 }
 const { release } = Astro.props;
 const title = `${release.title} — TokenPak releases`;
-const description = release.summary?.slice(0, 160) ?? `TokenPak ${release.version} release notes.`;
+// Meta/OG description: strip Markdown to plaintext AND scrub forbidden terms
+// before slicing to 160 chars, so neither literal `##`/`**` nor an internal
+// token can ship in <meta>/OG. Falls back to a generic line.
+const description =
+  (toPlainText(release.summary) || `TokenPak ${release.version} release notes.`).slice(0, 160);
 const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
   year: 'numeric', month: 'short', day: 'numeric',
 });
