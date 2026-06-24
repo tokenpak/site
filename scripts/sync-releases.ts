@@ -10,7 +10,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scrubForbiddenTerms } from './scrub-forbidden-terms';
+import { scrubForbiddenTerms, findForbiddenTerms } from './scrub-forbidden-terms';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -108,15 +108,27 @@ async function main() {
   const mapped = published.map((r) => {
     const version = tagToVersion(r.tag_name);
     // Two-layer public-safe pipeline: sanitizeBody() genericizes private
-    // home-config dot-dir paths; scrubForbiddenTerms() removes the
-    // internal-governance / maintainer-name / private-path / internal-reference
-    // tokens. Applied at ingestion so EVERY sync writes a public-safe
-    // releases.json.
-    const body = scrubForbiddenTerms(sanitizeBody(r.body));
+    // home-config dot-dir paths (always applied); scrubForbiddenTerms() removes
+    // the internal-governance / maintainer-name / private-path / internal-
+    // reference tokens. The comprehensive scrub also normalizes whitespace, so
+    // it is gated behind findForbiddenTerms(): a value with no forbidden token
+    // passes through sanitizeBody() only and is otherwise left byte-for-byte
+    // intact. This preserves SHA256SUMS checksum blocks (two-space separators)
+    // in clean release notes across every sync, while still scrubbing any body
+    // that actually carries a forbidden token. Applied at ingestion so EVERY
+    // sync writes a public-safe releases.json.
+    const sanitized = sanitizeBody(r.body) ?? '';
+    const body = findForbiddenTerms(sanitized).length > 0
+      ? scrubForbiddenTerms(sanitized)
+      : sanitized;
+    const rawTitle = r.name?.trim() || `TokenPak ${version}`;
+    const title = findForbiddenTerms(rawTitle).length > 0
+      ? scrubForbiddenTerms(rawTitle)
+      : rawTitle;
     return {
       version,
       published_at: r.published_at ?? r.created_at,
-      title: scrubForbiddenTerms(r.name?.trim() || `TokenPak ${version}`),
+      title,
       summary: firstParagraph(body),
       body_markdown: body,
       changelog_url: `https://github.com/${OWNER}/${REPO}/blob/main/CHANGELOG.md`,
