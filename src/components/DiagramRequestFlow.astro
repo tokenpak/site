@@ -13,7 +13,7 @@ const stages = ['Raw context', 'Packing Station', 'Route', 'Send', 'Provider', '
 <figure
   class="rounded-card border border-tp-rule bg-tp-paper p-6"
   role="group"
-  aria-label="TokenPak request flow: raw context is packed, routed, sent to the provider, and recorded. Reusable PAKs feed the Packing Station; a Guard gatehouse overlays the request before Send."
+  aria-label="TokenPak request flow: raw context is packed, routed, sent to the provider, and recorded. Today the companion path uses BM25 vault recall; planned Pak reuse feeds the Packing Station; a Guard gatehouse overlays the request before Send."
 >
   <figcaption class="text-small text-tp-mute mb-4">Request flow</figcaption>
 
@@ -34,8 +34,9 @@ const stages = ['Raw context', 'Packing Station', 'Route', 'Send', 'Provider', '
   <!-- side-channel feeds / overlays -->
   <div class="mt-4 grid gap-3 sm:grid-cols-2">
     <p class="text-small text-tp-mute m-0">
-      <span class="font-semibold text-tp-ink">Reuse feed:</span> PAKs feed into the
-      Packing Station — recall and reuse context instead of rebuilding it.
+      <span class="font-semibold text-tp-ink">Reuse feed:</span> Today the companion
+      path uses BM25 vault recall; the planned Pak reuse path feeds the Packing
+      Station so context can be reused instead of rebuilt.
     </p>
     <p class="text-small text-tp-mute m-0">
       <span class="font-semibold text-tp-ink">Gatehouse (Guard):</span> spend and
