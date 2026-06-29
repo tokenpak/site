@@ -29,12 +29,22 @@ import { config } from '../../lib/config';
     <p>
       TokenPak is a <strong>local proxy</strong>. Every compression, routing,
       caching, and telemetry decision happens on your machine. Your prompts,
-      completions, code, and business data are <em>not</em> sent to TokenPak
-      infrastructure by default, at any point, for any reason.
+      completions, code, and business data are <em>not</em> sent to any
+      TokenPak-operated infrastructure — there is none to send them to. The one
+      thing that does leave your machine is the LLM request you ask TokenPak to
+      proxy: it travels to the upstream provider you configure, using your own
+      credentials (see <em>What leaves your machine</em> below).
     </p>
 
     <h2>What we collect by default</h2>
-    <p>Nothing. Zero opt-in-required telemetry. No usage pings. No install counters.</p>
+    <p>
+      By default, nothing: zero telemetry, no usage pings, no install counters.
+      The opt-in debug and logging controls described below can expand what is
+      stored <em>locally on your machine</em> when you enable them — they write
+      only to local destinations (file, stdout, or your system's local syslog
+      socket) and do not initiate any outbound network connection for logging
+      purposes.
+    </p>
 
     <h2>What TokenPak stores locally on your machine</h2>
     <ul>
@@ -71,9 +81,11 @@ import { config } from '../../lib/config';
 
     <h2>Third parties</h2>
     <p>
-      TokenPak OSS has no sub-processors. Your prompts, completions, and
-      credentials never cross any TokenPak-operated boundary — only the upstream
-      LLM provider you configure (Anthropic, OpenAI, Google, etc.).
+      TokenPak OSS has no sub-processors and no TokenPak-operated cloud boundary.
+      Your prompts, completions, and credentials never reach TokenPak; the only
+      network destination for the requests you proxy is the upstream LLM provider
+      you configure (Anthropic, OpenAI, Google, etc.), reached using your own
+      credentials.
     </p>
 
     <h2>Your controls</h2>
