@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.10.0",
+    "published_at": "2026-06-28T19:00:59Z",
+    "title": "TokenPak v1.10.0",
+    "summary": "### Added\n- **TokenPak Dispatch graduates from preview to a released feature.** The `tokenpak dispatch`\n  command (intake/routing, Decision Inbox, run-ledger lifecycle, observability) now ships in the\n  released `pip install tokenpak` package — the Dispatch engine, its registry/schema data, and the\n  user guide are included in the wheel. Delivery/receipt remain an explicit post-alpha preview\n  (no live station execution wired yet).",
+    "body_markdown": "\n### Added\n- **TokenPak Dispatch graduates from preview to a released feature.** The `tokenpak dispatch`\n  command (intake/routing, Decision Inbox, run-ledger lifecycle, observability) now ships in the\n  released `pip install tokenpak` package — the Dispatch engine, its registry/schema data, and the\n  user guide are included in the wheel. Delivery/receipt remain an explicit post-alpha preview\n  (no live station execution wired yet).\n\n### Fixed\n- Importing the package no longer requires FastAPI: `tokenpak savings` (and other core value\n  commands) work on a base install without the optional serve/dashboard extra.\n- The CLI proxy-version probe now derives the expected version from the package version and reads\n  `/health`, instead of a hard-coded value.\n\n### Packaging\n- Release wheels now include `budget_config.yaml` and `term_cards.json`; a build-time assertion\n  verifies the Dispatch registry/schema data ships.\n\n\n### Added\n\n- **cli:** `tokenpak upgrade` opens the public Pro upgrade page, supports\n  `--print-url` for non-interactive use, and honors `TOKENPAK_UPGRADE_URL`.\n\n### Changed\n\n- **license/status:** Free-tier upgrade guidance now points to\n  `https://tokenpak.ai/pro`.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.10.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.10.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.9.3",
     "published_at": "2026-06-22T18:53:16Z",
     "title": "TokenPak v1.9.3",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.9.3",
     "pypi_url": "https://pypi.org/project/tokenpak/1.9.3/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.9.2",

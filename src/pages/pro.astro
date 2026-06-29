@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { config } from '../lib/config';
+---
+<BaseLayout
+  title="Pro — TokenPak"
+  description="TokenPak Pro access information for the current v1 release line."
+>
+  <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Pro</p>
+    <h1>TokenPak Pro access.</h1>
+    <p class="mt-6 text-body">
+      TokenPak Pro access is gated during the v1 release line. The public
+      <code class="font-mono">tokenpak upgrade</code> command opens this page so
+      you can request access without guessing the current route.
+    </p>
+    <p class="mt-4 text-body text-tp-mute">
+      The OSS package remains available as <code class="font-mono">tokenpak</code>
+      on public PyPI. Once Pro access is granted, the paid package is distributed
+      as <code class="font-mono">{config.package_paid}</code> from
+      <code class="font-mono">{config.private_index_url_public_label}</code>.
+    </p>
+    <a
+      href={config.cta_urls.request_access}
+      class="mt-6 inline-flex items-center rounded-card bg-tp-accent px-5 py-3 font-semibold text-tp-ink no-underline"
+    >
+      Request access
+    </a>
+  </section>
+</BaseLayout>
