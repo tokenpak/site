@@ -1,15 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { latestRelease } from '../lib/releases';
 
 // OSS-beta status surface. Pro-tier infrastructure rows are parked while
 // the OSS beta is the focus — they will return when Pro launches publicly.
-// Manual updates here on the "Last update" line below when state changes.
+// The served version is DERIVED from data/releases.json (the latest release)
+// rather than hand-maintained, so it cannot go stale on the published page.
 
+const latestVersion = latestRelease()?.version;
 const components = [
   {
     name: 'Public package index (tokenpak on PyPI)',
     status: 'operational',
-    note: 'pip install tokenpak is serving v1.5.6.',
+    note: latestVersion
+      ? `pip install tokenpak is serving v${latestVersion}.`
+      : 'pip install tokenpak installs the latest published release.',
   },
   {
     name: 'Marketing site (tokenpak.ai)',
