@@ -12,7 +12,7 @@
     "show_product_page": false
   },
   "cta_urls": {
-    "get_started": "https://docs.tokenpak.ai/quickstart",
+    "get_started": "https://docs.tokenpak.ai/QUICKSTART/",
     "view_on_github": "https://github.com/tokenpak/tokenpak",
     "read_docs": "https://docs.tokenpak.ai",
     "explore_pro": "/paid",
