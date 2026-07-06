@@ -11,7 +11,7 @@ import DiagramRequestFlow from '../components/DiagramRequestFlow.astro';
 import DiagramWhereItFits from '../components/DiagramWhereItFits.astro';
 
 const latest = latestRelease();
-const featuredDocs = docsLinks.slice(0, 6);
+const featuredDocs = docsLinks.slice(0, 3);
 
 // Six-card capability grid. Render as a grid, NEVER an arrow pipeline.
 const pillars = [
@@ -47,7 +47,6 @@ const fitsRows = [
   <!-- Six-card capability grid (grid, never arrows) -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Six capabilities</h2>
-    <p class="mt-2 text-tp-mute">The logistics layer, as a capability grid.</p>
     <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {pillars.map((p) => <FeatureCard title={p.title} body={p.body} />)}
     </div>
@@ -62,7 +61,7 @@ const fitsRows = [
     </div>
   </section>
 
-  <!-- "Where TokenPak fits" + Diagram B -->
+  <!-- "Where TokenPak fits" — collapsed by default; full detail lives on /compare -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Where TokenPak fits</h2>
     <p class="mt-2 text-tp-mute">
@@ -70,11 +69,16 @@ const fitsRows = [
       don't. Run them together.
     </p>
 
-    <div class="mt-6">
-      <DiagramWhereItFits />
-    </div>
+    <details class="mt-4 group">
+      <summary class="cursor-pointer text-tp-ink font-medium rounded-input focus-visible:outline focus-visible:outline-2 focus-visible:outline-tp-accent">
+        How it sits alongside gateways, observability tools, and MCP
+      </summary>
 
-    <div class="mt-6 overflow-x-auto rounded-card border border-tp-rule" role="region" aria-label="Where TokenPak fits alongside other tools" tabindex="0">
+      <div class="mt-6">
+        <DiagramWhereItFits />
+      </div>
+
+      <div class="mt-6 overflow-x-auto rounded-card border border-tp-rule" role="region" aria-label="Where TokenPak fits alongside other tools" tabindex="0">
       <table class="w-full text-small">
         <thead class="bg-tp-paper">
           <tr>
@@ -95,15 +99,22 @@ const fitsRows = [
           ))}
         </tbody>
       </table>
-    </div>
+      </div>
+
+      <p class="mt-3 text-small text-tp-mute">
+        <a href="/compare">Full comparison</a>
+      </p>
+    </details>
   </section>
 
   <!-- Savings posture (qualitative only — no numeric % on v1) -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Savings</h2>
     <p class="mt-2 text-tp-ink">
-      Reduce the repeated context your agents re-send. Improve cache reuse.
-      Receipt-backed measurement is coming from benchmarked workloads.
+      TokenPak avoids re-sending context your tools already sent. We don't
+      publish savings numbers yet — receipt-backed measurements will land with
+      the benchmark work. Until then, every request leaves a local record you
+      can check yourself.
     </p>
   </section>
 
@@ -122,7 +133,6 @@ const fitsRows = [
   {latest && (
     <section class="mx-auto max-w-prose-wide px-6 py-8">
       <h2>Latest release</h2>
-      <p class="mt-2 text-tp-mute">Refreshed automatically on every release + on a daily safety-net schedule.</p>
       <div class="mt-6">
         <ReleaseCard release={latest} />
       </div>
@@ -131,13 +141,19 @@ const fitsRows = [
 
   {featuredDocs.length > 0 && (
     <section class="mx-auto max-w-prose-wide px-6 py-8">
-      <h2>Documentation highlights</h2>
-      <p class="mt-2 text-tp-mute">Curated entry points sourced from <a href="https://github.com/tokenpak/docs">tokenpak/docs</a>.</p>
+      <h2>Documentation</h2>
       <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {featuredDocs.map((link) => <DocLinkCard link={link} />)}
       </div>
+      <p class="mt-3 text-small text-tp-mute">
+        More at <a href="https://docs.tokenpak.ai">docs.tokenpak.ai</a>.
+      </p>
     </section>
   )}
 
-  <CTASection />
+  <CTASection
+    heading="Try it locally."
+    body="pip install tokenpak && tokenpak setup — then point your AI client at the local proxy. No cloud component; credentials stay in your environment and provider flow."
+    showPrimary={false}
+  />
 </BaseLayout>
