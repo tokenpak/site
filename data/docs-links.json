@@ -1,13 +1,13 @@
 [
   {
     "title": "Getting Started",
-    "url": "https://docs.tokenpak.ai/quickstart/",
+    "url": "https://docs.tokenpak.ai/QUICKSTART/",
     "section": "starter",
     "description": "Install TokenPak and see savings in one command."
   },
   {
     "title": "Installation",
-    "url": "https://docs.tokenpak.ai/install/",
+    "url": "https://docs.tokenpak.ai/installation/",
     "section": "starter",
     "description": "pip install options, OS notes, troubleshooting install failures."
   },
