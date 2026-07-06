@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.10.4",
+    "published_at": "2026-07-05T16:58:01Z",
+    "title": "TokenPak v1.10.4",
+    "summary": "> **Release note:** version **1.10.3 was tagged but never published to PyPI.** Its release run\n> stopped fail-closed at the test gate (a release-only `pytest-timeout` enforcement issue in the\n> dev/full test shapes — no build, GitHub Release, or PyPI artifact was produced) and PyPI remained\n> at 1.10.2. 1.10.4 carries the intended 1.10.3 changes (below), plus the release-test fix.",
+    "body_markdown": "\n> **Release note:** version **1.10.3 was tagged but never published to PyPI.** Its release run\n> stopped fail-closed at the test gate (a release-only `pytest-timeout` enforcement issue in the\n> dev/full test shapes — no build, GitHub Release, or PyPI artifact was produced) and PyPI remained\n> at 1.10.2. 1.10.4 carries the intended 1.10.3 changes (below), plus the release-test fix.\n\n### Fixed\n- **Release test-gate stability.** A health-check integration test that polls `/health` for up to\n  ~30 seconds by design is given a per-test timeout above the global 30-second cap, so it is no\n  longer killed under the enforced `pytest-timeout` in the dev/full test shapes. Release-mechanics\n  only — no runtime behavior change.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.10.4",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.10.4/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.10.2",
     "published_at": "2026-07-04T05:53:08Z",
     "title": "TokenPak v1.10.2",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.10.2",
     "pypi_url": "https://pypi.org/project/tokenpak/1.10.2/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.10.0",
