@@ -1,5 +1,29 @@
 [
   {
+    "version": "1.11.1",
+    "published_at": "2026-07-06T20:46:15Z",
+    "title": "TokenPak v1.11.1",
+    "summary": "> Patch release: ship the CLI command registry in built distributions so a clean\n> wheel install renders the full command list.",
+    "body_markdown": "\n> Patch release: ship the CLI command registry in built distributions so a clean\n> wheel install renders the full command list.\n\n### Fixed\n- **Command registry ships in wheels.** `tokenpak/core/registry/commands.json` is now\n  declared as package data, so a clean `pip install` renders the full command list\n  (`tokenpak help` / `help --all`) instead of reporting `0 commands`. The\n  distribution-contents gate now asserts the registry file in every built wheel and\n  sdist, and the registry's tier labels and the `start` usage string were corrected to\n  match the shipped open-source CLI verbs.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.11.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.11.1/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
+    "version": "1.11.0",
+    "published_at": "2026-07-06T16:34:02Z",
+    "title": "TokenPak v1.11.0",
+    "summary": "> Minor release: the batch reviewed and merged under the 2026-07-06 non-author review gate —\n> two new dashboard capabilities plus five correctness and packaging fixes.",
+    "body_markdown": "\n> Minor release: the batch reviewed and merged under the 2026-07-06 non-author review gate —\n> two new dashboard capabilities plus five correctness and packaging fixes.\n\n### Added\n- **Dashboard v2 JSON foundation.** `tokenpak dashboard --json` now emits a versioned\n  `dashboard.v2.0` snapshot with measured/not-measured semantics and source labeling, backed by\n  the new `tokenpak.platform` capability-detection package. Legacy TUI and fleet-wide views are\n  adapted to the new contract.\n- **Dashboard SSH tunnel launcher.** New `tokenpak dashboard connect` / `disconnect` subcommands\n  establish and tear down an SSH-tunneled dashboard session (ControlMaster-based, with liveness\n  and health probing); `--public` is repositioned as the advanced non-tunneled mode.\n\n### Fixed\n- **Wheel ships companion runtime files.** Companion shell hooks, codex skills, and the companion\n  guide are now included in built distributions; on clean installs the codex hooks no longer fail\n  with exit 127. The distribution-contents gate now asserts these files in every built wheel and\n  sdist.\n- **Context-window table corrected and consolidated.** Stale 200K entries for 1M-window models\n  were corrected against provider-published metadata, current models were added, and the table now\n  lives in the models registry as the single source (spend-guard thresholds key off real windows;\n  unknown-model conservative fallback unchanged).\n- **No fabricated model attribution.** Logging and forecast paths no longer default a missing\n  model id to a real model name; unknown stays unknown and cost is never attributed to a\n  fabricated id.\n- **Shutdown telemetry record persisted.** Proxy shutdown now writes its summary record to the\n  telemetry events file instead of silently dropping it on a missing method.\n- **Response stop reason captured.** The proxy records `stop_reason` for non-streaming and\n  streaming responses, so refusals returned as HTTP 200 are distinguishable from successful\n  completions in monitoring data. Forwarded bytes remain untouched.\n\n### CI\n- `actions/checkout` bumped v4 → v7 across workflows (gate-inventory manifest refreshed).\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.11.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.11.0/",
+    "prerelease": false,
+    "latest": false
+  },
+  {
     "version": "1.10.4",
     "published_at": "2026-07-05T16:58:01Z",
     "title": "TokenPak v1.10.4",
@@ -9,7 +33,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.10.4",
     "pypi_url": "https://pypi.org/project/tokenpak/1.10.4/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.10.2",
@@ -572,30 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.4",
     "pypi_url": "https://pypi.org/project/tokenpak/1.2.4/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.2.3",
-    "published_at": "2026-04-23T03:45:32Z",
-    "title": "TokenPak v1.2.3 (retroactive attestation)",
-    "summary": "**Retroactive SHA256SUMS attestation.**",
-    "body_markdown": "**Retroactive SHA256SUMS attestation.**\n\nThis release was published to PyPI on 1.2.3's upload date but did not have a GitHub Release page at that time. This release page and its attached `SHA256SUMS` asset are a **retroactive byte-level attestation** — computed against PyPI's current bytes.\n\nWhat this attestation proves:\n- The SHA256 of the wheel and sdist on PyPI at the time of this attestation.\n\nWhat it does **not** prove:\n- Original-build provenance. If PyPI's bytes differ from what was built from the `v1.2.3` commit at release time, this attestation certifies the former, not the latter. PyPI artifact immutability is the defense-in-depth that makes this attestation defensible; no known PyPI replace-in-place event has occurred for TokenPak.\n\nPyPI status: **live**.\n\nInstall:\n```\npip install tokenpak==1.2.3\n```\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.3",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.2.3/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.2.1",
-    "published_at": "2026-04-23T03:45:26Z",
-    "title": "TokenPak v1.2.1 (retroactive attestation)",
-    "summary": "**Retroactive SHA256SUMS attestation.**",
-    "body_markdown": "**Retroactive SHA256SUMS attestation.**\n\nThis release was published to PyPI on 1.2.1's upload date but did not have a GitHub Release page at that time. This release page and its attached `SHA256SUMS` asset are a **retroactive byte-level attestation** — computed against PyPI's current bytes.\n\nWhat this attestation proves:\n- The SHA256 of the wheel and sdist on PyPI at the time of this attestation.\n\nWhat it does **not** prove:\n- Original-build provenance. If PyPI's bytes differ from what was built from the `v1.2.1` commit at release time, this attestation certifies the former, not the latter. PyPI artifact immutability is the defense-in-depth that makes this attestation defensible; no known PyPI replace-in-place event has occurred for TokenPak.\n\nPyPI status: **live**.\n\nInstall:\n```\npip install tokenpak==1.2.1\n```\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.1",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.2.1/",
     "prerelease": false,
     "latest": false
   }
