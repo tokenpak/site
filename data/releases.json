@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.11.3",
+    "published_at": "2026-07-08T22:58:35Z",
+    "title": "TokenPak v1.11.3",
+    "summary": "> **Release note:** version **1.11.2 was tagged but never published to PyPI.** Its release run stopped fail-closed at the test gate on a concurrency safety check for the Codex skills installer, so no 1.11.2 artifacts were produced and the last published release remained 1.11.1. 1.11.3 carries the intended 1.11.2 changes plus the installer fix.",
+    "body_markdown": "\n> **Release note:** version **1.11.2 was tagged but never published to PyPI.** Its release run stopped fail-closed at the test gate on a concurrency safety check for the Codex skills installer, so no 1.11.2 artifacts were produced and the last published release remained 1.11.1. 1.11.3 carries the intended 1.11.2 changes plus the installer fix.\n\n### Fixed\n- **Codex skills installer never exposes an empty skill directory under concurrent installs.** A replaced skill is now retired as a timestamped generation and reclaimed only once it is old enough that no reader can still be enumerating it, instead of being deleted the instant it is superseded. Because `os.replace` only rebinds a name, a reader scanning the skills directory that opened the old directory just before the swap could otherwise observe it emptied mid-scan; retaining the prior generation until it ages out closes that window.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.11.3",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.11.3/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.11.1",
     "published_at": "2026-07-06T20:46:15Z",
     "title": "TokenPak v1.11.1",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.11.1",
     "pypi_url": "https://pypi.org/project/tokenpak/1.11.1/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.11.0",
