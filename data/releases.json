@@ -3,8 +3,8 @@
     "version": "1.11.3",
     "published_at": "2026-07-08T22:58:35Z",
     "title": "TokenPak v1.11.3",
-    "summary": "> **Release note:** version **1.11.2 was tagged but never published to PyPI.** Its release run stopped fail-closed at the test gate on a concurrency safety check for the Codex skills installer, so no 1.11.2 artifacts were produced and the last published release remained 1.11.1. 1.11.3 carries the intended 1.11.2 changes plus the installer fix.",
-    "body_markdown": "\n> **Release note:** version **1.11.2 was tagged but never published to PyPI.** Its release run stopped fail-closed at the test gate on a concurrency safety check for the Codex skills installer, so no 1.11.2 artifacts were produced and the last published release remained 1.11.1. 1.11.3 carries the intended 1.11.2 changes plus the installer fix.\n\n### Fixed\n- **Codex skills installer never exposes an empty skill directory under concurrent installs.** A replaced skill is now retired as a timestamped generation and reclaimed only once it is old enough that no reader can still be enumerating it, instead of being deleted the instant it is superseded. Because `os.replace` only rebinds a name, a reader scanning the skills directory that opened the old directory just before the swap could otherwise observe it emptied mid-scan; retaining the prior generation until it ages out closes that window.\n",
+    "summary": "> **Release note:** version **1.11.2 was tagged but never published to PyPI.**\n> Its release run stopped fail-closed at the test gate on a concurrency safety\n> check for the Codex skills installer — no build, GitHub Release, or PyPI\n> artifact was produced and the last published release remained 1.11.1. 1.11.3\n> carries the intended 1.11.2 changes (below), plus the installer fix.",
+    "body_markdown": "\n> **Release note:** version **1.11.2 was tagged but never published to PyPI.**\n> Its release run stopped fail-closed at the test gate on a concurrency safety\n> check for the Codex skills installer — no build, GitHub Release, or PyPI\n> artifact was produced and the last published release remained 1.11.1. 1.11.3\n> carries the intended 1.11.2 changes (below), plus the installer fix.\n\n### Fixed\n- **Codex skills installer never exposes an empty skill directory under\n  concurrent installs.** A replaced skill is now retired as a timestamped\n  generation and reclaimed only once it is old enough that no reader can still\n  be enumerating it, instead of being deleted the instant it is superseded.\n  Because `os.replace` only rebinds a name, a reader (Codex scanning the skills\n  directory) that opened the old directory just before the swap could otherwise\n  observe it emptied mid-scan; retaining the prior generation until it ages out\n  closes that window.\n",
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.11.3",
     "pypi_url": "https://pypi.org/project/tokenpak/1.11.3/",
@@ -596,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.5",
     "pypi_url": "https://pypi.org/project/tokenpak/1.2.5/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.2.4",
-    "published_at": "2026-04-23T03:45:36Z",
-    "title": "TokenPak v1.2.4 (retroactive attestation)",
-    "summary": "**Retroactive SHA256SUMS attestation.**",
-    "body_markdown": "**Retroactive SHA256SUMS attestation.**\n\nThis release was published to PyPI on 1.2.4's upload date but did not have a GitHub Release page at that time. This release page and its attached `SHA256SUMS` asset are a **retroactive byte-level attestation** — computed against PyPI's current bytes.\n\nWhat this attestation proves:\n- The SHA256 of the wheel and sdist on PyPI at the time of this attestation.\n\nWhat it does **not** prove:\n- Original-build provenance. If PyPI's bytes differ from what was built from the `v1.2.4` commit at release time, this attestation certifies the former, not the latter. PyPI artifact immutability is the defense-in-depth that makes this attestation defensible; no known PyPI replace-in-place event has occurred for TokenPak.\n\nPyPI status: **live**.\n\nInstall:\n```\npip install tokenpak==1.2.4\n```\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.4",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.2.4/",
     "prerelease": false,
     "latest": false
   }
