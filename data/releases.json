@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.14.0",
+    "published_at": "2026-07-24T05:22:24Z",
+    "title": "TokenPak v1.14.0",
+    "summary": "> Minor release: verified Codex contention recovery with typed diagnostics,\n> fail-closed eligibility, truthful temporary-lineage receipts, and a restored\n> health compatibility contract.",
+    "body_markdown": "\n> Minor release: verified Codex contention recovery with typed diagnostics,\n> fail-closed eligibility, truthful temporary-lineage receipts, and a restored\n> health compatibility contract.\n\n### Added\n\n- **Verified-contention recovery for `tokenpak codex`.** When another Codex\n  process is confirmed to hold the shared local history, an interactive launch\n  can start a temporary session with a new history lineage. The prompt defaults\n  to refusal and is never offered to CI, non-interactive launches, incomplete\n  diagnostics, permission/storage errors, corruption, or unknown failures.\n- **Typed preflight evidence and policy decisions.** Launcher diagnostics now\n  distinguish clear, live-holder, stopped-holder, last-verified-live timeout,\n  incomplete inspection, permission/storage failure, cancellation, corruption,\n  and unknown failure outcomes. The five additive launcher types are retained\n  as public beta API symbols and captured by the generated API snapshot.\n- **Temporary-lineage accounting evidence.** Codex accounting receipts can\n  additively report the original preflight result, fallback eligibility and\n  outcome, selected session class, continuity mode, prior-history attachment,\n  and the bridge policy version under `tokenpak_setup`. Existing receipt fields\n  and meanings are unchanged.\n- **Provider-neutral first-receipt path.** `tokenpak codex` can route an\n  already-authenticated Codex OAuth session through a healthy local proxy while\n  preserving the client's selected/default model. API keys and explicit model\n  overrides remain optional client-specific alternatives.\n\n### Fixed\n\n- **Contention no longer exposes a technical recovery command as the ordinary\n  UX.** Interactive users receive a consequence-oriented choice after verified\n  contention while the original safe refusal remains the default.\n- **Fallback failures preserve the original diagnosis.** Selection or\n  provisioning failure records both outcomes and exits through the original\n  refusal rather than silently choosing another session location.\n- **Queued monitor writes honor their target database.** The process-global\n  telemetry writer now switches its guarded SQLite connection when queued work\n  targets another monitor database, preventing cross-instance, recovery-tool,\n  and test traffic from being committed to the previous database.\n- **Responses routing distinguishes OAuth from API keys.** OAuth\n  `/v1/responses` traffic is rewritten to the ChatGPT Codex backend, while\n  `Bearer sk-...` Responses traffic remains on the OpenAI API endpoint. Native\n  zstd request entities are decoded before safe processing, and protected\n  system/developer policy is never capsulized.\n- **`/health` compatibility is explicit.** The canonical endpoint returns one\n  documented, uncached basic schema on every request; `?deep=true` adds bounded\n  diagnostics. The deprecated route-mixin payload and one-second cache remain\n  available for one compatibility window instead of changing silently.\n- **Health performance checks distinguish startup from steady state.** Cold\n  listener admission and first-health observations are recorded separately\n  from the blocking warmed 100-requests-per-second check, preventing startup\n  backlog from being mislabeled as sustained endpoint latency. The warmed gate\n  retains full latency vectors, host telemetry, and fail-closed provenance.\n- **Strict typing and generated-surface provenance are enforced.** Runtime,\n  CLI, proxy, telemetry, vault, and SDK boundaries now pass the strict type\n  baseline, while public API snapshots are generated from and correlated to\n  the declared source checkout.\n\n### Compatibility\n\n- **Breaking changes:** none. Existing launch defaults, environment overrides,\n  non-interactive behavior, shared-history refusal semantics, and the supported\n  basic `/health` response remain valid.\n- **Deprecations:** none.\n- **Migration:** none. Existing TokenPak and Codex configuration files require\n  no changes.\n- **Version note:** v1.13.1 was never released; v1.14.0 is the next published\n  candidate after v1.13.0.\n\n### Known limitation\n\nThe temporary session does not attach the prior shared Codex history and is not\nthe future broker-managed parallel-continuity architecture. Normal later\nlaunches return to the governed shared lineage.\n\n### Upgrade\n\n```bash\npip install --upgrade tokenpak==1.14.0\n```\n\n### Rollback\n\n```bash\npip install tokenpak==1.13.0\n```\n\nNo TokenPak-home cleanup is required. A temporary Codex history created by\nv1.14.0 remains retention-managed and does not replace the shared lineage.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.14.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.14.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.13.0",
     "published_at": "2026-07-21T01:17:34Z",
     "title": "TokenPak v1.13.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.13.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.13.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.12.0",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.8",
     "pypi_url": "https://pypi.org/project/tokenpak/1.2.8/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.2.7",
-    "published_at": "2026-04-23T03:45:47Z",
-    "title": "TokenPak v1.2.7 (retroactive attestation)",
-    "summary": "**Retroactive SHA256SUMS attestation.**",
-    "body_markdown": "**Retroactive SHA256SUMS attestation.**\n\nThis release was published to PyPI on 1.2.7's upload date but did not have a GitHub Release page at that time. This release page and its attached `SHA256SUMS` asset are a **retroactive byte-level attestation** — computed against PyPI's current bytes.\n\nWhat this attestation proves:\n- The SHA256 of the wheel and sdist on PyPI at the time of this attestation.\n\nWhat it does **not** prove:\n- Original-build provenance. If PyPI's bytes differ from what was built from the `v1.2.7` commit at release time, this attestation certifies the former, not the latter. PyPI artifact immutability is the defense-in-depth that makes this attestation defensible; no known PyPI replace-in-place event has occurred for TokenPak.\n\nPyPI status: **live**.\n\nInstall:\n```\npip install tokenpak==1.2.7\n```\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.7",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.2.7/",
     "prerelease": false,
     "latest": false
   }
