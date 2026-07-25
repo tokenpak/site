@@ -20,7 +20,7 @@ const pillars = [
   { title: 'Pack',     body: 'Deterministically pack context before it goes on the wire — stop re-sending the same boilerplate, file contents, and system prompts.' },
   { title: 'Reuse',    body: 'Recall and reuse context from local PAKs instead of rebuilding it every session.' },
   { title: 'Guard',    body: 'Spend and safety guardrails run as a side-channel gatehouse across every request.' },
-  { title: 'Route',    body: 'Routing rules and fallback policy are configurable from the CLI as scaffolding; in-flight enforcement is not active by default.' },
+  { title: 'Route',    body: 'Routing rules and fallback policy are configurable from the CLI. The proxy does not enforce them on the request path.' },
 ];
 
 // "Where TokenPak fits" — 3-row comparison. Observability row uses the interim
@@ -37,10 +37,9 @@ const fitsRows = [
 
   <!-- Narrative band -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>Your agent starts every session not knowing what you already decided.</h2>
+    <h2>The context exists. Nothing puts it in front of the model.</h2>
     <p class="mt-2 text-tp-mute">
-      TokenPak is a local proxy that closes that gap. Before the model is given the
-      task, it retrieves what is relevant from your indexed vault, fits it to a token
+      TokenPak is a local proxy that closes that gap. On eligible requests, before the model is given the task, it retrieves what is relevant from your indexed vault, fits it to a token
       budget, and tells you exactly what it added.
     </p>
   </section>

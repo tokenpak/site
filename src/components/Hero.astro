@@ -8,7 +8,7 @@ interface Props {
 
 const {
   tagline = 'Your agent starts every session not knowing what you already decided.',
-  lede = 'TokenPak is a local proxy. On every eligible request — before the model is given the task — it searches your indexed vault, fits the best matches to a token budget, and splices them into the request. Then it shows you what it added and where it came from.',
+  lede = 'TokenPak is a local proxy. Once you have indexed a vault, then on every eligible request — before the model is given the task — it searches that vault, fits the best matches to a token budget, and splices them into the request. Retrieved content becomes part of what your provider receives, and TokenPak shows you exactly what it added.',
 } = Astro.props;
 ---
 <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-12">

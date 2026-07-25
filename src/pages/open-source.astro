@@ -10,8 +10,8 @@ import { config } from '../lib/config';
 const ossHighlights = [
   { title: 'Full Prompt Packing pipeline', body: 'Deterministic Prompt Packing for every request — selects, reduces, and structures context into a Pak before it hits the wire. The OSS package is the full pipeline, not a limited demo.' },
   { title: 'Local proxy, no cloud',         body: 'Runs at 127.0.0.1. Byte-preserved passthrough; your prompts and credentials stay in your environment and the provider flow you already use.' },
-  { title: 'Client integrations',           body: 'Tested: Claude Code (dedicated integration guide), the OpenAI SDK, Anthropic SDK, and LiteLLM. Compatibility targets (not yet independently verified): Cursor, Cline, Continue, Aider, Codex.' },
-  { title: 'Savings Ledger + Spend Guard',  body: 'Local telemetry store, A/B replay, 50 built-in compression profiles, semantic vault indexing, and a pre-send circuit breaker (Spend Guard) that blocks runaway requests before they reach the provider.' },
+  { title: 'Client integrations',           body: 'See the client tiers below.' },
+  { title: 'Savings Ledger + Spend Guard',  body: 'Local telemetry store, A/B replay, 50 built-in compression profiles, vault indexing and search, and a pre-send circuit breaker (Spend Guard) that blocks runaway requests before they reach the provider.' },
 ];
 ---
 <BaseLayout title="Open source — TokenPak" description="TokenPak's OSS core is Apache 2.0 licensed. Install in one command.">
@@ -50,9 +50,22 @@ ${config.package_public} setup`}
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>What ships today</h2>
-    <p class="mt-2 text-tp-mute">Beta-honest inventory of every OSS feature in the current release.</p>
-    <div class="mt-6">
-    </div>
+    <p class="mt-2 text-tp-mute">Client support, by how far we can actually vouch for it.</p>
+    <dl class="mt-6 space-y-4">
+      <div>
+        <dt class="font-semibold">First-class integrations</dt>
+        <dd class="text-tp-mute">Codex and Claude Code. Each ships a dedicated launcher and a proxy path built for that client.</dd>
+      </div>
+      <div>
+        <dt class="font-semibold">Tested SDK adapters</dt>
+        <dd class="text-tp-mute">OpenAI SDK, Anthropic SDK, LiteLLM.</dd>
+      </div>
+      <div>
+        <dt class="font-semibold">Compatibility targets — not yet verified</dt>
+        <dd class="text-tp-mute">Cursor, Cline, Continue, Aider. Expected to work by pointing the client's base URL at the proxy, but no dedicated integration surface and no test coverage.</dd>
+      </div>
+    </dl>
+    <p class="mt-4 text-small text-tp-mute">Scored recall ranking, the capture pipeline and autonomous Pak injection are Pro surfaces, not part of the free core.</p>
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">

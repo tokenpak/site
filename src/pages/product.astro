@@ -11,11 +11,11 @@ import { config } from '../lib/config';
 const capabilities = [
   {
     title: 'Prompt Packing',
-    body: 'TokenPak selects, reduces, and structures context into a Pak before each request hits the wire. The compression stage inside Prompt Packing is deterministic; measured overhead is documented in the latency guide.',
+    body: 'TokenPak selects, reduces, and structures context into a Pak before each request hits the wire. The compression stage inside Prompt Packing is deterministic; we do not publish latency figures yet.',
   },
   {
     title: 'Routing policy',
-    body: 'Routing rules and fallback policy across providers are configurable from the CLI as scaffolding. In-flight enforcement is not active by default.',
+    body: 'Routing rules and fallback policy across providers are configurable from the CLI. The proxy does not enforce them on the request path.',
   },
   {
     title: 'Caching',
