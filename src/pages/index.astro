@@ -15,12 +15,12 @@ const featuredDocs = docsLinks.slice(0, 3);
 
 // Six-card capability grid. Render as a grid, NEVER an arrow pipeline.
 const pillars = [
+  { title: 'Recall',   body: 'On every eligible request, TokenPak searches your indexed vault before the model is given the task — the agent never has to remember to look. Requires an index.' },
+  { title: 'Record',   body: 'Every injection reports its sources and its token cost. A component that edits your prompts should be auditable, not trusted on faith.' },
   { title: 'Pack',     body: 'Deterministically pack context before it goes on the wire — stop re-sending the same boilerplate, file contents, and system prompts.' },
-  { title: 'Route',    body: 'Send each request to the right model, with fallback rules you control.' },
   { title: 'Reuse',    body: 'Recall and reuse context from local PAKs instead of rebuilding it every session.' },
   { title: 'Guard',    body: 'Spend and safety guardrails run as a side-channel gatehouse across every request.' },
-  { title: 'Dispatch', body: 'Coordinate scoped, multi-step and multi-agent work. Preview (alpha) — not yet in a published release.' },
-  { title: 'Record',   body: 'Every request leaves a local record — what was sent, reused, observed, and charged.' },
+  { title: 'Route',    body: 'Routing rules and fallback policy are configurable from the CLI as scaffolding; in-flight enforcement is not active by default.' },
 ];
 
 // "Where TokenPak fits" — 3-row comparison. Observability row uses the interim
@@ -37,16 +37,17 @@ const fitsRows = [
 
   <!-- Narrative band -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>TokenPak doesn't replace your AI stack.</h2>
+    <h2>Your agent starts every session not knowing what you already decided.</h2>
     <p class="mt-2 text-tp-mute">
-      It adds the missing logistics layer: packing, routing, reusable context,
-      guardrails, orchestration, and per-request records.
+      TokenPak is a local proxy that closes that gap. Before the model is given the
+      task, it retrieves what is relevant from your indexed vault, fits it to a token
+      budget, and tells you exactly what it added.
     </p>
   </section>
 
   <!-- Six-card capability grid (grid, never arrows) -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>Six capabilities</h2>
+    <h2>What TokenPak does</h2>
     <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {pillars.map((p) => <FeatureCard title={p.title} body={p.body} />)}
     </div>
@@ -61,7 +62,7 @@ const fitsRows = [
     </div>
   </section>
 
-  <!-- "Where TokenPak fits" — collapsed by default; full detail lives on /compare -->
+  <!-- "Where TokenPak fits" — neutral complementary positioning; no comparison surface -->
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Where TokenPak fits</h2>
     <p class="mt-2 text-tp-mute">
@@ -100,10 +101,6 @@ const fitsRows = [
         </tbody>
       </table>
       </div>
-
-      <p class="mt-3 text-small text-tp-mute">
-        <a href="/compare">Full comparison</a>
-      </p>
     </details>
   </section>
 
