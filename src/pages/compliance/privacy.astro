@@ -74,9 +74,10 @@ import { config } from '../../lib/config';
     </dl>
 
     <h2>What leaves your machine</h2>
-    <p>Only what you ask TokenPak to proxy:</p>
+    <p>What you ask TokenPak to proxy, plus any vault content it injects into that request:</p>
     <ul>
-      <li><strong>LLM requests</strong> — forwarded to the provider you configured (Anthropic, OpenAI, etc.), using <em>your</em> credentials on the way out. TokenPak does not intercept, log to our infrastructure, or mirror the payload.</li>
+      <li><strong>LLM requests</strong> — forwarded to the provider you configured (Anthropic, OpenAI, etc.), using <em>your</em> credentials on the way out. Apart from the retrieval injection described below, TokenPak does not intercept, log to our infrastructure, or mirror the payload.</li>
+      <li><strong>Retrieved vault content</strong> — when vault injection is enabled and a request is eligible, matched excerpts from your indexed vault are added to the request body before it is forwarded to your provider. This is the feature working as designed, and it means your provider receives local content you did not type into the prompt. Which sources were injected, and their token cost, are recorded in your local ledger. Injection is governed by the eligibility thresholds in your configuration and can be disabled.</li>
     </ul>
 
     <h2>Third parties</h2>
