@@ -7,14 +7,14 @@ interface Props {
 }
 
 const {
-  tagline = 'Local. Context-lean. Measurable.',
-  lede = 'TokenPak is a local proxy that packs your LLM context before it hits the API — fewer repeated tokens on the wire, more reuse opportunities, and savings you can measure per-request.',
+  tagline = 'Your agent starts every session not knowing what you already decided.',
+  lede = 'TokenPak is a local proxy. On every eligible request — before the model is given the task — it searches your indexed vault, fits the best matches to a token budget, and splices them into the request. Then it shows you what it added and where it came from.',
 } = Astro.props;
 ---
 <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-12">
   <div class="grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-10 items-center">
     <div>
-      <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">TokenPak — local LLM proxy</p>
+      <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">TokenPak — the open logistics layer for AI context</p>
       <h1 class="text-display leading-tight">{tagline}</h1>
       <p class="mt-4 text-body text-tp-ink max-w-prose">{lede}</p>
       <div class="mt-6 flex flex-wrap items-center gap-3">
@@ -33,7 +33,7 @@ const {
       </div>
     </div>
     <aside class="rounded-card border border-tp-rule p-6 bg-tp-paper">
-      <p class="text-caption text-tp-mute uppercase tracking-wide">Example packing view</p>
+      <p class="text-caption text-tp-mute uppercase tracking-wide">Illustrative packing fixture</p>
       <p class="mt-2 font-mono text-small text-tp-ink">747 → 502 tokens</p>
       <p
         class="mt-1 font-mono font-bold text-h1 inline-block px-2 rounded-input"

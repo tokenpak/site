@@ -11,11 +11,11 @@ import { config } from '../lib/config';
 const capabilities = [
   {
     title: 'Prompt Packing',
-    body: 'TokenPak selects, reduces, and structures context into a Pak before each request hits the wire. The compression stage inside Prompt Packing is deterministic and under 50ms. Fewer tokens.',
+    body: 'TokenPak selects, reduces, and structures context into a Pak before each request hits the wire. The compression stage inside Prompt Packing is deterministic; measured overhead is documented in the latency guide.',
   },
   {
-    title: 'Model routing',
-    body: 'Rules-based routing with fallbacks across providers (Anthropic, OpenAI, Google, Ollama, local). Swap the model without swapping the client.',
+    title: 'Routing policy',
+    body: 'Routing rules and fallback policy across providers are configurable from the CLI as scaffolding. In-flight enforcement is not active by default.',
   },
   {
     title: 'Caching',
