@@ -36,7 +36,7 @@ jobs:
         id: commit
         run: |
           if ! git diff --quiet -- data/docs-links.json; then
-            git config user.name  "tokenpak"
+            git config user.name  "TokenPak"
             git config user.email "hello@tokenpak.ai"
             git add data/docs-links.json
             git commit -m "site(data): refresh docs-links.json from tokenpak/docs"
