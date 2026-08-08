@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.18.4",
+    "published_at": "2026-08-08T01:23:51Z",
+    "title": "TokenPak v1.18.4",
+    "summary": "This compatible patch adds machine-readable output to `savings`, stamps a\nrequest-correlation header on every proxy response, closes a release-pipeline\nordering gap and a CI flake source, extends the interpreter safe-path guard to\nthe Codex registration, refreshes the companion MCP documentation, and retires\nhistorical internal-reference debt from code comments.",
+    "body_markdown": "\nThis compatible patch adds machine-readable output to `savings`, stamps a\nrequest-correlation header on every proxy response, closes a release-pipeline\nordering gap and a CI flake source, extends the interpreter safe-path guard to\nthe Codex registration, refreshes the companion MCP documentation, and retires\nhistorical internal-reference debt from code comments.\n\n### Added\n- `tokenpak savings --json` emits a machine-readable savings document,\n  matching the JSON support `recommendations` already had. The empty state is\n  a well-formed document with exit 0; human-readable output is unchanged.\n- The proxy now sets an `X-TokenPak-Request-ID` header on every response —\n  non-streaming, streaming (set before the first chunk), and proxy-generated\n  errors. On forwarded requests it carries the same correlation value as the\n  existing `X-Request-ID` echo (client-supplied value honored, otherwise a\n  generated opaque id). Response bodies remain byte-preserved.\n\n### Fixed\n- The Codex MCP server registration now spawns the interpreter in safe-path\n  mode (`-P`, applied on Python 3.11+ where the flag exists) so a `tokenpak/`\n  directory in the working directory cannot shadow the installed package —\n  the same guard the Claude Code MCP config and hook spawns already apply.\n  Existing registrations are untouched; re-register to pick up the guard.\n\n### Changed\n- Release workflow: the GitHub Release is now created only after the package\n  publish succeeds (or is skipped for rc/alpha/beta tags), closing the window\n  where a public Release could exist before artifacts were on the index.\n- The install-shape rehearsal matrix now excludes timing-sensitive benchmark\n  assertions (the same marker quarantine every other test workflow applies);\n  benchmarks keep their dedicated nightly workflow.\n- Companion MCP setup documentation refreshed to current behavior: tool\n  registry, lean profile advertising, config shapes, and the Codex\n  registration example including the version-gated safe-path flag.\n- Historical internal tracking references in comments and docstrings replaced\n  with descriptive text across 89 files (verified behavior-neutral).\n\n### Upgrade\n- `pip install --upgrade tokenpak`. No schema, config, or state migrations.\n\n### Rollback\n- `pip install tokenpak==1.18.3`. No state cleanup required.\n\n### Compatibility\n- No importable API symbols added or removed (snapshot-verified: 4634 symbols\n  unchanged). The new CLI flag and response header are additive surfaces;\n  existing invocations and clients are unaffected.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.18.4",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.18.4/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.18.3",
     "published_at": "2026-08-07T19:55:23Z",
     "title": "TokenPak v1.18.3",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.18.3",
     "pypi_url": "https://pypi.org/project/tokenpak/1.18.3/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.18.2",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.0.1",
     "pypi_url": "https://pypi.org/project/tokenpak/1.0.1/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.3.6",
-    "published_at": "2026-04-22T23:44:57Z",
-    "title": "TokenPak v1.3.6",
-    "summary": "### Fixed — release-gate hotfix-3 (pin validity + preflight coverage)",
-    "body_markdown": "\n### Fixed — release-gate hotfix-3 (pin validity + preflight coverage)\n\nRecovers from a third release attempt that failed before publication (v1.3.5). Content identical to v1.3.3 through v1.3.5 plus two narrowly-scoped fixes; the preflight added in v1.3.5 is now extended so the same bug class cannot burn a tag again.\n\n- **`release.yml` SHA pins corrected** — two of the five pins ported from `publish.yml` were invalid SHAs (not the actual tag commits):\n - `actions/download-artifact@fa0a91b85d4f404e444306234a2a8284e0a91ef9` → **`@fa0a91b85d4f404e444e00e005971372dc801d16`** (the real v4.1.8)\n - `pypa/gh-action-pypi-publish@76f52bc884231f62b3a5c8ae4dab2bd50e2e5720` → **`@67339c736fd9354cd4f8cb0b744f2b82a74b5c70`** (the real v1.12.3)\n\n Both verified via `git ls-remote --tags` against the upstream repos. The three other pins (`actions/checkout@v4.2.2`, `actions/setup-python@v5.3.0`, `actions/upload-artifact@v4.6.0`) are valid and unchanged.\n\n- **New `validate-pins` preflight job in `release.yml`.** Runs before `test` on both `push:tags` and `workflow_dispatch`. Uses `git ls-remote --tags` to resolve every SHA-pinned action to its upstream commit and fails fast if any pin diverges. Closes the gap that let v1.3.5 burn — the prior preflight gated `release` + `publish` out of dispatch runs, so SHA pins in those jobs were never exercised before a real tag.\n\n### Why three burned tags\n\nv1.3.3 → v1.3.4 → v1.3.5 each revealed a distinct release-path bug that the preceding preflight did not cover: conformance tests needed a registry checkout; the CLI smoke step used a non-executable module path; a Python 3.12 tempdir race; and finally two invalid SHA pins. Each fix closed a class. v1.3.6 adds the preflight that would have caught the SHA class before any of them.\n\n### No scope expansion\n\nNo TIP-SC semantic changes. No runtime behavior changes. No unrelated cleanup. No broader workflow redesign beyond the pin fixes + the single `validate-pins` job.\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.6",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.3.6/",
     "prerelease": false,
     "latest": false
   }
