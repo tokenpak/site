@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.19.0",
+    "published_at": "2026-08-12T14:58:37Z",
+    "title": "TokenPak v1.19.0",
+    "summary": "This backward-compatible minor release adds a versioned session-economics\ncontract and a deterministic runway view while preserving unknown usage and\npricing facts instead of inventing certainty.",
+    "body_markdown": "\nThis backward-compatible minor release adds a versioned session-economics\ncontract and a deterministic runway view while preserving unknown usage and\npricing facts instead of inventing certainty.\n\n### Added\n\n- The immutable `session-economics/1` contract exposes session facts, measured\n  values, estimates, provenance, forecasts, guard state, and runway through 29\n  additive Python symbols. Value states distinguish measured, estimated,\n  unavailable, and error results; existing public symbols are unchanged.\n- The proxy exposes `/v1/messages/session-economics`, a deterministic local\n  view of session runway that does not call a model provider. Context soft and\n  hard limits, request or dollar budgets, and rolling caps are evaluated\n  conservatively; the binding constraint is reported explicitly.\n- Provider usage ledgers retain the source and quality of token-usage facts\n  supplied by supported providers. Missing usage remains unknown rather than\n  being coerced to zero.\n\n### Fixed\n\n- Re-ingesting an already wrapped Pak envelope preserves a single stable\n  envelope instead of nesting another wrapper around it.\n- Proxy monitor writers now keep their database association and lifecycle\n  stable across concurrent requests and shutdown flushing.\n- Proxy test fixtures use isolated ephemeral ports, preventing unrelated test\n  processes from colliding on fixed listeners.\n\n### Upgrade\n\n```bash\npython -m pip install --upgrade \"tokenpak==1.19.0\"\n```\n\nNo configuration migration is required.\n\n### Rollback\n\n```bash\npython -m pip install --upgrade \"tokenpak==1.18.5\"\n```\n\nThe release introduces no destructive state migration. Artifact-level upgrade\nand rollback verification is part of the release gate.\n\n### Compatibility\n\n- The public API snapshot contains 4,663 symbols: 29 additive\n  session-economics exports and zero removals relative to v1.18.5.\n- Existing proxy request and response routes remain compatible. The new\n  endpoint and Python contract are additive, and unknown or insufficient facts\n  produce explicit learning, unavailable, or error states instead of fabricated\n  numeric values.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.19.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.19.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.18.5",
     "published_at": "2026-08-08T23:17:51Z",
     "title": "TokenPak v1.18.5",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.18.5",
     "pypi_url": "https://pypi.org/project/tokenpak/1.18.5/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.18.4",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.7",
     "pypi_url": "https://pypi.org/project/tokenpak/1.3.7/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.2.0",
-    "published_at": "2026-04-23T03:45:22Z",
-    "title": "TokenPak v1.2.0",
-    "summary": "### Changed\n- **BREAKING** — Paid tier commands (Pro/Team/Enterprise) split out into the separate `tokenpak-paid` private package. The OSS `tokenpak` package now contains upgrade stubs for 25 command modules; real implementations ship separately and are installed via `tokenpak install-tier <tier>`. Tier-package-separation initiative (`2026-04-21`).\n- **Removed ~5,150 LOC of paid implementation** from the OSS package: `cli/commands/{optimize, route, compression, diff, prune, retain, fingerprint, replay, debug, last, template, dashboard, savings, metrics, budget, serve, trigger, exec, workflow, ",
-    "body_markdown": "\n### Changed\n- **BREAKING** — Paid tier commands (Pro/Team/Enterprise) split out into the separate `tokenpak-paid` private package. The OSS `tokenpak` package now contains upgrade stubs for 25 command modules; real implementations ship separately and are installed via `tokenpak install-tier <tier>`. Tier-package-separation initiative (`2026-04-21`).\n- **Removed ~5,150 LOC of paid implementation** from the OSS package: `cli/commands/{optimize, route, compression, diff, prune, retain, fingerprint, replay, debug, last, template, dashboard, savings, metrics, budget, serve, trigger, exec, workflow, handoff, compliance, sla, maintenance, policy, vault}.py` now emit a `DeprecationWarning` on import and print an upgrade message on invocation (exit 2). Every public symbol external callers imported is preserved, aliased to the same `_upgrade_stub`.\n- **`tokenpak.enterprise.*`** (audit, compliance, governance, policy, sla) — canonical home moved to `tokenpak_paid.enterprise.*`. The OSS namespace now raises `ImportError` on attribute access (these modules exposed classes — a silent no-op stub would be surprising).\n- **`tokenpak/cli/trigger_cmd.py`** reduced to a re-export shim pointing at the (stubbed) `tokenpak.cli.commands.trigger`.\n\n### Added\n- **`tokenpak.cli._plugin_loader`** — plugin discovery via `tokenpak.commands` entry-points. Paid commands installed via `tokenpak-paid` surface automatically. Feature-flagged via `TOKENPAK_ENABLE_PLUGINS=1` until the default flips in a future release.\n- **`tokenpak install-tier <tier>`** subcommand — pip-installs the private `tokenpak-paid` package from `pypi.tokenpak.ai/simple/` using a local license key for HTTP Basic auth (`__token__:<KEY>`).\n- **3-layer gating model** — (1) license-key-gated PEP 503 index controls package access, (2) `tokenpak_paid.entitlements.gate_command` runtime-gates every paid command based on tier + features, (3) license-server periodic revalidation with tier-dependent grace periods (14d Pro / 7d Team / 3d Enterprise) + 30d offline tolerance.\n\n### Migration\n- OSS users who previously ran `tokenpak optimize`, `tokenpak dashboard`, etc. see an upgrade message + non-zero exit. Path forward: `tokenpak activate <KEY>` → `tokenpak install-tier pro` (or `team`/`enterprise`). No code change required for users who only use OSS commands (`status`, `doctor`, `config`, `index`, etc.).\n- `.importlinter` contract updated — dropped the obsolete `cli.commands.fingerprint → compression.fingerprinting.*` ignore entry (stub has no fingerprinting imports). 5/5 contracts still KEPT.\n\n### Removed\n- Direct access to paid implementation bodies from the OSS package (see migration note).\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.2.0",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.2.0/",
     "prerelease": false,
     "latest": false
   }
