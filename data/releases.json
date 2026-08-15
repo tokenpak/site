@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.19.1",
+    "published_at": "2026-08-15T18:26:55Z",
+    "title": "TokenPak v1.19.1",
+    "summary": "This patch release fixes interactive Codex clients (0.147 and newer) stalling\nat startup when routed through the local proxy with a subscription sign-in.",
+    "body_markdown": "\nThis patch release fixes interactive Codex clients (0.147 and newer) stalling\nat startup when routed through the local proxy with a subscription sign-in.\n\n### Fixed\n\n- The proxy's `/v1/models` endpoint now forwards subscription-authenticated\n  model-catalog requests to the subscription backend with the caller's own\n  credential, instead of returning an empty catalog. Newer interactive Codex\n  clients require a non-empty model list from their configured provider before\n  the session proceeds; against the previous empty reply they parked at the\n  model-availability step and silently re-polled. Verified end to end: an\n  interactive 0.147.0 client against the fixed proxy lists the full catalog\n  and starts normally, and non-interactive `exec` runs (which were never\n  affected) continue to work unchanged.\n- Credential routing for catalog requests is strict: requests carrying\n  Anthropic headers keep their existing route and reply, API-key clients still\n  list from the platform endpoint, and no credential is ever forwarded to a\n  backend of a different provider. Regression tests pin each of these paths at\n  both the routing and handler layers.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.19.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.19.1/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.19.0",
     "published_at": "2026-08-12T14:58:37Z",
     "title": "TokenPak v1.19.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.19.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.19.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.18.5",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.8",
     "pypi_url": "https://pypi.org/project/tokenpak/1.3.8/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.3.7",
-    "published_at": "2026-04-23T02:26:44Z",
-    "title": "TokenPak v1.3.7",
-    "summary": "### Added — TIP-SC+1: proxy semantic invariants",
-    "body_markdown": "\n### Added — TIP-SC+1: proxy semantic invariants\n\nSC+1 adds the semantic layer on top of TIP-SC's structural conformance. SC proved that emissions have the right shape; SC+1 proves they mean what they claim.\n\nFive property-test tracks, 56 tests total, split between blocking (I1 + I2 + I5) and advisory (I3 + I4) CI gates:\n\n- **I1 byte-identity (blocking).** 20 tests. For `claude-code-{tui,cli,tmux,sdk,ide,cron}`, the body forwarded to upstream is byte-identical to the client-submitted body. Anthropic OAuth billing depends on this. Includes a whitespace-mutation negative canary.\n- **I2 cache-attribution causality (blocking).** 5 tests. `cache_origin='proxy'` iff TokenPak placed the markers (Constitution §5.3). Three causal arms + two explicit over-claim negative tests that fail loudly if anyone misattributes provider-side hits as TokenPak wins.\n- **I3 TTL ordering (advisory).** 11 tests. No `cache_control ttl=\"1h\"` block appears after a default-TTL block on outbound bodies. On `claude-code-*`, byte-identity wins — proxy must NOT \"fix\" what the client sent.\n- **I4 DLP leak prevention (advisory).** 14 tests. Five synthetic secret families (AWS, Stripe, GitHub PAT, OpenAI, Anthropic). In `redact` mode, outbound bytes contain zero matches. In `block` mode, no dispatch occurs. On `claude-code-*`, auto-downgrade to `warn` is the expected passthrough.\n- **I5 header-allowlist enforcement (blocking).** 6 tests. Outbound headers ⊆ `PERMITTED_HEADERS_PROXY` (new canonical contract at `tokenpak/core/contracts/permitted_headers.py`). v1.2.6 `Content-Encoding` zlib-bug regression canary.\n\n### Infrastructure\n\n- **`ConformanceObserver.on_outbound_request`** — new callback captures the (route_class, url, method, headers, body) five-tuple at dispatch time. Wired at exactly two chokepoints in `proxy/server.py` (stream + non-stream paths). No-op when no observer installed; ship-safe.\n- **`tokenpak/core/contracts/permitted_headers.py`** — canonical per-profile header allowlist + `HOP_BY_HOP` strip-set. Single source of truth for I5.\n- **CI**: new `self-conformance (advisory) / invariants` job (I3+I4, `continue-on-error: true`) added alongside existing blocking matrix. Blocking filter becomes `conformance and not advisory`. Full suite: 84 tests green locally (28 SC-06 + 56 SC+1).\n\n### Why advisory for I3 + I4\n\nI3 depends on `prompt_builder` reordering behavior that may surface pre-existing findings; I4 depends on the DLP rule set being complete for the secret families under test. Both ship as WARN-on-red so the phase can land without holding up stabilization; promoted to blocking in a follow-up packet once each is stable.\n\n### Phase-2 entrypoint migrations (P2-06..10)\n\nRemain queued. Next cleanup phase after SC+1 ships — they run on top of SC+1's regression net.\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.7",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.3.7/",
     "prerelease": false,
     "latest": false
   }
