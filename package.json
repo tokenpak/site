@@ -14,8 +14,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check:docs-links": "tsx scripts/check-docs-links.ts",
-    "validate": "tsx scripts/validate-manifests.ts && tsx scripts/sync-releases.test.ts",
-    "test": "tsx scripts/sync-releases.test.ts",
+    "validate": "tsx scripts/validate-manifests.ts && tsx scripts/sync-releases.test.ts && tsx scripts/workflow-ordering.test.ts",
+    "test": "tsx scripts/sync-releases.test.ts && tsx scripts/workflow-ordering.test.ts",
     "audit:a11y": "tsx scripts/audit-a11y.ts",
     "audit:parity": "tsx scripts/audit-parity.ts"
   },
