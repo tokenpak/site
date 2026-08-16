@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch: {}
   repository_dispatch:
-    types: [release-synced, docs-links-synced]
+    types: [docs-links-synced]
 
 concurrency:
   group: pages
