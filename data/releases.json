@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.20.0",
+    "published_at": "2026-08-18T02:31:28Z",
+    "title": "TokenPak v1.20.0",
+    "summary": "This backward-compatible minor release adds a deterministic session trip\ncomputer to the default read surfaces, layers a calibrated\nremaining-consumption forecast on top of it, and refreshes the model pricing\ncatalog for the current Claude model generation.",
+    "body_markdown": "\nThis backward-compatible minor release adds a deterministic session trip\ncomputer to the default read surfaces, layers a calibrated\nremaining-consumption forecast on top of it, and refreshes the model pricing\ncatalog for the current Claude model generation.\n\n### Added\n\n- A deterministic session trip computer renders on every default read\n  surface: a one-line and full-block status rendering, a dashboard section\n  and snapshot field, and a read-only tool shared by both supported agent\n  clients. All surfaces are thin adapters over one validated contract and one\n  shared renderer, and the proxy selects a default session automatically\n  when none is supplied. A restart-proof regression suite verifies the new\n  surfaces change no provider bytes and no accounting inputs across a full\n  process restart.\n- A calibrated remaining-consumption forecast layers onto the trip computer:\n  a dependency-free split-conformal quantile engine over finished local\n  sessions produces a central 50% remaining-token range, a one-sided 90%\n  ceiling, an expected-turn range, measured walk-forward coverage with drift\n  awareness, and a guard-aligned block probability. Cold cells render an\n  honest learning state instead of a number; stale or unknown rates leave\n  USD unavailable while token ranges stay intact.\n\n### Fixed\n\n- The model pricing catalog now prices the current Claude model\n  generation — Fable 5, Opus 5, and Sonnet 5 — with matching context\n  windows, and corrects a Haiku pricing row that had been seeded as a\n  byte-identical copy of an older model's rates. A new catalog-integrity\n  test suite makes this class of staleness CI-detectable going forward\n  without hardcoding a model-name enumeration: every model the proxy serves\n  by default must resolve to explicit priced data with a known context\n  window, and every served model must carry positive pricing.\n\n### Upgrade\n\n```bash\npython -m pip install --upgrade \"tokenpak==1.20.0\"\n```\n\nNo configuration migration is required.\n\n### Rollback\n\n```bash\npython -m pip install --upgrade \"tokenpak==1.19.3\"\n```\n\nThe release introduces no destructive state migration. Artifact-level\nupgrade and rollback verification is part of the release gate.\n\n### Compatibility\n\n- The public API snapshot contains 4,679 symbols: 14 additive session\n  trip-computer exports (a new `tokenpak.proxy.session_forecast_calibration`\n  module plus three additions on existing modules) and zero removals\n  relative to v1.19.3.\n- No existing public symbol is removed or reclassified. No breaking changes\n  are introduced.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.20.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.20.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.19.3",
     "published_at": "2026-08-17T14:35:07Z",
     "title": "TokenPak v1.19.3",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.19.3",
     "pypi_url": "https://pypi.org/project/tokenpak/1.19.3/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.19.1",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.10",
     "pypi_url": "https://pypi.org/project/tokenpak/1.3.10/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.3.9",
-    "published_at": "2026-04-23T21:05:50Z",
-    "title": "TokenPak v1.3.9",
-    "summary": "### Added — TIP-SC+2: streaming semantics invariants",
-    "body_markdown": "\n### Added — TIP-SC+2: streaming semantics invariants\n\nSC+2 extends the conformance matrix from SC+1's non-stream invariants (I1–I5) into the streaming (SSE) path. Three invariants land this phase — the narrowest deliberate scope that covers the highest-value streaming guarantees. Two more (streaming byte-identity of the response-side accumulator; streaming error-frame shape) are deferred to SC+3.\n\nShipped invariants:\n\n- **I6 SSE frame-ordering (blocking).** Every complete Anthropic-style SSE frame forwarded to the client is notified to the conformance observer exactly once, in receipt order. No reordering, no drops, no synthesis. On `claude-code-*` routes, byte-identity per-frame. 9 tests covering parser primitives + multi-chunk split frames + observer receipt order + route-class propagation.\n- **I7 streaming cache-attribution causality (blocking).** The streaming analog of SC+1 I2. `cache_origin` classification from the `message_start` frame's `usage` block respects the \"who placed the markers\" rule — `'proxy'` iff TokenPak inserted the cache_control headers, `'client'` iff the client already did, `'unknown'` otherwise. Includes the explicit over-claim negative: upstream reports cache hits that neither side admits to seeding → never attribute to proxy. 5 tests.\n- **I10 streaming telemetry completeness (blocking).** `Monitor.log` fires exactly once per streamed request, post-`message_stop`, with `input_tokens` from `message_start` and `output_tokens` from the final `message_delta`. Fire-once and ordering contract locked; single mid-stream telemetry event would double-count or emit partial rows. 4 tests including the end-to-end ordering-contract exercise.\n\nInfrastructure:\n\n- **`tokenpak/services/diagnostics/conformance/__init__.py`** — new `on_stream_event(route_class, event_type, frame)` callback on `ConformanceObserver` + `notify_stream_event(...)` free helper. Ship-safe no-op when no observer installed.\n- **`parse_sse_frames(buf)`** helper — minimal, deterministic byte-in/tuple-out SSE parser. Consumed by both the production chokepoint (to extract event_type before notifying) and test harnesses (to reconstruct frame sequences). Tolerates LF-only and CRLF terminators; returns partial-frame remainder for chunk-accumulation patterns.\n- **`tokenpak/proxy/server.py`** — streaming forward loop now accumulates an observer-only byte buffer alongside the existing `sse_buffer`, parses complete frames on each chunk, and calls `notify_stream_event` per frame. Zero overhead when no observer is installed (one attr lookup on `threading.local`).\n\nDeferred:\n\n- **I8 streaming byte-identity of the response-side accumulator** — mostly subsumed by SC+1 I1 for the request side; the response-side streaming analog is niche.\n- **I9 streaming error-frame shape** — requires a minor `error.schema.json` extension to cover SSE `error` events; registry is frozen for this phase.\n\nConformance matrix status: **102 tests green** (84 SC + SC+1 + 18 new SC+2) across 3.10/3.11/3.12.\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.9",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.3.9/",
     "prerelease": false,
     "latest": false
   }
