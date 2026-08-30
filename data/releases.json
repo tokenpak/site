@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.22.0",
+    "published_at": "2026-08-30T07:19:43Z",
+    "title": "TokenPak v1.22.0",
+    "summary": "This backward-compatible minor release completes automatic context injection\nfor routes whose policy declares it and fixes the proxy's vault-injection\nreceipt accounting. It also refreshes CI toolchain actions and the TypeScript\nSDK's dependency pins.",
+    "body_markdown": "\nThis backward-compatible minor release completes automatic context injection\nfor routes whose policy declares it and fixes the proxy's vault-injection\nreceipt accounting. It also refreshes CI toolchain actions and the TypeScript\nSDK's dependency pins.\n\n### Fixed\n\n- Automatic context injection now actually applies on every route whose\n  policy declares it. The call site landed previously but had no real effect\n  once merged onto the current session-accounting shape: it wrote to session\n  accounting with an argument shape the current writer rejects, and it\n  fell back to detecting the request's format adapter from a blank\n  path/headers pair, which always resolved to a no-op passthrough adapter.\n  Both are fixed — the call site now reuses the shared receipt helper the\n  existing byte-preserved path relies on, and the adapter is detected from\n  the real request, so injected content reaches what the provider receives.\n- The proxy's vault-injection receipt (measured injected-token count and\n  source names) is now written to the live per-server session that request\n  accounting and `GET /stats` read, instead of a compatibility global no\n  live request path consults. `tokenpak status` now reflects real injection\n  totals instead of reporting zero across zero requests. Receipt parsing\n  fails open — a malformed pipeline result degrades to a measured zero\n  instead of raising.\n\n### Dependencies\n\n- Bump `actions/setup-python` 6.3.0 → 7.0.0, `actions/setup-node` 6.5.0 →\n  7.0.0, and `pypa/gh-action-pypi-publish` 1.14.0 → 1.14.2 (gate-inventory\n  manifest refreshed for each).\n- Bump the TypeScript SDK's `axios` runtime dependency 1.18.1 → 1.20.0 and\n  its `@types/node` development dependency 26.1.2 → 26.2.0.\n\n### Upgrade\n\n```bash\npython -m pip install --upgrade \"tokenpak==1.22.0\"\n```\n\nNo manual configuration migration is required. If a route's policy already\ndeclared automatic context injection, upgrading changes that route's runtime\nbehavior from a silent no-op to active injection — review request-volume and\ntoken-accounting expectations for those routes before upgrading.\n\n### Rollback\n\n```bash\npython -m pip install --upgrade \"tokenpak==1.21.0\"\n```\n\nThe release introduces no destructive state migration.\n\n### Compatibility\n\n- The public API snapshot contains 4,698 symbols: one additive export and\n  zero removals relative to v1.21.0. The addition,\n  `tokenpak.proxy.vault_bridge.set_vault_index_override`, is an explicit\n  substitution seam for the vault index that replaces in-place\n  module-attribute monkeypatching in tests.\n- No existing public symbol is removed or reclassified. No breaking changes\n  or deprecations are introduced.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.22.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.22.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.21.0",
     "published_at": "2026-08-28T14:53:19Z",
     "title": "TokenPak v1.21.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.21.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.21.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.20.0",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.12",
     "pypi_url": "https://pypi.org/project/tokenpak/1.3.12/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.3.11",
-    "published_at": "2026-04-23T23:27:38Z",
-    "title": "TokenPak v1.3.11",
-    "summary": "### Added — Phase B of MVP Gap Closure (Working Product Readiness)",
-    "body_markdown": "\n### Added — Phase B of MVP Gap Closure (Working Product Readiness)\n\nRatified by the maintainer 2026-04-24. Closes the six P1 + two P2 gaps in the Working Product Readiness gap catalog. User-facing changes are additive; no behavior regressions.\n\n**P1-1 — Per-request savings response headers.** On every proxied request (stream + non-stream) the client now receives input-side compression metrics as response headers:\n\n- `X-Tokenpak-Input-Tokens: <n>` — token count after the client's payload parsed, before compression\n- `X-Tokenpak-Sent-Tokens: <n>` — token count actually forwarded upstream (post-compression)\n- `X-Tokenpak-Saved-Tokens: <n>` — the delta; what TokenPak removed on this request\n\nStreaming-side output tokens aren't known until stream-end, so these headers cover input compression only — the \"did TokenPak do its job on this request?\" loop users were missing. Downstream in `tokenpak status` / `tokenpak savings` / dashboard the aggregate view still shows input + output totals.\n\n**P1-2 — Dashboard URL surfaced in `tokenpak setup` Next Steps.** The wizard's terminal \"Next steps\" block now prints the local dashboard URL as the second action (`http://127.0.0.1:<port>/dashboard`).\n\n**P1-3 — `tokenpak doctor --conformance` human-language preamble.** Before the per-check table, the doctor now prints a plain-English trust-posture summary (byte-identity / header-allowlist / cache-attribution / DLP leak-prevention) derived from the SC-07 runner results. Detailed check rows unchanged.\n\n**P1-4 — `tokenpak status` surfaces recent non-2xx responses.** When users hit a 500 / 429 / auth failure, the debug now starts with \"here are your last 5 non-2xx responses\" — timestamp, status, model, endpoint, latency — rather than a blank wall. Reads from the local `monitor.db` ledger; silently skips on a fresh install with no history.\n\n**P1-5 — Doctor vault-index warning demoted to INFO.** Previously a warning (`⚠️ Vault index... not found`) on every run regardless of whether the user had chosen to enable semantic search. Now an `ℹ` line that says: *\"not configured (optional; run `tokenpak index <dir>` to enable semantic search)\"*.\n\n**P1-6 — Pro features inline in README.** The Pro section now lists the actual feature groups (team-scale cost attribution / budget enforcement / advanced routing policies / enterprise credential management / SSO+SLA) rather than a single-sentence summary + link.\n\n**P2-1 — Privacy posture surfaced in CLI + linked from README.** New `tokenpak doctor --privacy` command prints the data-handling posture in human language: what stays local, what leaves, every optional escape hatch disclosed by env var name, and direct links to the `tokenpak.ai/compliance/{privacy,dpa,sub-processors}` pages. README adds a \"Privacy + compliance\" section linking all three pages.\n\n**P2-2 — `tokenpak plan` OSS output surfaces Pro.** When a user on OSS-tier runs `tokenpak plan`, the output now includes a short (5-line) summary of what Pro adds and the `tokenpak upgrade` command. No change when the user has activated a Pro license.\n\n### Tests\n\nNo new tests; Phase B changes are additive to existing user-facing surfaces. Regression coverage: 27/27 CLI + 102/102 conformance + ruff clean + `cli-docs-in-sync` green (new `--privacy` flag auto-generated into `docs/reference/cli.md`).\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.11",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.3.11/",
     "prerelease": false,
     "latest": false
   }
