@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.26.0",
+    "published_at": "2026-09-08T20:16:23Z",
+    "title": "TokenPak v1.26.0",
+    "summary": "### Added",
+    "body_markdown": "\n### Added\n\n- Authenticated, loopback-only native guard and request-workload observations\n  bind explicitly selected sessions to coherent accounting and current policy.\n  Unsupported, missing, overlapping or stale observations remain unavailable.\n- Optional durable spend reservations coordinate pending work with committed\n  usage and preserve bounded metadata across supported process handoffs.\n  Durable accounting remains off by default.\n- Workload pricing supports explicit model, input length, cache lifetime,\n  modality, region and service-tier conditions. Verified quotes require complete\n  applicable evidence; existing scalar pricing APIs remain compatible.\n\n### Fixed\n\n- Durable budget accounting prices supported responses from observed workload\n  facts and commits a bounded rate receipt with each cost. Pending projections\n  cover known cache-write and long-context rates; unpriced historical rows cannot\n  support monetary admission or eligible native observations.\n- Frozen per-session history reaches the session-economics wrapper without\n  falling back to a different read or losing the selected rows.\n- Empty streamed responses preserve ordinary accounting observations, and proxy\n  test listeners bind atomically without changing provider forwarding defaults.\n\n### Security and compatibility\n\n- Disclose the open NLTK advisory in optional compression/full and llamaindex\n  dependencies; this release accepts that finding only for the documented scope.\n  No patched NLTK release is currently listed. See SECURITY.md.\n- Disclose the separate Moderate Accelerate checkpoint-path advisory in the\n  optional compression/full dependency path and its trusted-model requirement.\n- Update the supported security-release line. TIP-1.0 and exact normative docs\n  and registry pins remain unchanged. Existing pricing rows and settings are\n  preserved; schema additions require backups before upgrade.\n- Pro 0.4.0 is the matching separately distributed companion. Upgrade and roll\n  back the pair together. See [release guidance](docs/release-log/v1.26.0.md).\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.26.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.26.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.25.3",
     "published_at": "2026-09-08T03:46:26Z",
     "title": "TokenPak v1.25.3",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.25.3",
     "pypi_url": "https://pypi.org/project/tokenpak/1.25.3/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.25.2",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.18",
     "pypi_url": "https://pypi.org/project/tokenpak/1.3.18/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.3.17",
-    "published_at": "2026-04-24T14:26:07Z",
-    "title": "TokenPak v1.3.17",
-    "summary": "### Fixed — Full Claude Code wire profile in credential injection",
-    "body_markdown": "\n### Fixed — Full Claude Code wire profile in credential injection\n\nv1.3.16 routed OpenClaw traffic through credential injection correctly, but Anthropic was billing it as generic API-with-OAuth instead of Claude Code — exhausting the user's \"extra usage\" pool while interactive `tokenpak claude` kept working on the same OAuth token. The maintainer flagged that behavior should match `tokenpak claude` end-to-end.\n\nRoot cause: the injector was adding only ``Authorization: Bearer <token>`` + ``anthropic-beta: oauth-2025-04-20``, but the real Claude CLI wire profile carries a richer identity set. Without ``claude-code-20250219`` in beta and ``User-Agent: claude-cli/<version>``, Anthropic sees OAuth traffic but doesn't apply Claude Code's caching / billing treatment.\n\nFix: `ClaudeCodeCredentialProvider` now reproduces the full CLI profile:\n\n- ``Authorization: Bearer <access_token>`` (from ``~/.claude/.credentials.json``)\n- ``anthropic-beta: …,claude-code-20250219,oauth-2025-04-20`` (MERGED with caller's betas)\n- ``anthropic-dangerous-direct-browser-access: true``\n- ``User-Agent: claude-cli/<probed-version> (external, cli)``\n- ``x-app: cli``\n\n**New `merge_headers` field on `InjectionPlan`.** Instead of stripping the caller's `anthropic-beta` and replacing it — which lost OpenClaw's feature-gate markers (`fine-grained-tool-streaming-*`, `interleaved-thinking-YYYY-MM-DD`) — the plan now carries *merge* semantics for `anthropic-beta`. The proxy hook concatenates the caller's value with ours, de-duping tokens case-insensitively. Other identity-clobbering headers (`User-Agent`, `x-app`, `Authorization`, `x-api-key`) keep the strip-and-replace pattern.\n\n**User-Agent is dynamically probed.** `ClaudeCodeCredentialProvider._detect_cli_version` runs `claude --version` once at first use and caches the result, so the injected UA follows whatever version the user has installed (no hardcoded version per `feedback_always_dynamic` 2026-04-16). Falls back to a constant if the `claude` binary isn't on PATH.\n\n### Live verification\n\nPre-fix (v1.3.16): OpenClaw-shape request with `X-TokenPak-Backend: claude-code` + caller's beta markers → `HTTP 200` but Anthropic billed as non-Claude-Code, `You're out of extra usage` after quota burn.\n\nPost-fix (v1.3.17): same request → `HTTP 200` with Claude response; Anthropic sees the full Claude Code profile + billing pool matches interactive `tokenpak claude`. Test command:\n\n```\ncurl -H \"User-Agent: Anthropic/JS 0.73.0\" \\\n -H \"x-api-key: placeholder\" \\\n -H \"X-TokenPak-Backend: claude-code\" \\\n -H \"anthropic-beta: fine-grained-tool-streaming-2025-05-14,interleaved-thinking-2025-05-14\" \\\n …\n```\n\n### Tests\n\n339 regression tests green (services + proxy + conformance + cli). `test_claude_provider_resolves_to_full_claude_code_profile` updated to assert the full profile + `merge_headers` semantics; two new regressions pin the beta-merge de-dup behavior.\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.17",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.3.17/",
     "prerelease": false,
     "latest": false
   }
