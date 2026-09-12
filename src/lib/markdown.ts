@@ -17,6 +17,53 @@ import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import { scrubForbiddenTerms } from '../../scripts/scrub-forbidden-terms';
 
+export interface ReleaseMarkdownContext {
+  version: string;
+  github_release_url?: string;
+}
+
+// Release notes are authored relative to the repository root. Require the
+// canonical release URL to agree with the version before constructing a tag
+// URL; an absent or inconsistent source must not invent a repository target.
+function releaseSourceRoot(context: ReleaseMarkdownContext): string | undefined {
+  if (!/^\d+\.\d+\.\d+(?:-[\dA-Za-z.-]+)?(?:\+[\dA-Za-z.-]+)?$/.test(context.version)) return;
+  const repository = 'https://github.com/tokenpak/tokenpak';
+  for (const tag of [`v${context.version}`, context.version]) {
+    if (context.github_release_url === `${repository}/releases/tag/${tag}`) {
+      return `${repository}/blob/${tag}/`;
+    }
+  }
+}
+
+function anchorHref(href: string | undefined, context?: ReleaseMarkdownContext): string | undefined {
+  if (!href || /[\u0000-\u0020\u007f\\]/.test(href) || href.startsWith('//')) return;
+  if (href.startsWith('#')) return href;
+  const scheme = /^([A-Za-z][A-Za-z\d+.-]*):/.exec(href);
+  if (scheme) return /^(https?|mailto)$/i.test(scheme[1]) ? href : undefined;
+
+  // Generic Markdown has no fixed repository root: preserve local navigation.
+  if (!context) return href;
+
+  // Do not normalize traversal into a different tag or repository. Reject
+  // encoded separators and nested encoding as well as literal parent paths.
+  const path = href.split(/[?#]/, 1)[0];
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(path);
+  } catch {
+    return;
+  }
+  if (/[\u0000-\u0020\u007f\\%]/.test(decoded)
+      || /%(?:2f|5c)/i.test(path)
+      || decoded.split('/').includes('..')
+      || decoded.startsWith('//')) return;
+
+  const root = releaseSourceRoot(context);
+  if (!root || decoded.startsWith('/')) return;
+  const resolved = new URL(href, root).href;
+  return resolved.startsWith(root) ? resolved : undefined;
+}
+
 // Tight allow-list — covers everything a real release body needs
 // (headings, lists, tables, code, links, emphasis, images from safe
 // protocols) and nothing that can execute or exfiltrate.
@@ -48,17 +95,6 @@ const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
   allowedSchemesByTag: { img: ['http', 'https', 'data'] },
   allowProtocolRelative: false,
   disallowedTagsMode: 'discard',
-  transformTags: {
-    // External links open in a new tab and drop referrer.
-    a: (tagName, attribs) => ({
-      tagName,
-      attribs: {
-        ...attribs,
-        rel: 'noopener noreferrer',
-        ...(attribs.href && /^https?:/.test(attribs.href) ? { target: '_blank' } : {}),
-      },
-    }),
-  },
 };
 
 marked.setOptions({
@@ -66,11 +102,28 @@ marked.setOptions({
   breaks: false,   // Keep paragraph breaks as Markdown intends; don't hard-wrap
 });
 
-export function renderMarkdown(source: string): string {
+export function renderMarkdown(source: string, context?: ReleaseMarkdownContext): string {
   if (!source || !source.trim()) return '';
   const clean = scrubForbiddenTerms(source);
   const rawHtml = marked.parse(clean, { async: false }) as string;
-  return sanitizeHtml(rawHtml, SANITIZE_OPTIONS);
+  return sanitizeHtml(rawHtml, {
+    ...SANITIZE_OPTIONS,
+    transformTags: {
+      a: (tagName, attribs) => {
+        const href = anchorHref(attribs.href, context);
+        const { href: _href, target: _target, ...rest } = attribs;
+        return {
+          tagName,
+          attribs: {
+            ...rest,
+            rel: 'noopener noreferrer',
+            ...(href ? { href } : {}),
+            ...(href && /^https?:/i.test(href) ? { target: '_blank' } : {}),
+          },
+        };
+      },
+    },
+  });
 }
 
 /*
