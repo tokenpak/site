@@ -19,7 +19,7 @@ const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
 
 // Sanitized HTML from the GitHub Release body (D2.a, 2026-04-23).
 // Falls back to the short summary if the source body is empty.
-const bodyHtml = release.body_markdown ? renderMarkdown(release.body_markdown) : '';
+const bodyHtml = release.body_markdown ? renderMarkdown(release.body_markdown, release) : '';
 ---
 <BaseLayout title={title} description={description}>
   <section class="mx-auto max-w-prose px-6 pt-16 pb-8">
