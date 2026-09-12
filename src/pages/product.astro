@@ -11,11 +11,11 @@ import { config } from '../lib/config';
 const capabilities = [
   {
     title: 'Prompt Packing',
-    body: 'TokenPak selects, reduces, and structures context into a Pak before each request hits the wire. The compression stage inside Prompt Packing is deterministic and under 50ms. Fewer tokens.',
+    body: 'Explicit compression operations can reduce eligible content. The default proxy preserves conversation turns; byte-preserved routes report zero product-attributed reduction.',
   },
   {
     title: 'Model routing',
-    body: 'Rules-based routing with fallbacks across providers (Anthropic, OpenAI, Google, Ollama, local). Swap the model without swapping the client.',
+    body: 'Routing policy configuration and observe-mode records. Automatic model changes and fallback enforcement are not active by default.',
   },
   {
     title: 'Caching',
@@ -45,17 +45,17 @@ const planes = [
   },
 ];
 ---
-<BaseLayout title="Product — TokenPak" description="TokenPak is a local proxy that compresses context before it hits the LLM API. Three planes, 18 subsystems, proxy-centered design.">
+<BaseLayout title="Product — TokenPak" description="TokenPak is a local LLM proxy with request records and explicit context tools. Conversation turns are preserved by default.">
   <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Product overview</p>
-    <h1>A local proxy that compresses context before it hits the LLM API.</h1>
+    <h1>A local LLM proxy with request records and explicit context tools.</h1>
     <p class="mt-6 text-body">
       TokenPak runs on <code class="font-mono">127.0.0.1</code> between your LLM client and the
-      model provider. Every outbound request goes through <strong>Prompt Packing</strong>: TokenPak
-      selects, reduces, and structures context into a <strong>Pak</strong> before it hits the wire.
-      Paks move through TIP (the TokenPak Integration Protocol) as the request flows to the provider.
-      What was saved is logged in the <strong>Savings Ledger</strong> — tokens, cost, and cause, per
-      request.
+      model provider. The default proxy preserves conversation turns. Explicit
+      compression operations can reduce eligible content, while byte-preserved
+      requests report zero product-attributed reduction. The <strong>Savings
+      Ledger</strong> records available usage and attribution; missing coverage
+      remains a limitation.
     </p>
     <p class="mt-4 text-body">
       Prompt Packing is one of four first-class concerns. Routing, caching, and the Savings Ledger all

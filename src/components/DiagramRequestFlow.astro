@@ -13,9 +13,9 @@ const stages = ['Raw context', 'Packing Station', 'Route', 'Send', 'Provider', '
 <figure
   class="rounded-card border border-tp-rule bg-tp-paper p-6"
   role="group"
-  aria-label="TokenPak request flow: raw context is packed, routed, sent to the provider, and recorded. Today the companion path uses BM25 vault recall; planned Pak reuse feeds the Packing Station; a Guard gatehouse overlays the request before Send."
+  aria-label="Conceptual request flow. Packing is an explicit context operation; the default proxy preserves conversation turns. Requests go to the configured provider and available usage is recorded. Companion vault recall and planned Pak reuse are separate; configured guards apply before Send."
 >
-  <figcaption class="text-small text-tp-mute mb-4">Request flow</figcaption>
+  <figcaption class="text-small text-tp-mute mb-4">Conceptual request flow — packing is optional; default conversation turns remain intact</figcaption>
 
   <!-- main linear line -->
   <ol class="flex flex-wrap items-center gap-2 list-none p-0 m-0">
