@@ -31,37 +31,35 @@ const surfaces = [
   },
 ];
 ---
-<BaseLayout title="About — TokenPak" description="Deterministic context reduction on real agent workloads; savings vary by integration path and provider cache. Measure your own with the tokenpak savings command.">
+<BaseLayout title="About — TokenPak" description="Local request records and explicit context tools. The default proxy preserves conversation turns and does not promise token savings.">
   <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">About</p>
-    <h1>Deterministic, reproducible context reduction — measure your own savings.</h1>
+    <h1>Local request records and explicit context tools.</h1>
     <p class="mt-4 text-tp-mute text-small">
-      Observed savings vary by integration path and provider-side cache behavior.
-      Provider-cached flows (Claude Code and similar) may show lower incremental
-      gains because TokenPak only affects the user-controlled portion of the
-      token pool.
+      The default proxy preserves conversation turns. Explicit tools can reduce
+      eligible content; byte-preserved requests report zero product-attributed
+      reduction. Provider cache reuse is a separate measurement.
     </p>
     <p class="mt-6 text-body">
-      TokenPak is the local layer between a developer's LLM client and the provider. It compresses
-      context before the wire, routes requests intelligently, and tells the user what was saved —
-      without touching their credentials or their code.
+      TokenPak is the local layer between a developer's LLM client and the provider.
+      It forwards requests and records available usage. Provider-bound prompts and
+      credentials still travel to the configured provider; TokenPak operates no cloud relay.
     </p>
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Product identity</h2>
     <p class="mt-4 text-body">
-      <strong>TokenPak is a local proxy that compresses context before it hits the LLM API.</strong>
-      That sentence goes in the README, the homepage, and every pitch. The identity is deliberate:
-      local-first (no cloud to fail, no credentials to store), proxy-shaped (drops in under the
-      tools you already use), Prompt Packing–focused (one job, done deterministically).
+      <strong>TokenPak is a local LLM proxy with request records and explicit context tools.</strong>
+      The default forwarding path preserves conversation turns. Integration support
+      is tiered; see the tested SDK adapters, first-class integrations and compatibility
+      targets on the <a href="/open-source">open-source page</a>.
     </p>
     <p class="mt-4 text-body">
-      <strong>Prompt Packing</strong> is the high-level process: TokenPak selects, reduces, and
-      structures context into a <strong>Pak</strong> before each request hits the wire.
-      Compression is the wire-side technical stage inside Prompt Packing. The <strong>Savings
-      Ledger</strong> records what each Pak saved — tokens, cost, cause, and cache origin —
-      per request.
+      <strong>Prompt Packing</strong> describes explicit context operations.
+      It does not mean that every proxy request is shortened. The <strong>Savings
+      Ledger</strong> records available usage and cache attribution; a request can
+      correctly show zero savings.
     </p>
     <p class="mt-4 text-body">
       Prompt Packing is one job, not the whole story. Routing, caching, the Savings Ledger, and
@@ -99,5 +97,5 @@ const surfaces = [
     </p>
   </section>
 
-  <CTASection heading="Ready to try it?" body={`pip install ${config.package_public}. Works with the LLM clients you already use.`} />
+  <CTASection heading="Ready to try it?" body={`pip install ${config.package_public}. See the documented integration tiers before configuring your client.`} />
 </BaseLayout>

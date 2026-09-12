@@ -11,12 +11,12 @@ const diff = [
   {
     title: 'Local-first',
     body:
-      'Your prompts, responses, and keys stay on your machine. No cloud ingestion, no SDK telemetry, no account required to run. The only telemetry TokenPak emits is the opt-in debug logging disclosed in the privacy page — and even that stays local.',
+      'The proxy and request records run locally. Provider-bound prompts and credentials still travel to the provider you configure; TokenPak operates no cloud relay. See the privacy page for logging details.',
   },
   {
     title: 'Deterministic compression with a reproducible benchmark',
     body:
-      'The headline reduction is pinned to an agent-style fixture in CI (`make benchmark-headline`) and gated on every PR — reproduce the current number yourself.',
+      'The headline benchmark exercises a fixed agent-style fixture (`make benchmark-headline`). Its reduction is not a default-proxy savings receipt; applicable CI paths select the benchmark.',
   },
   {
     title: 'Causal cost attribution + a pre-send circuit breaker',
@@ -52,7 +52,7 @@ const rows = [
   },
   {
     feature: 'Compression / context reduction',
-    tokenpak: 'Deterministic pipeline; optimizes the user-controlled token pool. Reduction pinned to an agent-style CI fixture (reproduce with `make benchmark-headline`). Provider-cached flows (Claude Code) show lower incremental savings.',
+    tokenpak: 'Explicit tools can reduce eligible content. The default proxy preserves conversation turns; byte-preserved routes report zero product-attributed reduction. The agent-style CI fixture is a separate measurement.',
     values: {
       Helicone:  'No compression feature documented.',
       LangSmith: 'Observability tool; not a compression product.',
@@ -167,20 +167,18 @@ const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Reproduce the headline benchmark</h2>
     <p class="mt-2 text-body">
-      The reduction shown in the <strong>Compression</strong> row is pinned by a CI
-      regression gate on a fixed agent-style fixture — run <code class="font-mono">make benchmark-headline</code>
-      to see the current value. On favorable direct-API / CLI / uncached workloads it can
-      reach up to 90%+. Clone the OSS repo and run:
+      Run <code class="font-mono">make benchmark-headline</code> to inspect a fixed
+      agent-style fixture. This is an explicit benchmark, not evidence that the
+      default proxy shortens provider conversation turns. Clone the OSS repo and run:
     </p>
     <pre class="mt-4 rounded-card border border-tp-rule p-4 bg-tp-paper font-mono text-small overflow-x-auto" tabindex="0" role="region" aria-label="Quick-start commands"><code>git clone {config.github_repo}
 cd tokenpak
 make dev
 make benchmark-headline</code></pre>
     <p class="mt-4 text-small text-tp-mute">
-      The benchmark runs on every PR under the <code class="font-mono">headline-benchmark
-      (blocking)</code> CI gate, which pins a minimum reduction on the fixed agent-style
-      fixture. These are fixture measurements you can reproduce — not a guaranteed savings
-      promise; your results vary by workload and provider cache.
+      The owning CI workflow selects this benchmark for applicable changed paths.
+      Its fixture measurements do not establish savings on your requests. Keep
+      observed provider cache reuse separate from TokenPak context reduction.
     </p>
   </section>
 
