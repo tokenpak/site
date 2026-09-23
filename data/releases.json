@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.29.0",
+    "published_at": "2026-09-23T01:05:50Z",
+    "title": "TokenPak v1.29.0",
+    "summary": "### Added",
+    "body_markdown": "\n### Added\n\n- Opt-in authenticated native token observations report independent request\n  coverage and bounded reservations with explicit response-completion evidence.\n  Token measurements do not establish billed cost or accepted task outcomes.\n\n### Fixed\n\n- Claude prompt submissions appear in fresh companion journals even without\n  the external SQLite executable. Metadata is queued outside the prompt path;\n  it does not count as completed work or provider usage. Configured shell-hook\n  budgets retain their refusal behavior when SQLite is unavailable.\n- Restore the companion MCP startup version banner and content-free malformed\n  JSON diagnostics on stderr, preserving JSON-RPC responses on stdout.\n- Additive accounting migrations preserve historical rows and priced reservation\n  domains without reclassifying older evidence as measured native token usage.\n- The database upgrade gate now migrates seeded snapshots from the six latest\n  published minor baselines through all registered stores, checking row fidelity,\n  current schema and repeated initialization. Missing baselines fail the gate.\n- Packaging tests distinguish the optional build frontend from a generated\n  source-install directory, restoring minimal-install release rehearsals.\n- Background SQLite journal writes close inherited response pipes so a pending\n  write cannot hold up prompt submission or leak writer output into the response.\n\n### Changed\n\n- Clarify README descriptions of default proxy preservation, explicit context\n  tools, provider cache attribution, integration maturity and available editions.\n- Correct Dispatch documentation and CLI help to describe the packaged alpha CLI and runtime,\n  optional dependencies, and unfinished station execution and delivery flow.\n\n### Compatibility\n\n- Native token observations are opt-in. Existing configurations and TIP-1.0\n  remain supported; absent or incomplete observations remain unavailable.\n- The paired Pro 0.5.0 candidate supports OSS 1.26.0 through 1.29.0.\n  Native token measurement requires OSS 1.29.0. Upgrade both packages together.\n- See [upgrade, rollback and release status](docs/release-log/v1.29.0.md).\n\n### Security\n\nThis release accepts the open NLTK GHSA-8mgp-746c-j5xp and Accelerate\nGHSA-4j2p-28q2-5m79 optional-dependency findings for this release only, following\na fresh September 21 dependency audit. Both are High under CVSS v3.1; the\nAccelerate advisory separately lists Moderate severity under CVSS v4. No verified\npublished fix is available. The base install excludes both packages. Optional\nintegrations must avoid untrusted model paths and checkpoint repositories and\ncannot rely on these APIs for filesystem containment. See SECURITY.md for\naffected extras and limitations. Both findings remain open and must be resolved\nor reassessed before another release; all other release checks remain required.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.29.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.29.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.28.0",
     "published_at": "2026-09-12T21:08:33Z",
     "title": "TokenPak v1.28.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.28.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.28.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.27.0",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.4.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.4.0/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.3.22",
-    "published_at": "2026-04-25T02:59:20Z",
-    "title": "TokenPak v1.3.22",
-    "summary": "### Added — Dynamic per-model context registry + fail-fast 413 at the bridge boundary",
-    "body_markdown": "\n### Added — Dynamic per-model context registry + fail-fast 413 at the bridge boundary\n\nPer-model context windows are now sourced from each provider's own `/v1/models` API instead of being hand-maintained in tokenpak. Self-maintaining + provider-agnostic: any future provider (OpenAI, Google, etc.) plugs in with one `register_provider` call.\n\n**New module** `tokenpak/services/routing_service/model_context.py`:\n\n- `ModelRegistryProvider` Protocol — each provider implements `fetch -> Iterable[ModelLimits]` against its own model-listing API.\n- `ModelContextRegistry` — federation across registered providers; lazy load on first use; 24h TTL cache at `~/.tokenpak/model_context_cache.json`; thread-safe; fail-open semantics (unreachable provider or unknown model → returns `None`, caller skips validation).\n- `AnthropicModelRegistryProvider` — built-in. Hits `GET https://api.anthropic.com/v1/models`, returns `max_input_tokens` + `max_tokens` per model. Reuses Claude CLI OAuth from `~/.claude/.credentials.json`.\n- Lookup is normalization-aware: callers can pass either versioned (`claude-haiku-4-5-20251001`) or unversioned (`claude-opus-4-7`) forms; both resolve to the same record.\n\n**OAuth backend dispatch** now does a fast input-token estimate before spawning the subprocess. If the estimate exceeds the model's context window minus a 4096-token safety margin, returns `HTTP 413` with a structured `context_overflow` error including `model`, `context_window`, `estimated_input_tokens`, `safety_margin`. No wasted round-trip to Anthropic, no reactive compaction, no ugly fail-then-retry latency. Disable via `TOKENPAK_BRIDGE_CONTEXT_CHECK=0`.\n\n### Live verification (2026-04-24)\n\n| Scenario | Result |\n|---|---|\n| Tiny payload to `claude-haiku-4-5` | HTTP 200 (passthrough) |\n| 222k tokens to `claude-haiku-4-5` (200k cap) | **HTTP 413** with `context_overflow` payload, served in milliseconds |\n| Unknown model id (`claude-opus-3-old`, `gpt-5.4`) | Registry returns `None`; backend fails-open |\n| Cache age > 24h | Lazy refresh on next access |\n| `/v1/models` unreachable | Cache stays as-is; new lookups fail-open |\n\nInitial fetch produced 9 Anthropic model records (Opus 4.6/4.7 + Sonnet 4.x at 1M, Haiku 4.5 + older Opus/Sonnet at 200k).\n\n### Provider-agnostic by design\n\nThe registry has no Anthropic-specific assumptions in the federation layer — that's the registered Anthropic provider's job. Adding OpenAI/Codex would be:\n\n```python\nclass OpenAIModelRegistryProvider:\n name = \"openai\"\n def fetch(self) -> Iterable[ModelLimits]:\n # GET /v1/models with the user's OpenAI key, parse, yield ModelLimits\n ...\n\nregister_provider(OpenAIModelRegistryProvider)\n```\n\nNo changes to `ModelContextRegistry`, `AnthropicOAuthBackend`, or the proxy hot path. Honors `feedback_always_dynamic` (2026-04-16) + the maintainer 2026-04-24 (\"provider/model/platform agnostic, self-maintaining, dynamic — users never edit a hand-written model list\").\n\n### Tests\n\n191 services + proxy tests green. Ruff + import contracts clean. Live curl verification covers passthrough, 413 fail-fast, cache behavior, and unknown-model fail-open.\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.3.22",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.3.22/",
     "prerelease": false,
     "latest": false
   }
