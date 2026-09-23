@@ -1,5 +1,6 @@
 ---
 import type { ReleaseEntry } from '../lib/releases';
+import { releaseSummary } from '../lib/markdown';
 
 interface Props {
   release: ReleaseEntry;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const { release, compact = false } = Astro.props;
+const summary = releaseSummary(release.body_markdown || release.summary);
 const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
   year: 'numeric', month: 'short', day: 'numeric',
 });
@@ -31,8 +33,8 @@ const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
       </span>
     )}
   </div>
-  {!compact && release.summary && (
-    <p class="mt-4 text-small text-tp-ink">{release.summary}</p>
+  {!compact && summary && (
+    <p class="mt-4 text-small text-tp-ink">{summary}</p>
   )}
   <div class="mt-4 flex flex-wrap gap-3 text-small">
     {/* Links inherit baseline a{} from global.css — tp-ink + underline, per 05 §5.2. */}

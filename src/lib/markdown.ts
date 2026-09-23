@@ -139,3 +139,16 @@ export function toPlainText(source: string | null | undefined): string {
   const text = sanitizeHtml(html, { allowedTags: [], allowedAttributes: {} });
   return text.replace(/\s+/g, ' ').trim();
 }
+
+// Release notes commonly start with a heading such as "Added". Use the first
+// paragraph or list item as the excerpt, preserving the existing text scrub.
+export function releaseSummary(source: string | null | undefined): string {
+  if (!source || !source.trim()) return '';
+  for (const token of marked.lexer(source)) {
+    if (token.type === 'paragraph') return toPlainText(token.raw).slice(0, 600);
+    if (token.type === 'list' && token.items.length) {
+      return toPlainText(token.items[0].text).slice(0, 600);
+    }
+  }
+  return '';
+}
