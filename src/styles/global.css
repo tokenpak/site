@@ -62,10 +62,10 @@
 
   /*
    * Links use panel-ink, not tp-accent. tp-accent on tp-paper is
-   * 2.42:1 (fails WCAG AA 4.5:1); underline is the affordance, not
-   * the color. Hover thickens the underline; color may optionally
-   * shift to tp-accent in per-component overrides (hover-state
-   * feedback is AA-exempt).
+   * 2.42:1, which fails WCAG AA 4.5:1 for text in every state, hover
+   * and focus included. Link text therefore never shifts to tp-accent
+   * on a light background; underline is the affordance, and hover and
+   * focus thicken it.
    */
   a {
     color: var(--panel-ink);
@@ -73,7 +73,8 @@
     text-underline-offset: 2px;
   }
 
-  a:hover {
+  a:hover,
+  a:focus-visible {
     text-decoration-thickness: 2px;
   }
 
