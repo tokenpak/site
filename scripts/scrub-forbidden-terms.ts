@@ -15,7 +15,8 @@
  * the maintainer/agent and private-path tokens that are never legitimate on
  * the public site:
  *   - private home paths:      ~/vault/…, /home/<user>/…
- *   - maintainer name:         first name, alone or with a surname (and embedded decision IDs)
+ *   - personal names + handles: the hashed register in private-terms.mjs
+ *                              (and name-embedded decision IDs)
  *   - governance attribution:  Approved-by:/Ratified-by/Signed-off-by lines
  *   - internal reference refs: standard numbers, optionally with a section
  *                              and a decision number
@@ -37,6 +38,8 @@
  * release body keeps its structure and never truncates mid-word.
  */
 
+import { redactPrivateTerms, findPrivateTerms } from './private-terms.mjs';
+
 /** A neutral redaction noun substituted for personal maintainer references. */
 const MAINTAINER = 'the maintainer';
 
@@ -52,7 +55,7 @@ export function scrubForbiddenTerms(text: string | null | undefined): string {
   let out = text;
 
   // 1. Governance-attribution header lines (their own line):
-  //    "Approved-by: the maintainer (PATCH, 2026-05-08)" etc. Drop the whole line.
+  //    "Approved-by: <name> (PATCH, 2026-05-08)" etc. Drop the whole line.
   out = out.replace(
     /^[ \t]*(?:Approved-by|Ratified-by|Reviewed-by|Signed-off-by|Authorized-by|Acked-by)[ \t]*:[^\n]*\n?/gim,
     '',
@@ -70,7 +73,6 @@ export function scrubForbiddenTerms(text: string | null | undefined): string {
 
   // 4. Internal infra tokens.
   out = out.replace(/`?\.claude\/projects\S*`?/g, '<path>');
-  out = out.replace(/\bhostuser\b/g, '<user>');
 
   // 5. Internal standard references. Drop a parenthetical standard reference
   //    entirely; replace an inline standard reference (with an optional section
@@ -102,15 +104,15 @@ export function scrubForbiddenTerms(text: string | null | undefined): string {
   out = out.replace(/\bF-\d+[ \t]+(?=[A-Za-z])/g, '');
   out = out.replace(/\bF-\d+\b/g, 'an internal finding');
 
-  // 6. Personal / maintainer names. Case-insensitive
-  //    so "the maintainer", "maintainer" and the all-caps form are all caught. Internal
-  //    decision/task IDs that embed the name ("MAINTAINER-DECISION-A", "MAINTAINER-A")
-  //    are neutralized to a generic phrase BEFORE the bare-name rule so they
-  //    don't degrade into "the maintainer-DECISION-A".
-  out = out.replace(/\bMAINTAINER(?:-[A-Z0-9]+)+\b/g, 'an internal decision');
-  out = out.replace(/\bthe maintainer[ \t]+[A-Z][a-z]+\b/g, MAINTAINER);
-  out = out.replace(/\bthe maintainer's\b/gi, `${MAINTAINER}'s`);
-  out = out.replace(/\bthe maintainer\b/gi, MAINTAINER);
+  // 6. Personal names and private host handles, matched through the hashed
+  //    register so the words never appear in this source. Name-embedded
+  //    decision IDs are neutralized whole, and a name followed by a surname is
+  //    replaced as one unit.
+  out = redactPrivateTerms(out, {
+    maintainer: MAINTAINER,
+    decision: 'an internal decision',
+    user: '<user>',
+  });
 
   // 7. Fleet agent names (word-boundary; never legit on the site).
   for (const name of AGENT_NAMES) {
@@ -120,7 +122,7 @@ export function scrubForbiddenTerms(text: string | null | undefined): string {
 
   // 7b. Grammar polish for the maintainer substitution so old release entries
   //     stay non-amateurish: (a) when "the maintainer" follows a count or
-  //     quantifier it was a noun-modifier ("Five the maintainer decisions") — drop the
+  //     quantifier it was a noun-modifier ("Five <name> decisions") — drop the
   //     article ("Five maintainer decisions"); (b) capitalize a sentence-initial
   //     "the maintainer" (it replaced a capitalized name at the start of a
   //     sentence). The count rule runs first so its output isn't re-articled.
@@ -154,17 +156,16 @@ export function findForbiddenTerms(text: string | null | undefined): string[] {
     ['/home path', /\/home\/[A-Za-z0-9._-]+\//g],
     ['.claude/projects', /\.claude\/projects/g],
     ['Approved-by/Ratified-by', /^[ \t]*(?:Approved-by|Ratified-by|Reviewed-by|Signed-off-by|Authorized-by|Acked-by)[ \t]*:/gim],
-    ['the maintainer', /\bthe maintainer\b/gi],
-    ['MAINTAINER-id', /\bMAINTAINER-[A-Z0-9-]+\b/g],
     ['Std NN', /\bStd[ \t]+\d+\b/g],
     ['agent name', new RegExp(`\\b(?:${AGENT_NAMES.join('|')})\\b`, 'g')],
     ['finding id', /\bF-\d+\b/g],
     ['known-findings.md', /\bknown-findings\.md\b/g],
-    ['hostuser', /\bhostuser\b/g],
   ];
   for (const [label, re] of probes) {
     const m = text.match(re);
     if (m) hits.push(`${label}: ${m.slice(0, 3).join(', ')}`);
   }
+  const priv = findPrivateTerms(text);
+  if (priv.length) hits.push(`private term: ${priv.length} match(es)`);
   return hits;
 }
