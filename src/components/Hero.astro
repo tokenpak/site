@@ -7,15 +7,15 @@ interface Props {
 }
 
 const {
-  tagline = 'Local proxy. Request records.',
-  lede = 'TokenPak is a local LLM proxy with request records and explicit context tools. The default proxy preserves conversation turns; a forwarded request can correctly report zero tokens saved.',
+  tagline = 'Know how far your agent can go.',
+  lede = 'TokenPak is a local proxy for coding agents that records each request and shows how far the session can go: measured usage, estimated cost, burn and runway.',
 } = Astro.props;
 ---
 <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-12">
   <div class="grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-10 items-center">
     <div>
       <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">TokenPak — local LLM proxy</p>
-      <h1 class="text-display leading-tight">{tagline}</h1>
+      <h1 class="text-display leading-tight text-balance">{tagline}</h1>
       <p class="mt-4 text-body text-tp-ink max-w-prose">{lede}</p>
       <div class="mt-6 flex flex-wrap items-center gap-3">
         <a
@@ -32,16 +32,20 @@ const {
         </a>
       </div>
     </div>
-    <aside class="rounded-card border border-tp-rule p-6 bg-tp-paper">
-      <p class="text-caption text-tp-mute uppercase tracking-wide">Example packing view</p>
-      <p class="mt-2 font-mono text-small text-tp-ink">747 → 502 tokens</p>
-      <p
-        class="mt-1 font-mono font-bold text-h1 inline-block px-2 rounded-input"
-        style="background-color: var(--tp-signal-value); color: var(--tp-ink);"
-      >
-        fewer tokens
-      </p>
-      <p class="mt-2 text-caption text-tp-mute">Illustrative fixture — token counts vary by workload. Savings claims require benchmark receipts; receipt-backed ranges will publish after the benchmark lane lands.</p>
-    </aside>
+    {/* What ships today versus what is planned. The direction line (the
+        heading) is only ever shown next to this statement. */}
+    <dl class="rounded-card border border-tp-rule p-6 bg-tp-paper">
+      <dt class="text-caption text-tp-mute uppercase tracking-wide">Today</dt>
+      <dd class="mt-1 text-small text-tp-ink">
+        Request records and receipts, a session trip computer with forecasts
+        shown only where calibrated, Spend Guard limits and explicit context tools.
+      </dd>
+      <dt class="mt-4 text-caption text-tp-mute uppercase tracking-wide">Planned</dt>
+      <dd class="mt-1 text-small text-tp-ink">
+        Calibrated forecasts for more model and effort combinations, and Pro
+        reroute recommendations once calibration evidence exists. Any
+        automation comes later, and separately gated.
+      </dd>
+    </dl>
   </div>
 </section>

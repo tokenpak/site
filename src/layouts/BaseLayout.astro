@@ -8,7 +8,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Compression, caching, routing, telemetry — for every LLM client you already use.' } = Astro.props;
+const { title, description = 'TokenPak is a local proxy for coding agents that records each request and shows how far the session can go: measured usage, estimated cost, burn and runway.' } = Astro.props;
 
 // Self-referential canonical + social-share metadata. Astro.site is set in
 // astro.config (https://tokenpak.ai), so these resolve to absolute URLs at
@@ -44,7 +44,7 @@ const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c
     {/* Content Security Policy. Static site; no JS, no analytics, no
         third-party embeds. Allows own-origin assets + inline styles
         (Tailwind generates some). Data URIs allowed for SVG favicons /
-        small inlined images. 22 §19 item. */}
+        small inlined images. */}
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"

@@ -4,18 +4,20 @@
 
 /*
  * Brand tokens exposed as CSS custom properties for non-Tailwind consumers
- * (inline styles, third-party snippets, etc.). Canonical source is 05 §5.1.
+ * (inline styles, third-party snippets, etc.). The values are read from
+ * tailwind.config.mjs through theme(), the single definition of the palette,
+ * so nothing here is hand-copied.
  */
 :root {
-  --tp-ink: #0B0F14;
-  --tp-paper: #F6F7F9;
-  --tp-charcoal: #1A1F26;
-  --tp-accent: #00C389;
-  --tp-signal-value: #EDE085;
-  --tp-warn: #F5A623;
-  --tp-danger: #E5484D;
-  --tp-mute: #6B7280;
-  --tp-rule: #E4E7EB;
+  --tp-ink: theme('colors.tp-ink');
+  --tp-paper: theme('colors.tp-paper');
+  --tp-charcoal: theme('colors.tp-charcoal');
+  --tp-accent: theme('colors.tp-accent');
+  --tp-signal-value: theme('colors.tp-signal-value');
+  --tp-warn: theme('colors.tp-warn');
+  --tp-danger: theme('colors.tp-danger');
+  --tp-mute: theme('colors.tp-mute');
+  --tp-rule: theme('colors.tp-rule');
 
   --panel: var(--tp-paper);
   --panel-ink: var(--tp-ink);
@@ -59,11 +61,11 @@
   }
 
   /*
-   * Links use panel-ink (not tp-accent) per 05 §5.2. tp-accent on
-   * tp-paper is 2.13:1 (fails WCAG AA 4.5:1); underline is the
-   * affordance, not the color. Hover thickens the underline; color
-   * may optionally shift to tp-accent in per-component overrides
-   * (hover-state feedback is AA-exempt).
+   * Links use panel-ink, not tp-accent. tp-accent on tp-paper is
+   * 2.42:1 (fails WCAG AA 4.5:1); underline is the affordance, not
+   * the color. Hover thickens the underline; color may optionally
+   * shift to tp-accent in per-component overrides (hover-state
+   * feedback is AA-exempt).
    */
   a {
     color: var(--panel-ink);
@@ -85,7 +87,7 @@
 /*
  * Motion kill-switch. All non-essential transitions + animations stop
  * when the user has requested reduced motion. Components adding new
- * animation must respect this (22 §10).
+ * animation must respect this.
  */
 @media (prefers-reduced-motion: reduce) {
   *,

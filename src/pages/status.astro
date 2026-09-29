@@ -2,8 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { latestRelease } from '../lib/releases';
 
-// OSS-beta status surface. Pro-tier infrastructure rows are parked while
-// the OSS beta is the focus — they will return when Pro launches publicly.
+// Status surface for the public OSS services. Pro-tier infrastructure rows
+// are parked and return when Pro services are listed publicly.
 // The served version is DERIVED from data/releases.json (the latest release)
 // rather than hand-maintained, so it cannot go stale on the published page.
 
@@ -13,8 +13,8 @@ const components = [
     name: 'Public package index (tokenpak on PyPI)',
     status: 'operational',
     note: latestVersion
-      ? `pip install tokenpak is serving v${latestVersion}.`
-      : 'pip install tokenpak installs the latest published release.',
+      ? `The tokenpak package on PyPI is serving v${latestVersion}.`
+      : 'The tokenpak package on PyPI serves the latest published release.',
   },
   {
     name: 'Marketing site (tokenpak.ai)',
@@ -33,12 +33,12 @@ const components = [
   },
 ];
 
+// Brand tokens only. The dot is decorative; the label carries the status.
 const statusStyles = {
-  'operational':    { dot: 'bg-green-500',  label: 'Operational' },
-  'degraded':       { dot: 'bg-yellow-500', label: 'Degraded' },
-  'outage':         { dot: 'bg-red-500',    label: 'Outage' },
-  'pending-deploy': { dot: 'bg-gray-400',   label: 'Pending deploy' },
-  'beta':           { dot: 'bg-tp-accent',  label: 'Beta' },
+  'operational':    { dot: 'bg-tp-accent', label: 'Operational' },
+  'degraded':       { dot: 'bg-tp-warn',   label: 'Degraded' },
+  'outage':         { dot: 'bg-tp-danger', label: 'Outage' },
+  'pending-deploy': { dot: 'bg-tp-mute',   label: 'Pending deploy' },
 };
 
 const lastUpdated = '2026-05-15';

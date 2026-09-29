@@ -20,7 +20,7 @@ const pillars = [
   { title: 'Reuse',    body: 'Use local vault recall and read-only Pak inspection. Broader Pak reuse is a separate capability with its own availability requirements.' },
   { title: 'Guard',    body: 'Spend and safety guardrails run as a side-channel gatehouse across every request.' },
   { title: 'Dispatch', body: 'Inspect scoped workflows, routing decisions and a local run ledger. Packaged alpha with optional dependencies; live station execution and delivery receipts remain unfinished.' },
-  { title: 'Record',   body: 'Inspect locally recorded requests, observed usage and available cost attribution. Missing coverage remains visible; records do not guarantee savings.' },
+  { title: 'Receipt',  body: 'Inspect locally recorded request receipts: observed usage and available cost attribution. Missing coverage remains visible; a receipt can truthfully report zero tokens saved.' },
 ];
 
 // "Where TokenPak fits" — 3-row comparison. Observability row uses the interim
@@ -32,7 +32,6 @@ const fitsRows = [
 ];
 ---
 <BaseLayout title="TokenPak — open logistics layer for AI context">
-  {/* Live hero preserved intentionally — do not overwrite. */}
   <Hero />
 
   <!-- Narrative band -->
@@ -122,8 +121,13 @@ const fitsRows = [
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Open source &amp; Pro</h2>
     <p class="mt-2 text-tp-ink">
-      TokenPak's core is open source (Apache-2.0). Pro adds team dashboards,
-      advanced routing, and enterprise controls.
+      TokenPak's core is open source (Apache-2.0). Pro (0.4.0 and later) adds
+      prepared stay-versus-fresh session comparisons, with measurements and
+      explicit confirm or decline.
+    </p>
+    <p class="mt-2 text-tp-ink">
+      Planned: Pro reroute recommendations once calibration evidence exists.
+      Any automation comes later, and separately gated.
     </p>
     <p class="mt-2 text-small text-tp-mute">
       Pro is delivered as the <code>tokenpak-paid</code> package via a separate index.
@@ -153,7 +157,7 @@ const fitsRows = [
 
   <CTASection
     heading="Try it locally."
-    body="pip install tokenpak && tokenpak setup — then point your AI client at the local proxy. No cloud component; credentials stay in your environment and provider flow."
+    body="python -m pip install tokenpak && tokenpak setup — then point your AI client at the local proxy. No cloud component; credentials stay in your environment and provider flow."
     showPrimary={false}
   />
 </BaseLayout>

@@ -5,8 +5,7 @@ import ModuleCard from '../components/ModuleCard.astro';
 import CTASection from '../components/CTASection.astro';
 import { config } from '../lib/config';
 
-// Copy sourced from Constitution §2 (identity), §13 (TIP), and
-// 01 §1.4 (three planes). No invented framings.
+// Copy states only what the README and docs support. No invented framings.
 
 const capabilities = [
   {
@@ -41,7 +40,7 @@ const planes = [
   {
     label: 'Semantic layer',
     title: 'TIP-1.0 contracts',
-    body: 'Canonical headers, metadata fields, telemetry events, capability labels. TokenPak is the reference implementation of the TokenPak Integration Protocol.',
+    body: 'Canonical headers, metadata fields, telemetry events, capability labels. TokenPak is the reference implementation of the TokenPak Integrity Protocol.',
   },
 ];
 ---
@@ -114,19 +113,18 @@ const planes = [
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Who it's for</h2>
     <p class="mt-2 text-body">
-      Teams running LLM agents in production or in daily developer workflows where the token
-      bill is starting to show. Claude Code, Cursor, Cline, Continue, Aider, Codex, plus any
-      app built on the Anthropic or OpenAI SDK or LiteLLM.
+      Developers and tech leads running long coding-agent sessions in Claude Code or Codex who
+      want to see what a session has used, what finishing will likely cost, and how far it can go.
     </p>
     <p class="mt-4 text-body">
-      If your tools already speak the provider API, TokenPak drops in under them. If you're
-      building the tools yourself, there's an SDK. Nothing on this page is per-tool; the
-      integrations are in <a href="/open-source">the OSS package</a>.
+      First-class integrations: Claude Code and Codex. Tested adapters: the OpenAI SDK, the
+      Anthropic SDK and LiteLLM. Cursor, Cline, Continue and Aider are compatibility targets,
+      not yet verified. Details are on <a href="/open-source">the open-source page</a>.
     </p>
   </section>
 
   <CTASection
     heading="Try it locally."
-    body={`pip install ${config.package_public} && ${config.package_public} integrate claude-code --apply. Takes a minute.`}
+    body={`python -m pip install ${config.package_public} && ${config.package_public} integrate claude-code --apply. Takes a minute.`}
   />
 </BaseLayout>

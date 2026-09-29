@@ -1,9 +1,9 @@
 ---
 /*
- * OSS-beta feature inventory. The historical "OSS vs Pro" two-column form
- * is parked while the OSS beta is the focus — Pro is not on the public
- * surface during beta. To restore the Pro column, revert to the row schema
- * with `oss` and `pro` keys and re-add the header cells.
+ * Open-source feature inventory. The historical "OSS vs Pro" two-column form
+ * is parked, so Pro is not part of this inventory. To restore the Pro column,
+ * revert to the row schema with `oss` and `pro` keys and re-add the header
+ * cells.
  */
 interface Row {
   feature: string;
@@ -37,14 +37,14 @@ const { rows = defaultRows } = Astro.props;
 <div
   class="overflow-x-auto rounded-card border border-tp-rule"
   role="region"
-  aria-label="OSS beta feature inventory"
+  aria-label="Open-source feature inventory"
   tabindex="0"
 >
   <table class="w-full text-small">
     <thead class="bg-tp-paper">
       <tr>
         <th class="text-left font-semibold px-4 py-3">Feature</th>
-        <th class="text-left font-semibold px-4 py-3 w-32">OSS beta</th>
+        <th class="text-left font-semibold px-4 py-3 w-32">Status</th>
       </tr>
     </thead>
     <tbody>
