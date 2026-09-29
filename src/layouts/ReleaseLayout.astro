@@ -18,7 +18,7 @@ const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
   year: 'numeric', month: 'short', day: 'numeric',
 });
 
-// Sanitized HTML from the GitHub Release body (D2.a, 2026-04-23).
+// Sanitized HTML from the GitHub Release body.
 // Falls back to the short summary if the source body is empty.
 const bodyHtml = release.body_markdown ? renderMarkdown(release.body_markdown, release) : '';
 ---
@@ -51,7 +51,7 @@ const bodyHtml = release.body_markdown ? renderMarkdown(release.body_markdown, r
   /*
    * Scoped styling for the release-body prose. Kept tight — headings,
    * lists, code, tables, links — matching brand tokens from global.css
-   * via CSS variables (05 §5.1).
+   * via CSS variables.
    */
   /* Container-level wrapping: long unbroken identifiers (e.g.,
      tokenpak.core.contracts.capabilities.SELF_CAPABILITIES_PROXY) from

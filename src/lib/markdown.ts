@@ -2,7 +2,7 @@
  * Markdown → safe HTML for user-visible content sourced from external
  * surfaces (GitHub Release bodies in /releases/[version], etc.).
  *
- * Safety posture (D2.a, 2026-04-23): render Markdown; sanitize output
+ * Safety posture: render Markdown; sanitize output
  * against an explicit allow-list; no raw <script>, <iframe>, form
  * elements, on* handlers, javascript: URLs. `marked` produces the HTML;
  * `sanitize-html` enforces the allow-list.
