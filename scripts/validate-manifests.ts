@@ -1,8 +1,8 @@
 /*
  * Manifest validator. Validates every schemas/*.schema.json against its
- * matching data/*.json. Missing data files are tolerated (not every
- * manifest exists yet in Phase 1 — releases + docs-links arrive in
- * PR#8 + PR#9). Schema failures are hard build failures.
+ * matching data/*.json. Missing data files are tolerated for the optional
+ * manifests (releases and docs-links); product-config is required. Schema
+ * failures are hard build failures.
  */
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';

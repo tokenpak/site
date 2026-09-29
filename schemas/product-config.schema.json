@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "tokenpak-site product-config",
-  "description": "Hand-maintained product identity + CTA manifest consumed by every site component that needs install commands, package names, or CTA destinations. See 22-public-website-standard.md §5.3 and site design doc §4.2.",
+  "description": "Hand-maintained product identity + CTA manifest consumed by every site component that needs install commands, package names, or CTA destinations.",
   "type": "object",
   "additionalProperties": false,
   "required": [

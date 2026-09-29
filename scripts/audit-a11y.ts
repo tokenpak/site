@@ -4,11 +4,11 @@
  * For each (browser, route, viewport):
  *   1. Navigate via headless browser.
  *   2. Run axe-core WCAG 2.1 AA; emit JSON + summary line.
- *   3. Switch viewport to 375 x 667 (iPhone SE / 22 §19 spec).
+ *   3. Switch viewport to 375 x 667 (iPhone SE).
  *   4. Capture full-page PNG screenshot.
  *   5. Measure document scrollWidth vs clientWidth; flag horizontal overflow.
  *
- * Browser matrix (Phase 4 / D4.a): Chromium, Firefox, WebKit.
+ * Browser matrix: Chromium, Firefox, WebKit.
  * Restrict to a subset with AUDIT_BROWSERS=chromium,firefox (comma-separated).
  *
  * Emits artifacts under docs/audits/phase-4-cross-browser-YYYY-MM-DD/:
@@ -221,7 +221,7 @@ async function auditRoute(browser: Browser, browserName: string, route: typeof R
   await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
 
   // --- Desktop axe pass ---
-  // 05 §5.2 wordmark exception: the split-color 'Pak' span is the one
+  // Wordmark exception: the split-color 'Pak' span is the one
   // permitted tp-accent-on-tp-paper usage. Parent <a> carries the
   // accessible name; the span is decorative brand typography. Excluded
   // from axe so CI fails on real regressions, not the documented
@@ -444,7 +444,7 @@ async function main() {
   }
   console.log(`Artifacts: ${OUT_DIR}`);
 
-  // D3.a strict: any serious+ on any browser OR any overflow on any browser fails CI.
+  // Strict: any serious+ on any browser OR any overflow on any browser fails CI.
   if (hardFindings > 0 && !process.env.AUDIT_TOLERATE_FINDINGS) {
     process.exitCode = 1;
   }

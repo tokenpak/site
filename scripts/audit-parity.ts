@@ -1,5 +1,5 @@
 /*
- * Phase 3 / mini-3F content-parity audit.
+ * Content-parity audit.
  *
  * For every canonical claim the site makes (savings %, latency,
  * compatibility list, feature-count anchors), fetch each upstream
@@ -159,8 +159,8 @@ const CLAIMS: Claim[] = [
 
 // --- Forbidden markers --------------------------------------------
 //
-// Phrases that should NEVER appear on the site (07 §3 claim boundaries
-// + §6 forbidden phrases). A hit on the site surface is a hard finding.
+// Phrases that should NEVER appear on the site (claim boundaries and
+// forbidden phrases). A hit on the site surface is a hard finding.
 
 interface Forbidden {
   id: string;
@@ -169,22 +169,22 @@ interface Forbidden {
   allowWhere?: (surfaceName: string, context: string) => boolean;
 }
 
-// 07 §3 + §6 are claim boundaries on marketing copy. Docs repo content
+// These are claim boundaries on marketing copy. Docs repo content
 // that uses 'instant' to describe cache-hit timing in a sequence diagram
 // or similar technical exposition isn't a marketing claim. Gate the
 // strictest phrases to the marketing surfaces (site + README).
 const MARKETING_SURFACES = new Set<string>(['tokenpak/site:src+data', 'tokenpak/tokenpak:README.md']);
 
 const FORBIDDEN: Forbidden[] = [
-  { id: 'no-90pct',         description: '90 % savings (workload-dependent; forbidden per 07 §3)', pattern: /\b90\s*%\s*savings/i },
-  { id: 'no-instant',       description: '"instant" as a latency claim on marketing surfaces (07 §3)',
+  { id: 'no-90pct',         description: '90 % savings (workload-dependent; a forbidden claim)',  pattern: /\b90\s*%\s*savings/i },
+  { id: 'no-instant',       description: '"instant" as a latency claim on marketing surfaces',
     pattern: /\binstant\b/i,
     allowWhere: (surfaceName, ctx) =>
       !MARKETING_SURFACES.has(surfaceName) || /instantiat|instance|instant-?on/i.test(ctx) },
-  { id: 'no-zero-overhead', description: '"zero overhead" (07 §3)',                                pattern: /zero\s*overhead/i },
-  { id: 'no-fully-private', description: '"fully private" (07 §3 — requests go to providers)',    pattern: /fully\s*private/i },
-  { id: 'no-no-setup',      description: '"no setup" (07 §3 — there is setup)',                    pattern: /\bno\s*setup\b/i },
-  { id: 'no-tokenpak-pro',  description: 'tokenpak-pro — wrong package name (07 §5.4)',           pattern: /tokenpak[-_]pro\b/i },
+  { id: 'no-zero-overhead', description: '"zero overhead"',                                       pattern: /zero\s*overhead/i },
+  { id: 'no-fully-private', description: '"fully private" (requests go to providers)',            pattern: /fully\s*private/i },
+  { id: 'no-no-setup',      description: '"no setup" (there is setup)',                           pattern: /\bno\s*setup\b/i },
+  { id: 'no-tokenpak-pro',  description: 'tokenpak-pro — wrong package name',                     pattern: /tokenpak[-_]pro\b/i },
   { id: 'no-marketing-filler-rev',      description: 'marketing filler: revolutionary',           pattern: /\brevolutionary\b/i },
   { id: 'no-marketing-filler-gamech',   description: 'marketing filler: game-changing',           pattern: /\bgame[-\s]?changing\b/i },
   { id: 'no-marketing-filler-cutedge',  description: 'marketing filler: cutting-edge',            pattern: /\bcutting[-\s]?edge\b/i },
@@ -293,7 +293,7 @@ async function main() {
   const lines: string[] = [];
   lines.push(`# Phase 3 content-parity audit (${new Date().toISOString().slice(0, 10)})`);
   lines.push('');
-  lines.push('Cross-surface check: every canonical claim the site makes matches the same claim on README + docs; no 07 §3/§6 forbidden phrases anywhere.');
+  lines.push('Cross-surface check: every canonical claim the site makes matches the same claim on README + docs; no forbidden phrases anywhere.');
   lines.push('');
   lines.push('## Rollup');
   lines.push('');

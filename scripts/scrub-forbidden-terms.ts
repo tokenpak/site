@@ -17,7 +17,8 @@
  *   - private home paths:      ~/vault/…, /home/<user>/…
  *   - maintainer name:         the maintainer / the maintainer (and embedded decision IDs)
  *   - governance attribution:  Approved-by:/Ratified-by/Signed-off-by lines
- *   - internal reference refs: "Std NN", "Std NN §x.y", "… Decision #N"
+ *   - internal reference refs: standard numbers, optionally with a section
+ *                              and a decision number
  *   - internal author names:   Sue / Cali / Trix / Suki / Aya / Dee / ReiPo
  *   - internal finding refs:   F-NN finding IDs, known-findings.md, and the
  *                              trailing "Governance note" backfill block
@@ -71,12 +72,13 @@ export function scrubForbiddenTerms(text: string | null | undefined): string {
   out = out.replace(/`?\.claude\/projects\S*`?/g, '<path>');
   out = out.replace(/\bhostuser\b/g, '<user>');
 
-  // 5. Internal standard references. Drop a parenthetical "(Std 32)" entirely;
-  //    replace an inline "Std NN §x.y [Decision #N]" with a neutral noun so the
-  //    surrounding sentence stays grammatical.
+  // 5. Internal standard references. Drop a parenthetical standard reference
+  //    entirely; replace an inline standard reference (with an optional section
+  //    and decision number) with a neutral noun so the surrounding sentence
+  //    stays grammatical.
   out = out.replace(/[ \t]*\((?:per[ \t]+)?Std[ \t]+\d+[^)]*\)/g, '');
-  // §-ref uses `\d+(?:\.\d+)*` (not `[\d.]+`) so a trailing sentence period
-  // ("§4.4.") is NOT swallowed into the section number.
+  // The section part uses `\d+(?:\.\d+)*` (not `[\d.]+`) so a trailing
+  // sentence period is NOT swallowed into the section number.
   out = out.replace(
     /\bStd[ \t]+\d+(?:[ \t]*§\d+(?:\.\d+)*)*(?:[ \t]+Decision[ \t]+#?\d+)?/g,
     'internal policy',
@@ -100,7 +102,7 @@ export function scrubForbiddenTerms(text: string | null | undefined): string {
   out = out.replace(/\bF-\d+[ \t]+(?=[A-Za-z])/g, '');
   out = out.replace(/\bF-\d+\b/g, 'an internal finding');
 
-  // 6. Personal / maintainer names (Std 36 §1.1 P0_BLOCKER). Case-insensitive
+  // 6. Personal / maintainer names. Case-insensitive
   //    so "the maintainer", "maintainer" and the all-caps form are all caught. Internal
   //    decision/task IDs that embed the name ("MAINTAINER-DECISION-A", "MAINTAINER-A")
   //    are neutralized to a generic phrase BEFORE the bare-name rule so they
