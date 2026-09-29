@@ -1,6 +1,6 @@
 # Phase 2 — post-remediation audit (2026-04-23, Path 2 final)
 
-> Captured against the **live** site after `85021cc8` (PR#18) deployed — the Path-2 (tp-accent → tp-ink/underline for links) implementation of Kevin's 2026-04-23 `05 §5.2` amendment.
+> Captured against the **live** site after `85021cc8` (PR#18) deployed — the Path-2 (tp-accent → tp-ink/underline for links) implementation of the maintainer's 2026-04-23 `05 §5.2` amendment.
 >
 > **State: zero findings across every class, every route, every viewport.** `22 §19` accessibility row **flips to ✅ pass**.
 >

@@ -1,7 +1,7 @@
 ---
 title: Pre-launch public-trust audit — tokenpak.ai Phase 1
 date: 2026-04-22
-auditor: automated checks / Kevin (sign-off)
+auditor: automated checks / maintainer (sign-off)
 scope: Phase 1 v1 surface — /, /open-source, /product, /paid, /about, /releases, /releases/[version]
 standard: 22-public-website-standard.md §19
 ---
@@ -49,4 +49,4 @@ Zero hard-fail items. Two verification items (require live site) and two known g
 ## Sign-off
 
 Automated checks run 2026-04-22. Pass + pending items recorded above.
-Kevin — required for launch approval; sign below after reviewing the 4 pending/gap items.
+Maintainer — required for launch approval; sign below after reviewing the 4 pending/gap items.

@@ -15,7 +15,7 @@
  * the maintainer/agent and private-path tokens that are never legitimate on
  * the public site:
  *   - private home paths:      ~/vault/…, /home/<user>/…
- *   - maintainer name:         Kevin / Kevin Yang (and embedded decision IDs)
+ *   - maintainer name:         first name, alone or with a surname (and embedded decision IDs)
  *   - governance attribution:  Approved-by:/Ratified-by/Signed-off-by lines
  *   - internal reference refs: standard numbers, optionally with a section
  *                              and a decision number
@@ -108,7 +108,7 @@ export function scrubForbiddenTerms(text: string | null | undefined): string {
   //    are neutralized to a generic phrase BEFORE the bare-name rule so they
   //    don't degrade into "the maintainer-DECISION-A".
   out = out.replace(/\bKEVIN(?:-[A-Z0-9]+)+\b/g, 'an internal decision');
-  out = out.replace(/\bKevin Yang\b/gi, MAINTAINER);
+  out = out.replace(/\bKevin[ \t]+[A-Z][a-z]+\b/g, MAINTAINER);
   out = out.replace(/\bKevin's\b/gi, `${MAINTAINER}'s`);
   out = out.replace(/\bKevin\b/gi, MAINTAINER);
 
