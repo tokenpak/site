@@ -18,17 +18,14 @@ const dateText = new Date(release.published_at).toLocaleDateString('en-US', {
     <div>
       <p class="text-caption text-tp-mute uppercase tracking-wide">Release</p>
       <h3 class="mt-1">
-        <a href={`/releases/${release.version}/`} class="text-tp-ink no-underline hover:text-tp-accent">
+        <a href={`/releases/${release.version}/`} class="text-tp-ink no-underline hover:underline focus-visible:underline">
           {release.title}
         </a>
       </h3>
       <p class="mt-1 font-mono text-small text-tp-mute">v{release.version} · {dateText}</p>
     </div>
     {release.latest && (
-      <span
-        class="font-mono text-caption px-2 py-1 rounded-input"
-        style="background-color: var(--tp-signal-value); color: var(--tp-ink);"
-      >
+      <span class="font-mono text-caption px-2 py-1 rounded-input bg-tp-accent text-tp-ink">
         latest
       </span>
     )}

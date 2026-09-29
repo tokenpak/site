@@ -28,7 +28,7 @@ const navItems = [
           quickstart which exposes the full nav on that side. */}
       <div class="hidden sm:flex items-center gap-6">
         {navItems.map((item) => (
-          <a href={item.href} class="text-tp-ink no-underline hover:text-tp-accent">{item.label}</a>
+          <a href={item.href} class="text-tp-ink no-underline hover:underline focus-visible:underline">{item.label}</a>
         ))}
       </div>
       <a
