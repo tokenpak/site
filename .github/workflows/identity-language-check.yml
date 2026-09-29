@@ -35,24 +35,23 @@ jobs:
           # ---- forbidden-pattern register -----------------------------------
           # Case-sensitive group: internal author names (word-boundary so
           # "Sue" matches the name but not "ensue"/"issue"), internal reference
-          # numbers, name-embedded decision IDs, governance attribution headers,
+          # numbers, governance attribution headers,
           # and infra-private tokens. These are never lowercase in fleet usage,
           # so case-sensitivity avoids false positives on ordinary prose.
           CS_PATTERNS=(
             '\b(Sue|Cali|Trix|Suki|Aya|Dee|ReiPo)\b'
             '\bStd [0-9]+'
-            '\bKEVIN-[A-Z0-9-]+'
             '^[[:space:]]*(Approved-by|Ratified-by|Signed-off-by|Authorized-by|Reviewed-by|Acked-by)[[:space:]]*:'
             '\.claude/projects'
-            'trixxie168'
           )
-          # Case-insensitive group: the maintainer name and private home paths.
-          # Scoped to fleet usernames so the CI runner's own /home/runner path
-          # is not matched.
+          # Case-insensitive group: private home paths. Scoped to fleet
+          # usernames so the CI runner's own /home/runner path is not matched.
+          # Personal names and host handles are checked separately against the
+          # hashed register in scripts/private-terms.mjs, so the words never
+          # appear in this file.
           CI_PATTERNS=(
-            '\bkevin\b'
             '~/vault'
-            '/home/(sue|trix|cali|dee|aya|reipo|suki|kevin)/'
+            '/home/(sue|trix|cali|dee|aya|reipo|suki)/'
           )
           # NOTE (intentional non-goals, mirroring the package public-language
           # allowlist): the product brand "OpenClaw", the functional lowercase
@@ -61,7 +60,8 @@ jobs:
           # legitimate public surface and are NOT in the register.
 
           # Files excluded from the delta scan: the gate itself and the scrub
-          # helper both carry the register literals by design.
+          # helper both carry the register literals by design. The private-term
+          # register and its CLI hold only hashes, so they are scanned like any other file.
           EXCLUDE_RE='^(\.github/workflows/identity-language-check\.yml|scripts/scrub-forbidden-terms\.ts)$'
 
           # scan_file <path>: print "file:line:match" for every register hit.
@@ -90,6 +90,7 @@ jobs:
                 rc=1
               fi
             done
+            node scripts/check-private-terms.mjs "$f" || rc=1
             return $rc
           }
 
