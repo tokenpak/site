@@ -1,14 +1,14 @@
 ---
 /*
  * Diagram A — request flow (literal). Render rules:
- *   - Linear flow: Raw context -> Packing Station -> Route -> Send -> Provider -> Record.
+ *   - Linear flow: Raw context -> Packing Station -> Route -> Send -> Provider -> Receipt.
  *   - "Reuse" (PAKs) is a FEED into the Packing Station, NOT a stage on the line.
  *   - "Guard" (Gatehouse) is a side-channel OVERLAY before Send, never an inline
  *     box between two stages.
  *   - "Dispatch" does NOT appear in this per-request flow.
  * Static, no motion.
  */
-const stages = ['Raw context', 'Packing Station', 'Route', 'Send', 'Provider', 'Record'];
+const stages = ['Raw context', 'Packing Station', 'Route', 'Send', 'Provider', 'Receipt'];
 ---
 <figure
   class="rounded-card border border-tp-rule bg-tp-paper p-6"

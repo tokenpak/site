@@ -6,8 +6,8 @@ import FeatureCard from '../components/FeatureCard.astro';
 import CTASection from '../components/CTASection.astro';
 import { config } from '../lib/config';
 
-// OSS-beta positioning. Pro-tier framing is parked during beta — only OSS
-// features that ship today are surfaced here.
+// Pro-tier framing is parked; only OSS features that ship today are surfaced
+// here.
 const ossHighlights = [
   { title: 'Context tools and request records', body: 'Explicit compression operations can reduce eligible content. The built-in Pak builder preserves conversation turns; byte-preserved routes report zero product-attributed reduction.' },
   { title: 'Local proxy, no cloud',         body: 'Runs at 127.0.0.1. Byte-preserved passthrough; your prompts and credentials stay in your environment and the provider flow you already use.' },
@@ -17,13 +17,13 @@ const ossHighlights = [
 ---
 <BaseLayout title="Open source — TokenPak" description="TokenPak's OSS core is Apache 2.0 licensed. Install in one command.">
   <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
-    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Open source · beta</p>
+    <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Open source</p>
     <h1>TokenPak is open source.</h1>
     <p class="mt-4 text-body text-tp-ink max-w-prose">
       The proxy, Prompt Packing engine, client integrations, local dashboard,
       Savings Ledger, and Spend Guard are <strong>Apache 2.0 licensed</strong> and
-      run entirely on your machine. This is the beta surface — features that
-      ship today, no marketing of anything that doesn't.
+      run entirely on your machine. This page lists what ships today; anything
+      not yet verified is labeled as such.
     </p>
   </section>
 
@@ -31,7 +31,7 @@ const ossHighlights = [
     <h2>Install</h2>
     <div class="mt-4 grid grid-cols-1 gap-4">
       <CodeBlock language="bash" title="pip">
-{`pip install ${config.package_public}
+{`python -m pip install ${config.package_public}
 ${config.package_public} setup`}
       </CodeBlock>
     </div>
@@ -43,7 +43,7 @@ ${config.package_public} setup`}
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>What's in the OSS beta</h2>
+    <h2>What's in the open-source core</h2>
     <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
       {ossHighlights.map((card) => <FeatureCard title={card.title} body={card.body} />)}
     </div>
@@ -51,7 +51,7 @@ ${config.package_public} setup`}
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>What ships today</h2>
-    <p class="mt-2 text-tp-mute">Beta-honest inventory of every OSS feature in the current release.</p>
+    <p class="mt-2 text-tp-mute">Inventory of the open-source features in the current release.</p>
     <div class="mt-6">
       <ComparisonTable />
     </div>

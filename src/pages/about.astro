@@ -4,9 +4,8 @@ import ModuleCard from '../components/ModuleCard.astro';
 import CTASection from '../components/CTASection.astro';
 import { config } from '../lib/config';
 
-// All content sourced from Constitution §1 (mission), §2 (identity),
-// §13 (TokenPak / TIP / MCP), 01 §11 (multi-repo topology). No
-// invented narrative; no founder mythology per kickoff §3 PR#10.
+// Copy states only what the README and docs support. No invented narrative;
+// no founder mythology.
 
 const surfaces = [
   {
@@ -62,16 +61,16 @@ const surfaces = [
       correctly show zero savings.
     </p>
     <p class="mt-4 text-body">
-      Prompt Packing is one job, not the whole story. Routing, caching, the Savings Ledger, and
-      a local dashboard all ship in the same package — because a team running agents in production
-      needs all four at the same layer.
+      <strong>Who it's for.</strong> Developers and tech leads running long coding-agent sessions
+      in Claude Code or Codex who want to see what a session has used, what finishing will likely
+      cost, and how far it can go.
     </p>
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>TIP-1.0 — the TokenPak Integration Protocol</h2>
+    <h2>TIP-1.0 — the TokenPak Integrity Protocol</h2>
     <p class="mt-4 text-body">
-      TokenPak is the <strong>reference implementation</strong> of the TokenPak Integration
+      TokenPak is the <strong>reference implementation</strong> of the TokenPak Integrity
       Protocol, version 1.0 — a small specification that defines what TokenPak-compatible behavior
       means: canonical headers, metadata fields, telemetry event schemas, capability labels,
       manifest shapes. TIP is a profile/spec, not a transport; the normative text lives in the
@@ -97,5 +96,5 @@ const surfaces = [
     </p>
   </section>
 
-  <CTASection heading="Ready to try it?" body={`pip install ${config.package_public}. See the documented integration tiers before configuring your client.`} />
+  <CTASection heading="Ready to try it?" body={`python -m pip install ${config.package_public}. See the documented integration tiers before configuring your client.`} />
 </BaseLayout>

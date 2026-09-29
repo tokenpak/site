@@ -2,10 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { config } from '../../lib/config';
 
-// C1 (PM/GTM v2 Phase 2, 2026-04-23): Privacy policy template.
-// Banner: "Templates pending legal review."
-// Authoritative escape-hatch list sourced from 2026-04-23 repo audit —
-// keep in sync with tokenpak/telemetry/{config,request_logger}.py + the
+// Privacy policy template, pending legal review. Keep the escape-hatch list
+// in sync with tokenpak/telemetry/{config,request_logger}.py and the
 // TOKENPAK_DEBUG CLI surface.
 ---
 <BaseLayout
@@ -13,8 +11,8 @@ import { config } from '../../lib/config';
   description="How TokenPak handles data on your machine. Local-first by default."
 >
   <div class="mx-auto max-w-prose-wide px-6 py-12 prose">
-    <div class="rounded-lg border border-tp-rule bg-tp-signal-value p-4 mb-8 text-small">
-      <strong>OSS beta — plain-English data-handling summary.</strong> This page
+    <div class="rounded-lg border border-tp-rule bg-tp-paper text-tp-ink p-4 mb-8 text-small">
+      <strong>Plain-English data-handling summary.</strong> This page
       describes what TokenPak does on your machine today. It is not a substitute
       for legal advice and has not been reviewed by counsel. TokenPak is a local
       proxy with no cloud component, so the disclosures here describe local file
