@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.30.1",
+    "published_at": "2026-10-01T18:35:39Z",
+    "title": "TokenPak v1.30.1",
+    "summary": "### Fixed",
+    "body_markdown": "\n### Fixed\n\n- The Claude Code footer and the Codex pane showed only `TokenPak` instead of\n  the session line when the user's locale collates regex ranges, for example\n  `en_US.UTF-8` on Linux. The footer's ASCII check now runs in byte order\n  under any locale.\n\n### Changed\n\n- The README and the documentation home page now open with what TokenPak\n  shows for a coding-agent session: measured usage, estimated cost, burn and\n  runway.\n- Personal names are removed from source comments, schema examples and test\n  fixtures.\n- The orchestration handoff's human recipient is now registered as\n  `operator`. A handoff addressed to the previous name fails as an unknown\n  agent.\n- The release metadata's documentation-revision pin now names the rewritten\n  commit ID of the same documentation content. The documentation repository's\n  history was rewritten to remove personal data.\n\n### Compatibility\n\n- No API, CLI, storage or configuration change apart from the handoff\n  recipient name above.\n- TokenPak Pro 0.5.1 supports TokenPak 1.26.0 through 1.30.0. It refuses to run\n  on 1.30.1. Keep Pro installations on 1.30.0 until Pro 0.5.2, which adds\n  1.30.1, is installed.\n- See [upgrade, rollback and release status](docs/release-log/v1.30.1.md).\n\n### Known issues\n\n- `tokenpak doctor` reports \"legacy DB\" for a newly created `monitor.db` that\n  has no schema-version or budget-alert table yet. The database is not legacy;\n  no action is needed.\n\n### Security\n\nThis release accepts the open NLTK GHSA-8mgp-746c-j5xp and Accelerate\nGHSA-4j2p-28q2-5m79 optional-dependency findings for this release only,\nfollowing a fresh October 1 dependency reassessment. Neither advisory lists a\npatched version, and no verified published fix is available for either. The\nbase install excludes both packages. SECURITY.md lists the affected extras and\nlimitations. Both findings remain open and must be resolved or reassessed\nbefore another release.\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.30.1",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.30.1/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.30.0",
     "published_at": "2026-09-28T16:53:13Z",
     "title": "TokenPak v1.30.0",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.30.0",
     "pypi_url": "https://pypi.org/project/tokenpak/1.30.0/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.29.0",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.1",
     "pypi_url": "https://pypi.org/project/tokenpak/1.5.1/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.5.0",
-    "published_at": "2026-05-03T19:19:18Z",
-    "title": "TokenPak v1.5.0",
-    "summary": "### Added — VDS-01 OSS vault discovery / config (PR #86)",
-    "body_markdown": "\n### Added — VDS-01 OSS vault discovery / config (PR #86)\n\nA user-facing config schema and CLI surface for managing tokenpak's vault paths without the paid `tokenpak vault add` command.\n\n- `tokenpak/vault/config.py` — `vault.yaml` v1 schema parser + loader.\n- `tokenpak index --reindex-all` — reindexes every registered vault path.\n- `tokenpak index --reindex-path <path>` — reindexes a single registered subtree.\n- `docs/reference/cli.md` regenerated to cover the new flags.\n\nOSS users can now hand-edit `~/.tokenpak/vault.yaml` and reindex via the CLI; paid users continue to use `tokenpak vault add` as the convenience entry point.\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.0",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.5.0/",
     "prerelease": false,
     "latest": false
   }
