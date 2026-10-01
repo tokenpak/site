@@ -33,7 +33,7 @@
     "title": "Cline guide",
     "url": "https://docs.tokenpak.ai/guides/cline/",
     "section": "starter",
-    "description": "Route Cline through TokenPak with a custom compatible base URL."
+    "description": "Compatibility target, not yet independently verified. Expected setup for Cline with a custom compatible base URL."
   },
   {
     "title": "Codex CLI guide",
@@ -45,7 +45,7 @@
     "title": "Cursor guide",
     "url": "https://docs.tokenpak.ai/guides/cursor/",
     "section": "starter",
-    "description": "Route Cursor through TokenPak with an OpenAI-compatible base URL."
+    "description": "Compatibility target, not yet independently verified. Expected setup for Cursor with an OpenAI-compatible base URL."
   },
   {
     "title": "Gemini CLI guide",
@@ -57,13 +57,13 @@
     "title": "Aider guide",
     "url": "https://docs.tokenpak.ai/guides/aider/",
     "section": "starter",
-    "description": "Route Aider through TokenPak with --openai-api-base and openai/<model>."
+    "description": "Compatibility target, not yet independently verified. Expected setup for Aider with --openai-api-base and openai/<model>."
   },
   {
     "title": "Continue.dev guide",
     "url": "https://docs.tokenpak.ai/guides/continue/",
     "section": "starter",
-    "description": "Route Continue.dev through TokenPak with ~/.continue/config.json."
+    "description": "Compatibility target, not yet independently verified. Expected setup for Continue.dev with ~/.continue/config.json."
   },
   {
     "title": "CLI Reference",
