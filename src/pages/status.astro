@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { latestRelease } from '../lib/releases';
+import { config } from '../lib/config';
 
 // Status surface for the public OSS services. Pro-tier infrastructure rows
 // are parked and return when Pro services are listed publicly.
@@ -41,7 +42,7 @@ const statusStyles = {
   'pending-deploy': { dot: 'bg-tp-mute',   label: 'Pending deploy' },
 };
 
-const lastUpdated = '2026-05-15';
+const lastUpdated = '2026-10-06';
 ---
 <BaseLayout
   title="Status — TokenPak"
@@ -87,10 +88,11 @@ const lastUpdated = '2026-05-15';
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Incident history</h2>
     <p class="mt-2 text-body">
-      No reported incidents in the last 30 days.
+      No incidents are recorded here as of {lastUpdated}.
     </p>
     <p class="mt-2 text-small text-tp-mute">
-      We post incidents here with a root-cause write-up once resolved.
+      This page is static and is not connected to a monitor. To report or follow
+      a problem, use <a href={`${config.github_repo}/issues`}>GitHub issues</a>.
     </p>
   </section>
 

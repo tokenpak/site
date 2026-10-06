@@ -4,7 +4,9 @@ import { config } from '../../lib/config';
 
 // Privacy policy template, pending legal review. Keep the escape-hatch list
 // in sync with tokenpak/telemetry/{config,request_logger}.py and the
-// TOKENPAK_DEBUG CLI surface.
+// TOKENPAK_DEBUG CLI surface, and keep the optional network requests in sync
+// with tokenpak/core/_update_check.py, tokenpak/telemetry/{reporter,install_reporter}.py
+// and tokenpak/compression/fingerprinting/sync.py.
 ---
 <BaseLayout
   title="Privacy — TokenPak"
@@ -16,20 +18,21 @@ import { config } from '../../lib/config';
       describes what TokenPak does on your machine today. It is not a substitute
       for legal advice and has not been reviewed by counsel. TokenPak is a local
       proxy with no cloud component, so the disclosures here describe local file
-      paths and opt-in escape hatches — not a service operated on your behalf.
+      paths, opt-in controls and the optional network requests you can turn on
+      — not a service operated on your behalf.
     </div>
 
     <h1>Privacy</h1>
 
-    <p class="text-tp-mute">Last updated: 2026-04-23 (draft).</p>
+    <p class="text-tp-mute">Last updated: 2026-10-06 (draft).</p>
 
     <h2>What runs where</h2>
     <p>
       TokenPak is a <strong>local proxy</strong>. Every compression, routing,
       caching, and telemetry decision happens on your machine. Your prompts,
       completions, code, and business data are <em>not</em> sent to any
-      TokenPak-operated infrastructure — there is none to send them to. The one
-      thing that does leave your machine is the LLM request you ask TokenPak to
+      TokenPak-operated service: none sits in your request path. By default, the
+      one thing that leaves your machine is the LLM request you ask TokenPak to
       proxy: it travels to the upstream provider you configure, using your own
       credentials (see <em>What leaves your machine</em> below).
     </p>
@@ -41,7 +44,8 @@ import { config } from '../../lib/config';
       stored <em>locally on your machine</em> when you enable them — they write
       only to local destinations (file, stdout, or your system's local syslog
       socket) and do not initiate any outbound network connection for logging
-      purposes.
+      purposes. The few optional network requests TokenPak can make are listed
+      under <em>What leaves your machine</em>.
     </p>
 
     <h2>What TokenPak stores locally on your machine</h2>
@@ -50,7 +54,7 @@ import { config } from '../../lib/config';
       <li>Configuration at <code>~/.tokenpak/config.yaml</code> (or <code>~/.tpk/config.yaml</code> on fresh installs). Contains profile selection, port, compression knobs. Never contains API keys or prompts.</li>
     </ul>
 
-    <h2>Optional debug/logging escape hatches — full disclosure</h2>
+    <h2>Optional debug and logging controls</h2>
     <p>
       Several opt-in controls <strong>will</strong> expand what is stored locally if
       you turn them on. They are off by default. We disclose them here so you
@@ -72,23 +76,44 @@ import { config } from '../../lib/config';
     </dl>
 
     <h2>What leaves your machine</h2>
-    <p>Only what you ask TokenPak to proxy:</p>
+    <p>By default, only what you ask TokenPak to proxy:</p>
     <ul>
-      <li><strong>LLM requests</strong> — forwarded to the provider you configured (Anthropic, OpenAI, etc.), using <em>your</em> credentials on the way out. TokenPak does not intercept, log to our infrastructure, or mirror the payload.</li>
+      <li><strong>LLM requests</strong> — forwarded to the provider you configured (Anthropic, OpenAI, etc.), using <em>your</em> credentials on the way out. TokenPak forwards the request to that provider; it does not send a copy to any TokenPak-operated service.</li>
     </ul>
+    <p>
+      The requests below happen only if you opt in or run the command yourself.
+      None of them sends your prompts, responses, file contents or credentials.
+    </p>
+    <dl class="space-y-4">
+      <div>
+        <dt>Update check (asks first)</dt>
+        <dd>TokenPak asks, in an interactive terminal, whether it may check for new releases. The default answer is no, and nothing is requested until you say yes. If you agree, it reads <code>https://pypi.org/pypi/tokenpak/json</code> at most once a day. The request carries no TokenPak project, prompt, completion, usage, credential or file data, but PyPI sees ordinary connection metadata such as your IP address. Turn it off with <code>tokenpak update --disable-checks</code> or <code>TOKENPAK_NO_UPDATE_CHECK=1</code>. Running <code>tokenpak update --check</code> yourself makes a one-time request to the same address.</dd>
+      </div>
+      <div>
+        <dt>Usage metrics (<code>TOKENPAK_METRICS_ENABLED=1</code>)</dt>
+        <dd>Off by default. If you turn it on, TokenPak can send content-free usage metrics to TokenPak-operated endpoints (<code>metrics.tokenpak.ai</code> and <code>api.tokenpak.ai</code>). The data is limited to the date and time of the report, token counts, model names, compression ratio, latency, the profile and invocation mode in use, the TokenPak version, your operating system and Python version, a random install ID and a 24-hour request count. It never includes prompts, responses, file names or API keys.</dd>
+      </div>
+      <div>
+        <dt><code>tokenpak fingerprint sync</code> (a command you run)</dt>
+        <dd>Sends a structural fingerprint of the text you give it (segment types, token estimates and counts, not the text itself) to <code>intelligence.tokenpak.ai</code> and receives suggested directives back. Add <code>--dry-run</code> to see exactly what would be sent.</dd>
+      </div>
+    </dl>
 
     <h2>Third parties</h2>
     <p>
-      TokenPak OSS has no sub-processors and no TokenPak-operated cloud boundary.
-      Your prompts, completions, and credentials never reach TokenPak; the only
-      network destination for the requests you proxy is the upstream LLM provider
-      you configure (Anthropic, OpenAI, Google, etc.), reached using your own
-      credentials.
+      TokenPak OSS has no sub-processors, and no TokenPak-operated service sits
+      in your request path. Your prompts, completions, and credentials never
+      reach TokenPak. The only network destination for the requests you proxy is
+      the upstream LLM provider you configure (Anthropic, OpenAI, Google, etc.),
+      reached using your own credentials. The optional requests listed under
+      <em>What leaves your machine</em> are separate from your proxied requests.
     </p>
 
     <h2>Your controls</h2>
     <ul>
-      <li><code>rm -rf ~/.tokenpak ~/.tpk</code> removes every local artifact TokenPak has ever created (legacy + canonical paths).</li>
+      <li><code>tokenpak uninstall --soft</code> restores your Claude Code settings, reverses the Codex companion install and stops a running proxy. It keeps your configuration and local data.</li>
+      <li><code>tokenpak uninstall --hard</code> also deletes TokenPak's local files, such as configuration, request databases and caches. It keeps your session journal, budget history and saved capsules; delete those yourself if you want them gone. Add <code>--dry-run</code> to either command to see exactly what it would change.</li>
+      <li>Clients you configured with <code>tokenpak integrate &lt;client&gt; --apply</code> can be restored with <code>tokenpak integrate &lt;client&gt; --revert</code>.</li>
       <li>Unset any optional escape-hatch env var to disable that source of data collection.</li>
       <li>Uninstalling the package (<code>pip uninstall tokenpak</code>) stops all TokenPak execution on your machine.</li>
     </ul>
