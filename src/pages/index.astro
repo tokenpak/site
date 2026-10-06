@@ -7,6 +7,7 @@ import ReleaseCard from '../components/ReleaseCard.astro';
 import { latestRelease } from '../lib/releases';
 import DocLinkCard from '../components/DocLinkCard.astro';
 import { docsLinks } from '../lib/docs-links';
+import { config } from '../lib/config';
 import DiagramRequestFlow from '../components/DiagramRequestFlow.astro';
 import DiagramWhereItFits from '../components/DiagramWhereItFits.astro';
 
@@ -18,7 +19,7 @@ const pillars = [
   { title: 'Pack',     body: 'Explicit context tools can reduce eligible content. The default proxy preserves conversation turns and can report zero tokens saved.' },
   { title: 'Route',    body: 'Configure routing policies and inspect observe-mode records. Automatic model changes and fallback enforcement are not active by default.' },
   { title: 'Reuse',    body: 'Use local vault recall and read-only Pak inspection. Broader Pak reuse is a separate capability with its own availability requirements.' },
-  { title: 'Guard',    body: 'Spend and safety guardrails run as a side-channel gatehouse across every request.' },
+  { title: 'Guard',    body: "Spend Guard checks each proxied request before it is sent and holds one that would exceed a limit. By default the limit is the model's context window; dollar and rolling session caps are opt-in." },
   { title: 'Dispatch', body: 'Inspect scoped workflows, routing decisions and a local run ledger. Packaged alpha with optional dependencies; live station execution and delivery receipts remain unfinished.' },
   { title: 'Receipt',  body: 'Inspect locally recorded request receipts: observed usage and available cost attribution. Missing coverage remains visible; a receipt can truthfully report zero tokens saved.' },
 ];
@@ -121,16 +122,19 @@ const fitsRows = [
   <section class="mx-auto max-w-prose-wide px-6 py-8">
     <h2>Open source &amp; Pro</h2>
     <p class="mt-2 text-tp-ink">
-      TokenPak's core is open source (Apache-2.0). Pro prepares context bundles
-      for continuing in a fresh session, measures them against observed
-      references, and records your confirm or decline.
+      TokenPak's core is open source (Apache-2.0). Pro is a separate,
+      proprietary package (<code>tokenpak-paid</code>) for individual
+      developers. Its stay-versus-fresh session comparison is a preview: it
+      prepares context bundles for continuing in a fresh session, measures them
+      against observed references, and records your confirm or decline.
     </p>
     <p class="mt-2 text-tp-ink">
       Planned: Pro reroute recommendations once calibration evidence exists.
       Any automation comes later, and separately gated.
     </p>
     <p class="mt-2 text-small text-tp-mute">
-      Pro is delivered as the <code>tokenpak-paid</code> package via a separate index.
+      There is no self-service purchase yet. To ask about access, write to
+      <a href={config.cta_urls.request_access}>hello@tokenpak.ai</a>.
     </p>
   </section>
 
@@ -157,7 +161,7 @@ const fitsRows = [
 
   <CTASection
     heading="Try it locally."
-    body="python -m pip install tokenpak && tokenpak setup — then point your AI client at the local proxy. No cloud component; credentials stay in your environment and provider flow."
+    body="python -m pip install tokenpak && tokenpak setup --start — then point your AI client at the local proxy. No cloud component; credentials stay in your environment and provider flow."
     showPrimary={false}
   />
 </BaseLayout>

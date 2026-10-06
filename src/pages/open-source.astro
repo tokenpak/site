@@ -12,7 +12,7 @@ const ossHighlights = [
   { title: 'Context tools and request records', body: 'Explicit compression operations can reduce eligible content. The built-in Pak builder preserves conversation turns; byte-preserved routes report zero product-attributed reduction.' },
   { title: 'Local proxy, no cloud',         body: 'Runs at 127.0.0.1. Byte-preserved passthrough; your prompts and credentials stay in your environment and the provider flow you already use.' },
   { title: 'Client integrations',           body: 'Tested SDK adapters: OpenAI SDK, Anthropic SDK and LiteLLM. First-class integrations: Claude Code and Codex. Compatibility targets (not yet independently verified): Cursor, Cline, Continue and Aider.' },
-  { title: 'Savings Ledger + Spend Guard',  body: 'Local telemetry store, A/B replay, 50 built-in compression profiles, semantic vault indexing, and a pre-send circuit breaker (Spend Guard) that blocks runaway requests before they reach the provider.' },
+  { title: 'Savings Ledger + Spend Guard',  body: "Local telemetry store, A/B replay, 50 built-in compression profiles, semantic vault indexing, and Spend Guard, a pre-send circuit breaker that holds a request before it reaches the provider when it would exceed a limit. By default the limit is the model's context window; dollar and rolling caps are opt-in." },
 ];
 ---
 <BaseLayout title="Open source — TokenPak" description="TokenPak's OSS core is Apache 2.0 licensed. Install in one command.">
@@ -32,13 +32,15 @@ const ossHighlights = [
     <div class="mt-4 grid grid-cols-1 gap-4">
       <CodeBlock language="bash" title="pip">
 {`python -m pip install ${config.package_public}
-${config.package_public} setup`}
+${config.package_public} setup --start`}
       </CodeBlock>
     </div>
     <p class="mt-3 text-small text-tp-mute">
-      One command to install, one to set up. The setup wizard detects API keys,
-      picks a compression profile, and starts the proxy on
-      <code class="font-mono">127.0.0.1:8766</code>.
+      The setup wizard detects optional provider API keys, asks which
+      compression profile to use, and writes your configuration. With
+      <code class="font-mono">--start</code> it also starts the proxy on
+      <code class="font-mono">127.0.0.1:8766</code> (the default port); without
+      it, run <code class="font-mono">{config.package_public} start</code> later.
     </p>
   </section>
 
