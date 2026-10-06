@@ -2,8 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { config } from '../lib/config';
 
-// Comparison rows cite public documentation or a reproducible benchmark.
-// Avoid unsupported claims about private behavior.
+// This page makes no feature claims about other projects. It names the
+// categories TokenPak overlaps with and links each tool to its own
+// documentation. TokenPak's own statements are limited to what the
+// open-source package ships today.
 
 const diff = [
   {
@@ -12,110 +14,54 @@ const diff = [
       'The proxy and request records run locally. Provider-bound prompts and credentials still travel to the provider you configure; TokenPak operates no cloud relay. See the privacy page for logging details.',
   },
   {
-    title: 'Deterministic compression with a reproducible benchmark',
+    title: 'A reproducible fixture benchmark for explicit compression',
     body:
       'The headline benchmark exercises a fixed agent-style fixture (`make benchmark-headline`). Its reduction is not a default-proxy savings receipt; applicable CI paths select the benchmark.',
   },
   {
     title: 'Causal cost attribution + a pre-send circuit breaker',
     body:
-      'Savings attribution is causal — proxy-caused hits are never mixed with provider-side cache hits. Spend Guard catches runaway requests before they reach the provider, returning HTTP 402 with a release directive instead of letting a single agent burn through a budget.',
+      "Savings attribution is causal — proxy-caused hits are never mixed with provider-side cache hits. Spend Guard holds a request that would exceed its limit before it reaches the provider and returns HTTP 402 with a release directive. By default the limit is the model's context window; dollar and rolling caps are opt-in.",
   },
 ];
 
-const rows = [
+// Each entry links to the project's own documentation.
+const overlaps = [
   {
-    feature: 'Runtime shape',
-    tokenpak: 'Local proxy on 127.0.0.1. Byte-preserved passthrough.',
-    values: {
-      Helicone:  'Managed SaaS proxy (proxy your requests through helicone.ai).',
-      LangSmith: 'SDK + hosted observability backend.',
-      LiteLLM:   'Library + optional proxy server.',
-      Portkey:   'Managed gateway with hosted control plane.',
-      Langfuse:  'Self-hostable or cloud observability backend with SDKs.',
-      OpenRouter:'Hosted model router; requests route through openrouter.ai.',
-    },
+    kind: 'Gateways and routers',
+    overlap: 'Routing',
+    tools: [
+      { name: 'LiteLLM', href: 'https://docs.litellm.ai/' },
+      { name: 'OpenRouter', href: 'https://openrouter.ai/docs' },
+      { name: 'Portkey', href: 'https://portkey.ai/docs' },
+    ],
   },
   {
-    feature: 'Data-exit posture (default)',
-    tokenpak: 'Nothing leaves your machine except the request you were already sending.',
-    values: {
-      Helicone:  'Request bodies + responses flow through Helicone by design.',
-      LangSmith: 'Traces shipped to LangSmith (hosted) by SDK default.',
-      LiteLLM:   'Local by default in library mode; proxy forwards to provider.',
-      Portkey:   'Traffic through Portkey gateway.',
-      Langfuse:  'Traces shipped to backend (self-hosted or cloud).',
-      OpenRouter:'All traffic through OpenRouter.',
-    },
-  },
-  {
-    feature: 'Compression / context reduction',
-    tokenpak: 'Explicit tools can reduce eligible content. The default proxy preserves conversation turns; byte-preserved routes report zero product-attributed reduction. The agent-style CI fixture is a separate measurement.',
-    values: {
-      Helicone:  'No compression feature documented.',
-      LangSmith: 'Observability tool; not a compression product.',
-      LiteLLM:   'Caching + prompt-management; no compression pipeline.',
-      Portkey:   'Configurable gateway transforms; not a compression pipeline.',
-      Langfuse:  'Not a compression product.',
-      OpenRouter:'Router; not a compression product.',
-    },
-  },
-  {
-    feature: 'Cost tracking',
-    tokenpak: 'Per-request SQLite ledger with causal attribution. OSS.',
-    values: {
-      Helicone:  'Yes (hosted dashboard).',
-      LangSmith: 'Yes (hosted observability).',
-      LiteLLM:   'Yes (lightweight, library-level).',
-      Portkey:   'Yes (hosted).',
-      Langfuse:  'Yes (cost tracking in observability backend).',
-      OpenRouter:'Yes (account-scoped).',
-    },
-  },
-  {
-    feature: 'Pre-send spend control (Spend Guard)',
-    tokenpak: 'OSS — pre-send circuit breaker with rolling caps. Blocks before the request reaches the provider and returns a release directive.',
-    values: {
-      Helicone:  'Rate limits available; pre-send budget enforcement not the primary framing.',
-      LangSmith: 'Observability, not enforcement.',
-      LiteLLM:   'Rate-limit primitives; no pre-send budget enforcement documented.',
-      Portkey:   'Rate limits + guardrails available (hosted).',
-      Langfuse:  'Observability, not enforcement.',
-      OpenRouter:'Per-key credit limits.',
-    },
-  },
-  {
-    feature: 'License',
-    tokenpak: 'Apache 2.0 open-source core. Pro is a separate, licensed package.',
-    values: {
-      Helicone:  'OSS core + commercial cloud plan.',
-      LangSmith: 'Commercial.',
-      LiteLLM:   'MIT; commercial support available.',
-      Portkey:   'Commercial (hosted) with SDKs.',
-      Langfuse:  'OSS core (MIT) + commercial cloud + enterprise.',
-      OpenRouter:'Commercial.',
-    },
+    kind: 'Observability tools',
+    overlap: 'Measurement',
+    tools: [
+      { name: 'Helicone', href: 'https://docs.helicone.ai/' },
+      { name: 'Langfuse', href: 'https://langfuse.com/docs' },
+      { name: 'LangSmith', href: 'https://docs.smith.langchain.com/' },
+    ],
   },
 ];
-
-const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 'OpenRouter'];
 ---
 <BaseLayout
   title="How TokenPak compares — TokenPak"
-  description="Honest comparison between TokenPak and other LLM proxy, gateway, and observability tools. Cited sources only; no unverifiable claims."
+  description="How TokenPak relates to LLM gateways and observability tools: where it overlaps with them, what it adds, and why you can run both."
 >
   <section class="mx-auto max-w-prose-wide px-6 pt-16 pb-8">
     <p class="text-caption text-tp-mute uppercase tracking-wide mb-2">Compare</p>
     <h1>How TokenPak compares.</h1>
     <p class="mt-6 text-body">
-      We get asked how TokenPak stacks up against the other LLM proxy, gateway, and
-      observability tools. This page is an honest summary. Every row cites a public
-      source or a reproducible benchmark — if something isn't cited, we don't claim it.
+      TokenPak overlaps with gateways on routing and with observability tools on
+      measurement. It adds local request records, session economics and Spend
+      Guard, and runs beside them. Run both.
     </p>
     <p class="mt-4 text-small text-tp-mute">
-      Comparisons reflect public documentation as of 2026-04-23. Competitor products
-      evolve — if something below becomes outdated, write to
-      <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a> and we'll update the row.
+      This page does not compare features across projects. Each tool below links
+      to its own documentation, which is the place to check what it offers today.
     </p>
   </section>
 
@@ -132,29 +78,31 @@ const competitors = ['Helicone', 'LangSmith', 'LiteLLM', 'Portkey', 'Langfuse', 
   </section>
 
   <section class="mx-auto max-w-prose-wide px-6 py-8">
-    <h2>Feature-by-feature</h2>
+    <h2>Where TokenPak overlaps</h2>
     <p class="mt-2 text-small text-tp-mute">
-      TokenPak column describes the open-source core as it ships today.
+      Tools you may already run, grouped by the job they overlap with TokenPak on.
     </p>
-    <div class="mt-6 overflow-x-auto" tabindex="0" role="region" aria-label="Feature comparison table">
-      <table class="w-full border-collapse text-small">
-        <thead>
-          <tr class="border-b border-tp-rule">
-            <th class="text-left py-3 pr-4 font-semibold text-tp-ink">Feature</th>
-            <th class="text-left py-3 px-4 font-semibold text-tp-ink">TokenPak</th>
-            {competitors.map((c) => (
-              <th class="text-left py-3 px-4 font-semibold text-tp-mute">{c}</th>
-            ))}
+    <div class="mt-6 overflow-x-auto rounded-card border border-tp-rule" role="region" aria-label="Tools TokenPak overlaps with" tabindex="0">
+      <table class="w-full text-small">
+        <thead class="bg-tp-paper">
+          <tr>
+            <th class="text-left font-semibold px-4 py-3">Tool type</th>
+            <th class="text-left font-semibold px-4 py-3">Overlaps with TokenPak on</th>
+            <th class="text-left font-semibold px-4 py-3">Project documentation</th>
           </tr>
         </thead>
         <tbody>
-          {rows.map((r) => (
-            <tr class="border-b border-tp-rule align-top">
-              <td class="py-3 pr-4 font-semibold text-tp-ink">{r.feature}</td>
-              <td class="py-3 px-4 text-tp-ink">{r.tokenpak}</td>
-              {competitors.map((c) => (
-                <td class="py-3 px-4 text-tp-mute">{r.values[c]}</td>
-              ))}
+          {overlaps.map((o) => (
+            <tr class="border-t border-tp-rule align-top">
+              <td class="px-4 py-3 text-tp-ink font-medium">{o.kind}</td>
+              <td class="px-4 py-3 text-tp-mute">{o.overlap}</td>
+              <td class="px-4 py-3 text-tp-ink">
+                {o.tools.map((t, i) => (
+                  <>
+                    <a href={t.href}>{t.name}</a>{i < o.tools.length - 1 ? ', ' : ''}
+                  </>
+                ))}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -184,9 +132,8 @@ make benchmark-headline</code></pre>
     <div class="rounded-card border border-tp-rule p-8 bg-tp-paper">
       <h2>Spot something wrong?</h2>
       <p class="mt-2 text-body">
-        If a competitor row is out of date or inaccurate, write to
-        <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a>. We publish corrections
-        within two business days.
+        If something on this page is out of date or inaccurate, write to
+        <a href="mailto:hello@tokenpak.ai">hello@tokenpak.ai</a>.
       </p>
     </div>
   </section>
