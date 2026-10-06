@@ -35,7 +35,7 @@ const planes = [
   {
     label: 'Control plane',
     title: 'Capability + diagnostics',
-    body: 'MCP over stdio or Streamable HTTP. Tools, resources, prompts, status. No model requests flow on this plane — it only describes and observes.',
+    body: 'MCP over stdio. Tools such as session info and budget checks. No model requests flow on this plane — it only describes and observes.',
   },
   {
     label: 'Semantic layer',
@@ -57,8 +57,8 @@ const planes = [
       remains a limitation.
     </p>
     <p class="mt-4 text-body">
-      Prompt Packing is one of four first-class concerns. Routing, caching, and the Savings Ledger all
-      live at the same layer: your traffic, your machine, your rules.
+      Prompt Packing, routing policy, cache attribution and the Savings Ledger sit in the same
+      local layer. Routing policy is configuration and observe-mode records.
     </p>
   </section>
 
@@ -78,8 +78,8 @@ const planes = [
       {planes.map((p) => <ModuleCard label={p.label} title={p.title} body={p.body} />)}
     </div>
     <p class="mt-6 text-small text-tp-mute">
-      Full architecture — 18 canonical subsystems, plane ownership rules,
-      byte-fidelity guarantees — lives on <a href={config.docs_base_url + '/architecture/'}>docs.tokenpak.ai/architecture</a>.
+      Full architecture — the proxy-centered design and component diagram —
+      lives on <a href={config.docs_base_url + '/architecture/'}>docs.tokenpak.ai/architecture</a>.
     </p>
   </section>
 
