@@ -2,7 +2,7 @@
 
 Source of the TokenPak public marketing website at `tokenpak.ai`.
 
-This repo is the fifth public surface in the TokenPak topology. It is **marketing-first**: the homepage, `/open-source`, `/releases`, `/product`, `/paid`, and `/about` live here. Protocol specs, API docs, and operational guides live in `tokenpak/docs` and publish at `docs.tokenpak.ai`.
+This repo is the fifth public surface in the TokenPak topology. It is **marketing-first**: the homepage, `/open-source`, `/releases`, `/product`, and `/about` live here. Protocol specs, API docs, and operational guides live in `tokenpak/docs` and publish at `docs.tokenpak.ai`.
 
 ## Stack
 
