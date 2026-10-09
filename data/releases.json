@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.31.0",
+    "published_at": "2026-10-09T17:44:49Z",
+    "title": "TokenPak v1.31.0",
+    "summary": "### Added",
+    "body_markdown": "\n### Added\n\n- `tokenpak update apply` makes a staged or already installed update take\n  effect. It restarts the TokenPak services, and it refuses, changing nothing\n  and exiting with code 9, while a request is in flight or a client is\n  connected. It takes two idle observations a short interval apart and checks\n  again immediately before it stops anything. `--check` reports whether it\n  would apply now without restarting anything. When no service manager is found\n  it prints the exact manual step. `tokenpak update` now reports a pending\n  update instead of downloading it again.\n- A pending update is shown where you already look. `tokenpak status`,\n  `tokenpak doctor` and the stats footer say when a newer version is staged or\n  installed but not running (for example `1.30.3 → 1.31.0, applies at next\n  launch`), and the companion status line ends with `update <version> pending`\n  when there is room for it. The check is local: a staged-release marker, or an\n  installed version newer than the version the proxy reports on its loopback\n  `/health`.\n- `tokenpak doctor` reports a split home: it warns when both `<config-dir>` and\n  `~/.tokenpak` hold TokenPak state, and says when `tokenpak home migrate` has\n  finished the merge. After a migration it warns again only if something wrote\n  to `~/.tokenpak` later.\n\n### Changed\n\n- `tokenpak home migrate` is now a plan-first merge from `~/.tokenpak` into\n  `<config-dir>`; it used to copy blindly. It prints the plan by default and writes\n  only with `--apply`. SQLite databases are snapshotted and merged row by row\n  (journal entries are matched on content, not on row id). A file that differs\n  keeps the `<config-dir>` copy and the `~/.tokenpak` one is saved beside it as\n  `<name>.legacy`. Every changed target is backed up first. Symbolic links are\n  recreated rather than followed. `~/.tokenpak` is never modified or removed.\n  The command refuses while the proxy or a companion session is in use, and a\n  successful `--apply` leaves a `home-migrated.json` receipt in `<config-dir>`.\n- Product code now finds the TokenPak home through one resolver instead of\n  building `~/.tokenpak` or `<config-dir>` paths itself. About a hundred places that\n  wrote to the older home after an install had moved, which split the install\n  again, now write to the home the resolver names. A test fails on a\n  hard-coded home path in product code.\n\n### Compatibility\n\n- **Installs with state in both `~/.tokenpak` and `<config-dir>`.** After you upgrade,\n  new writes go to `<config-dir>`. Spend-cap, cost and telemetry history that lives in\n  `~/.tokenpak` can look reset until you run `tokenpak home migrate --apply`.\n  Run `tokenpak home migrate` first to read the plan. `tokenpak doctor` flags\n  this layout. Installs with a single home are unaffected, and so are installs\n  that set `TOKENPAK_HOME`.\n- Nothing is migrated automatically. The upgrade is package-only. To roll back,\n  install `tokenpak==1.30.3`; anything written to `<config-dir>` after a migration\n  stays there, and the migration leaves `~/.tokenpak` as it was.\n- The public API snapshot gains the new command modules and\n  `tokenpak.core.runtime.update_pending`; no symbol is removed or changed.\n- TokenPak Pro 0.6.0 accepts only TokenPak 1.30.3 and refuses 1.31.0. Pro users\n  stay on 1.30.3 and wait for Pro 0.6.1, which is tested against the exact\n  1.31.0 release source before it is published. See the\n  [1.31.0 release log](docs/release-log/v1.31.0.md).\n",
+    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
+    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.31.0",
+    "pypi_url": "https://pypi.org/project/tokenpak/1.31.0/",
+    "prerelease": false,
+    "latest": true
+  },
+  {
     "version": "1.30.3",
     "published_at": "2026-10-07T18:01:12Z",
     "title": "TokenPak v1.30.3",
@@ -9,7 +21,7 @@
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.30.3",
     "pypi_url": "https://pypi.org/project/tokenpak/1.30.3/",
     "prerelease": false,
-    "latest": true
+    "latest": false
   },
   {
     "version": "1.30.2",
@@ -584,18 +596,6 @@
     "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
     "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.4",
     "pypi_url": "https://pypi.org/project/tokenpak/1.5.4/",
-    "prerelease": false,
-    "latest": false
-  },
-  {
-    "version": "1.5.3",
-    "published_at": "2026-05-09T14:36:45Z",
-    "title": "TokenPak v1.5.3",
-    "summary": "> ⚠️ **PyPI publish failed for v1.5.3 — use v1.5.4 instead.**\n>\n> The `Release TokenPak` workflow ran on the `v1.5.3` tag. The `Run Tests`, `Build Distribution`, and `Create GitHub Release` jobs all completed green, proving the test-suite recovery work landed correctly. The final `Publish to PyPI` step failed with `InvalidDistribution: Unknown distribution format: 'SHA256SUMS'` because the prior `release.yml` placed `SHA256SUMS` inside `dist/` and `pypa/gh-action-pypi-publish` enumerates `dist/*` and rejects every non-`.whl`/`.tar.gz` entry. This was a pre-existing release-workflow defect, not",
-    "body_markdown": "> ⚠️ **PyPI publish failed for v1.5.3 — use v1.5.4 instead.**\n>\n> The `Release TokenPak` workflow ran on the `v1.5.3` tag. The `Run Tests`, `Build Distribution`, and `Create GitHub Release` jobs all completed green, proving the test-suite recovery work landed correctly. The final `Publish to PyPI` step failed with `InvalidDistribution: Unknown distribution format: 'SHA256SUMS'` because the prior `release.yml` placed `SHA256SUMS` inside `dist/` and `pypa/gh-action-pypi-publish` enumerates `dist/*` and rejects every non-`.whl`/`.tar.gz` entry. This was a pre-existing release-workflow defect, not a v1.5.3 content defect.\n>\n> **Action for users:** install [`tokenpak==1.5.4`](https://github.com/tokenpak/tokenpak/releases/tag/v1.5.4) — it contains every line of v1.5.3 plus the workflow fix, and is the first clean release on PyPI in this line.\n>\n> **Action for the repo:** the workflow defect is fixed in v1.5.4 (see PR #154): SHA256SUMS now lives at the repo root and never inside `dist/`; new pre-upload + pre-publish dist-purity guards prevent regression.\n>\n> v1.5.3 is retained as a historical GitHub-tag-only release. The tag is **not** retagged or force-pushed.\n\n---\n\n## Original release notes\n\nRelease v1.5.3\n\n### Installation (use v1.5.4)\n\n```bash\npip install tokenpak==1.5.4\n```\n\n### What's New\n\nSee [CHANGELOG.md](https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md) for details (entries for both v1.5.3 and v1.5.4).\n\n### Checksums\n\n```\n981fbecf4a4f684a0be623343c41f63d5089d276a2b3d2c57031c721badd079a  tokenpak-1.5.3-py3-none-any.whl\ndaba3059b7293aa0b05e5f9faa06c1a566ee420fe833415f9e6e3285ae235374  tokenpak-1.5.3.tar.gz\n```\n",
-    "changelog_url": "https://github.com/tokenpak/tokenpak/blob/main/CHANGELOG.md",
-    "github_release_url": "https://github.com/tokenpak/tokenpak/releases/tag/v1.5.3",
-    "pypi_url": "https://pypi.org/project/tokenpak/1.5.3/",
     "prerelease": false,
     "latest": false
   }
